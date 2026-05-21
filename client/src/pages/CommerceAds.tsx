@@ -782,8 +782,8 @@ export default function CommerceAds() {
         {/* TLDR */}
         <div className="mt-10 md:mt-12 max-w-4xl">
           <TldrWithSwitcher
-            accentColor="#e6781e"
-            accentRgb="230,120,30"
+            accentColor="#0ee9d6"
+            accentRgb="14,233,214"
             summary={<p><strong>I led design of the product media section inside Meta's new unified eCommerce ad builder</strong> — integrating 7 product catalog features from 3 separate legacy flows. This new ads flow shipped to a scaled alpha with 100K brands.</p>}
             role="Design lead"
             timeline={<span>H1 2026 · 3 months</span>}

@@ -27,7 +27,7 @@ const casesData = [
     lede: "Unifying how eCommerce advertisers build ads on Meta",
     role: "Design Lead", timeline: "H1 2026",
     outcome: "Scaled alpha (100K brands)",
-    accent: "#f9a04a", accentRgb: "230,120,30",
+    accent: "#0ee9d6", accentRgb: "14,233,214",
     heroSrc: "/primer/commerce-hero.png", heroAlt: "Unified ad creation flow",
   },
   {
@@ -37,7 +37,7 @@ const casesData = [
     lede: "Making WhatsApp ads available to nearly every advertiser",
     role: "Design Lead", timeline: "H2 2025",
     outcome: "Shipped globally",
-    accent: "#6aee9a", accentRgb: "74,222,128",
+    accent: "#1eff8a", accentRgb: "30,255,138",
     heroSrc: "/primer/sales-06-ad-creative.png", heroAlt: "WhatsApp Status ad creative",
   },
   {
@@ -339,7 +339,7 @@ export default function Landing() {
 
       {/* Right content */}
       <div className="flex-1 flex flex-col py-6 px-6 lg:py-[36px] xl:py-[56px] 2xl:py-[72px] lg:pr-7 lg:pl-6 relative z-10">
-        <h1 className="font-display text-[clamp(1.6rem,3vw,3.2rem)] font-extrabold leading-[1.45] tracking-[-0.03em] text-[var(--ink)] shrink-0">
+        <h1 className="font-mono text-[clamp(1.6rem,3vw,3.2rem)] font-normal leading-[1.45] tracking-[-0.01em] text-[var(--ink)] shrink-0">
           Empowering advertisers to build <span className="inline-block px-4 py-1.5 rounded-xl border border-white/30 bg-white/[0.06]">ads that perform</span>
         </h1>
         <div className="mt-8 lg:mt-10 xl:mt-12 2xl:mt-14 mb-3 lg:mb-4 xl:mb-6">

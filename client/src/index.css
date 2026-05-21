@@ -106,10 +106,10 @@ html, body {
   --case-accent-soft: rgba(74, 222, 128, 0.1);
 }
 
-/* Commerce-ads — warm amber for dark */
+/* Commerce-ads — teal */
 .theme-commerce {
-  --case-accent: #f59e0b;
-  --case-accent-soft: rgba(245, 158, 11, 0.1);
+  --case-accent: #0ee9d6;
+  --case-accent-soft: rgba(14, 233, 214, 0.1);
 }
 
 @layer base {
