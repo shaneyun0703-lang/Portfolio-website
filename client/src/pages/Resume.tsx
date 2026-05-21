@@ -1,7 +1,20 @@
 export default function Resume() {
   return (
     <>
-      <div className="resume-outer min-h-screen bg-[#e8e8e8] py-10" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
+      {/* Download bar — hidden when printing */}
+      <div className="print:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-3 bg-[#1c1c1e] border-b border-[#2a2a2a]">
+        <span className="font-mono text-[12px] text-white tracking-[0.06em] uppercase font-semibold">Resume</span>
+        <button
+          onClick={() => { const prev = document.title; document.title = "Shane Yun - Resume"; window.print(); document.title = prev; }}
+          className="font-mono text-[12px] tracking-[0.04em] uppercase px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer font-semibold"
+          style={{ background: "rgba(255,255,255,0.92)", color: "#111", border: "1px solid rgba(255,255,255,0.9)" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#fff"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.92)"; }}
+        >
+          Download PDF
+        </button>
+      </div>
+      <div className="resume-outer min-h-screen bg-[#e8e8e8] pt-20 pb-10 print:p-0" style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
         <div id="resume-content" className="resume-page max-w-[816px] mx-auto bg-white text-[#1a1a1a] shadow-[0_2px_20px_rgba(0,0,0,0.15)]" style={{ minHeight: "1056px" }}>
         <div className="resume-content px-16 pt-12 pb-0">
 
@@ -14,7 +27,7 @@ export default function Resume() {
             <div className="text-right text-[0.72rem] text-[#666] leading-[1.6]">
               <div>shane.yun0703@gmail.com</div>
               <div>linkedin.com/in/shane-yun</div>
-              <div className="font-bold text-[#1a1a1a]">shaneyun.com</div>
+              <div className="font-bold text-[#1a1a1a]">shane-yun.vercel.app</div>
             </div>
           </div>
 

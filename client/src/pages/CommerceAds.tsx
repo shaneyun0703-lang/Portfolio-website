@@ -760,7 +760,7 @@ export default function CommerceAds() {
             </Link>
             <div className={`w-px bg-[#444] transition-all duration-500 ${scrolled ? "h-5" : "h-6"}`} />
             <div>
-              <div className={`font-display font-bold tracking-[-0.01em] text-[var(--ink)] transition-all duration-500 ease-in-out ${scrolled ? "text-[17px]" : "text-[20px]"}`}>{scrolled ? "Dissolving a ten-year fork in ad creation" : "Commerce Ads"}</div>
+              <div className={`font-display font-bold tracking-[-0.01em] text-[var(--ink)] transition-all duration-500 ease-in-out ${scrolled ? "text-[17px]" : "text-[20px]"}`}>{scrolled ? "Unifying Meta's split eCommerce ad builder" : "Commerce Ads"}</div>
             </div>
           </div>
           <span className={`font-display font-bold tracking-[-0.02em] text-[var(--ink)] transition-all duration-500 ease-in-out ${scrolled ? "text-[17px]" : "text-[20px]"}`}>Shane Yun</span>
@@ -771,11 +771,10 @@ export default function CommerceAds() {
       <section className="container pt-28 pb-8 md:pt-32 md:pb-10">
         <div className="max-w-4xl">
           <span className="kicker">Commerce ads on Meta</span>
-          <h1 className="display-1 mt-4">
-            Dissolving a ten-year fork in ad creation
+          <h1 className="display-1 mt-4" style={{ fontSize: "clamp(1.8rem, 3.6vw, 2.7rem)" }}>
+            Unifying Meta's split<br />eCommerce ad builder
           </h1>
           <div className="flex items-center gap-2 mt-5 flex-wrap">
-            <span className="font-display text-[12px] font-medium text-[#ccc] bg-[var(--tint)] border border-[var(--rule)] px-3.5 py-1 rounded-full">Case study</span>
             <span className="font-display text-[12px] font-medium text-[var(--case-accent)] bg-[var(--case-accent-soft)] border border-[var(--case-accent)]/20 px-3.5 py-1 rounded-full">Shipped to alpha</span>
           </div>
         </div>
@@ -785,13 +784,12 @@ export default function CommerceAds() {
           <TldrWithSwitcher
             accentColor="#e6781e"
             accentRgb="230,120,30"
-            summary={<p><strong>I led the unification of two separate ad creation flows into one surface</strong> — merging 7 catalog-driven creative features into a single product media accordion. After 3+ years of planning across two product orgs, the project shipped to a scaled alpha with 100K brands.</p>}
-            columns={[
-              { label: "Role", content: <span>Design lead</span> },
-              { label: "Team", content: <ul className="list-disc pl-3.5 space-y-0.5"><li>Me</li><li>2 design teams (2 managers, 1 director, 3 ICs)</li><li>Content design</li><li>Product manager</li><li>UX research</li><li>Tech lead</li></ul> },
-              { label: "Scope + Timeline", content: <ul className="list-disc pl-3.5 space-y-0.5"><li>H1 2026 (3 month duration)</li><li>Shipped to scaled alpha (100K brands)</li></ul> },
-              { label: "Audience", content: <ul className="list-disc pl-3.5 space-y-0.5"><li>~100,000 invited advertisers</li><li>High-spend online retailers</li></ul> },
-            ]}
+            summary={<p><strong>I led design of the product media section inside Meta's new unified eCommerce ad builder</strong> — integrating 7 product catalog features from 3 separate legacy flows. This new ads flow shipped to a scaled alpha with 100K brands.</p>}
+            role="Design lead"
+            timeline={<span>H1 2026 · 3 months</span>}
+            outcome={<span>Scaled alpha · 100K brands</span>}
+            team={<ul className="list-disc pl-3.5 space-y-1"><li>Me :)</li><li>2 design teams<span className="block text-[0.72rem] text-white/60 mt-0.5 leading-snug">2 managers, 1 director, 3 ICs</span></li><li>Content designer</li><li>Product manager</li><li>UX researcher</li><li>Tech lead</li></ul>}
+            audience={<span>High spend eCommerce, Retail, and CPG advertisers</span>}
           />
         </div>
       </section>

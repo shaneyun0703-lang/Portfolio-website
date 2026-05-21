@@ -443,6 +443,36 @@ html, body {
     font-style: normal !important;
   }
 
+  /* ── Resume print styles ── */
+  @media print {
+    @page {
+      size: letter portrait;
+      margin: 0;
+    }
+    .resume-outer {
+      background: white !important;
+      padding: 0 !important;
+      min-height: unset !important;
+    }
+    .resume-page {
+      max-width: 100% !important;
+      width: 100% !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+      min-height: unset !important;
+    }
+    .resume-content {
+      padding-left: 0.7in !important;
+      padding-right: 0.7in !important;
+      padding-top: 0.55in !important;
+    }
+    .resume-footer {
+      margin-left: 0.7in !important;
+      margin-right: 0.7in !important;
+      margin-top: 0.25in !important;
+    }
+  }
+
   /* Reveal on scroll */
   @media (prefers-reduced-motion: no-preference) {
     .reveal {

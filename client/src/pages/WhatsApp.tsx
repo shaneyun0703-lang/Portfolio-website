@@ -741,7 +741,6 @@ export default function WhatsApp() {
               Taking WhatsApp ads from launch to scale
             </h1>
             <div className="flex items-center gap-2 mt-5 flex-wrap">
-              <span className="font-display text-[12px] font-medium text-[#ccc] bg-[var(--tint)] border border-[var(--rule)] px-3.5 py-1 rounded-full">Case study</span>
               <span className="font-display text-[12px] font-medium text-[var(--case-accent)] bg-[var(--case-accent-soft)] border border-[var(--case-accent)]/20 px-3.5 py-1 rounded-full">Shipped · 100% rollout</span>
             </div>
           </div>
@@ -751,13 +750,12 @@ export default function WhatsApp() {
             <TldrWithSwitcher
               accentColor="#4ade80"
               accentRgb="74,222,128"
-              summary={<p><strong>I led the expansion of WhatsApp Status ads from 2 to 5 of Meta's 6 marketing objectives.</strong> The project shipped globally to 100% rollout, hitting all topline metric goals across revenue, ad creation, and advertiser experience.</p>}
-              columns={[
-                { label: "Role", content: <span>Design lead</span> },
-                { label: "Team", content: <ul className="list-disc pl-3.5 space-y-0.5"><li>Me</li><li>Co-design lead</li><li>Product designer</li><li>Content designer</li><li>Product manager</li><li>Tech lead + 2 ENG</li></ul> },
-                { label: "Scope + Timeline", content: <ul className="list-disc pl-3.5 space-y-0.5"><li>H2 2025 (3 month duration)</li><li>Shipped to 100% rollout globally</li></ul> },
-                { label: "Audience", content: <ul className="list-disc pl-3.5 space-y-0.5"><li>SMBs using WhatsApp Business</li><li>Global brands extending reach to WhatsApp</li></ul> },
-              ]}
+              summary={<p><strong>I led the expansion of WhatsApp Status ads from 2 to 5 of Meta's 6 marketing objectives.</strong> WhatsApp ads shipped globally to 100% rollout, hitting all revenue and advertiser experience goals.</p>}
+              role="Design lead"
+              timeline={<span>H2 2025 · 3 months</span>}
+              outcome={<span>100% global rollout</span>}
+              team={<ul className="list-disc pl-3.5 space-y-1"><li>Me :)</li><li>Co-design lead</li><li>Product designer</li><li>Content designer</li><li>Product manager</li><li>Tech lead + 2 ENG</li></ul>}
+              audience={<ul className="list-disc pl-3.5 space-y-0.5"><li>SMBs using WhatsApp Business</li><li>Global brands extending reach to WhatsApp</li></ul>}
             />
           </div>
         </div>

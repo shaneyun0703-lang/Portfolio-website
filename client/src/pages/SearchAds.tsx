@@ -288,7 +288,7 @@ export default function SearchAds() {
             </Link>
             <div className={`w-px bg-[#444] transition-all duration-500 ${scrolled ? "h-5" : "h-6"}`} />
             <div>
-              <div className={`font-display font-bold tracking-[-0.01em] text-[var(--ink)] transition-all duration-500 ease-in-out ${scrolled ? "text-[17px]" : "text-[20px]"}`}>{scrolled ? "Making Meta a real search player" : "Search Ads"}</div>
+              <div className={`font-display font-bold tracking-[-0.01em] text-[var(--ink)] transition-all duration-500 ease-in-out ${scrolled ? "text-[17px]" : "text-[20px]"}`}>{scrolled ? "Making Meta a real search ads player" : "Search Ads"}</div>
             </div>
           </div>
           <span className={`font-display font-bold tracking-[-0.02em] text-[var(--ink)] transition-all duration-500 ease-in-out ${scrolled ? "text-[17px]" : "text-[20px]"}`}>Shane Yun</span>
@@ -301,10 +301,9 @@ export default function SearchAds() {
           <div className="max-w-4xl">
             <div className="kicker mb-4">Search Ads in Meta Ads Manager</div>
             <h1 className="display-1">
-              Making Meta a real<br />search player
+              Making Meta a real<br />search ads player
             </h1>
             <div className="flex items-center gap-2 mt-5 flex-wrap">
-              <span className="font-display text-[12px] font-medium text-[#ccc] bg-[var(--tint)] border border-[var(--rule)] px-3.5 py-1 rounded-full">Case study</span>
               <span className="font-display text-[12px] font-medium text-[var(--case-accent)] bg-[rgba(110,142,255,0.08)] border border-[rgba(110,142,255,0.18)] px-3.5 py-1 rounded-full">Design milestone aligned</span>
             </div>
           </div>
@@ -314,13 +313,12 @@ export default function SearchAds() {
             <TldrWithSwitcher
               accentColor="#6e8eff"
               accentRgb="110,142,255"
-              summary={<p><strong>I designed Search Themes and Negative Keywords</strong> — the first search-specific advertiser controls for Meta Ads Manager. Three rounds of research with 14+ companies validated the UX, and the product direction was aligned for engineering handoff.</p>}
-              columns={[
-                { label: "Role", content: <span>Design lead</span> },
-                { label: "Team", content: <ul className="list-disc pl-3.5 space-y-0.5"><li>Me</li><li>Content designer</li><li>Product manager</li><li>UX researcher</li><li>Tech lead</li><li>4+ partner teams</li></ul> },
-                { label: "Scope + Timeline", content: <ul className="list-disc pl-3.5 space-y-0.5"><li>H2 2025 (3 month duration)</li><li>3 research rounds, 14+ companies</li><li>Product and UX direction aligned</li></ul> },
-                { label: "Audience", content: <ul className="list-disc pl-3.5 space-y-0.5"><li>Active Meta advertisers investing in search ads on other platforms</li><li>US Retail, eCommerce, and CPG brands</li></ul> },
-              ]}
+              summary={<p><strong>I led the design of Search Themes and Negative Keywords</strong> — Meta's first search-specific tools in Ads Manager. Three research rounds with 14+ companies validated the direction and secured leadership alignment.</p>}
+              role="Design lead"
+              timeline={<span>H2 2025 · 3 months</span>}
+              outcome={<><span className="block">Research validated</span><span className="block">Leadership aligned</span></>}
+              team={<ul className="list-disc pl-3.5 space-y-1"><li>Me :)</li><li>Content designer</li><li>Product manager</li><li>UX researcher</li><li>Tech lead</li><li>4+ partner teams</li></ul>}
+              audience={<span>US Retail, eCommerce, and CPG brands actively investing in search ads on other platforms</span>}
             />
           </div>
         </div>
