@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
+import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { Link } from "wouter";
 
 type CaseStudyCard = {
@@ -154,15 +154,23 @@ function EmailButton() {
 const HERO_PRE = "Empowering advertisers to build ";
 const HERO_HL = "ads that perform";
 const HERO_FULL = HERO_PRE + HERO_HL;
+const LABEL = "Projects in the past year I designed";
 const H1_CLASS = "font-display text-[clamp(2.2rem,3.8vw,3.8rem)] font-bold leading-[1.35] tracking-[-0.04em] text-[var(--ink)]";
 
-type Phase = "typing" | "highlighting" | "settling" | "done";
+type Phase = "typing" | "highlighting" | "settling" | "projects" | "done";
 
 export default function Landing() {
   const alreadySeen = typeof window !== "undefined" && !!sessionStorage.getItem("intro-seen");
   const [phase, setPhase] = useState<Phase>(alreadySeen ? "done" : "typing");
   const [typed, setTyped]   = useState(alreadySeen ? HERO_FULL : "");
   const [showCursor, setShowCursor] = useState(!alreadySeen);
+  const [labelTyped, setLabelTyped] = useState(alreadySeen ? LABEL : "");
+  const [visibleCards, setVisibleCards] = useState(alreadySeen ? 3 : 0);
+
+  const introH1Ref = useRef<HTMLHeadingElement>(null);
+  const settledH1Ref = useRef<HTMLHeadingElement>(null);
+  const capturedTop = useRef<number>(0);
+  const controls = useAnimation();
 
   useEffect(() => {
     if (alreadySeen) return;
@@ -172,21 +180,47 @@ export default function Landing() {
       setTyped(HERO_FULL.slice(0, i));
       if (i === HERO_FULL.length) {
         clearInterval(id);
-        // cursor lingers, then fades
-        setTimeout(() => setShowCursor(false), 400);
-        // switch to highlight phase (text snaps to 2-line + selection sweep begins)
-        setTimeout(() => setPhase("highlighting"), 600);
-        // text slides up into position
-        setTimeout(() => setPhase("settling"), 600 + 1600);
-        // layout complete
+        setTimeout(() => setShowCursor(false), 350);
+        setTimeout(() => setPhase("highlighting"), 550);
+        // highlight reveal (0.75s) + shimmer sweep (0.85s delay + 0.9s) + pause = ~2.4s
         setTimeout(() => {
-          sessionStorage.setItem("intro-seen", "1");
-          setPhase("done");
-        }, 600 + 1600 + 700);
+          if (introH1Ref.current) capturedTop.current = introH1Ref.current.getBoundingClientRect().top;
+          setPhase("settling");
+        }, 550 + 2400);
+        setTimeout(() => setPhase("projects"), 550 + 2400 + 1000);
       }
-    }, 62);
+    }, 95);
     return () => clearInterval(id);
   }, []);
+
+  useEffect(() => {
+    if (alreadySeen || phase !== "projects") return;
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setLabelTyped(LABEL.slice(0, i));
+      if (i === LABEL.length) {
+        clearInterval(id);
+        setTimeout(() => setVisibleCards(1), 400);
+        setTimeout(() => setVisibleCards(2), 400 + 500);
+        setTimeout(() => {
+          setVisibleCards(3);
+          setTimeout(() => {
+            sessionStorage.setItem("intro-seen", "1");
+            setPhase("done");
+          }, 500);
+        }, 400 + 1000);
+      }
+    }, 48);
+    return () => clearInterval(id);
+  }, [phase]);
+
+  useLayoutEffect(() => {
+    if (phase !== "settling" || alreadySeen || !settledH1Ref.current) return;
+    const dy = capturedTop.current - settledH1Ref.current.getBoundingClientRect().top;
+    controls.set({ y: dy });
+    controls.start({ y: 0, transition: { type: "spring", stiffness: 110, damping: 28, mass: 0.85 } });
+  }, [phase]);
 
   // shared horizontal padding to keep intro text aligned with final h1
   const hPad = "px-6 lg:pl-6 lg:pr-7";
@@ -227,108 +261,129 @@ export default function Landing() {
         </aside>
 
         {/* ── RIGHT COLUMN ── */}
-        <LayoutGroup>
         <div className={`flex-1 flex flex-col relative ${hPad} py-6 lg:py-[36px] xl:py-[56px] 2xl:py-[72px] z-10`}>
 
-          {/* ── INTRO: centered, animated text ── */}
+          {/* ── INTRO OVERLAY: centered, exits instantly — FLIP handles the motion ── */}
           <AnimatePresence>
             {(phase === "typing" || phase === "highlighting") && (
               <motion.div
                 key="intro"
-                className={`absolute inset-0 flex items-center ${hPad} z-20`}
-                exit={{ opacity: 0, transition: { duration: 0.12 } }}
+                className={`absolute inset-0 flex flex-col justify-center ${hPad} z-20`}
+                exit={{ opacity: 0, transition: { duration: 0 } }}
               >
-                <motion.h1
-                  layoutId={alreadySeen ? undefined : "hero-h1"}
-                  className={H1_CLASS}
-                >
+                <h1 ref={introH1Ref} className={`${H1_CLASS} shrink-0`}>
                   {phase === "typing" ? (
-                    typed.length <= HERO_PRE.trimEnd().length ? (
-                      <>
-                        {typed}
-                        {showCursor && (
-                          <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.6 }}>|</motion.span>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        Empowering advertisers to build<br />
-                        <span className="inline-block px-5 py-2 rounded-2xl">
-                          {typed.slice(HERO_PRE.length)}
-                          {showCursor && (
-                            <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.6 }}>|</motion.span>
-                          )}
-                        </span>
-                      </>
-                    )
+                    <>
+                      {typed.slice(0, HERO_PRE.length)}
+                      {typed.length < HERO_PRE.length && showCursor && (
+                        <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.6 }}>|</motion.span>
+                      )}
+                      {typed.length >= HERO_PRE.length && (
+                        <>
+                          <br />
+                          <span
+                            className="relative inline-block px-5 py-2 rounded-2xl overflow-hidden"
+                            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}
+                          >
+                            {typed.slice(HERO_PRE.length)}
+                            {showCursor && (
+                              <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.6 }}>|</motion.span>
+                            )}
+                          </span>
+                        </>
+                      )}
+                    </>
                   ) : (
-                    /* Highlighting — frosted pill sweeps in left → right */
                     <>
                       Empowering advertisers to build<br />
-                      <motion.span
-                        className="inline-block px-5 py-2 rounded-2xl overflow-hidden"
+                      <span
+                        className="relative inline-block px-5 py-2 rounded-2xl overflow-hidden"
                         style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}
-                        initial={{ clipPath: "inset(0 100% 0 0 round 1rem)" }}
-                        animate={{ clipPath: "inset(0 0% 0 0 round 1rem)" }}
-                        transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
                       >
+                        <motion.span
+                          aria-hidden
+                          className="absolute inset-0 pointer-events-none"
+                          style={{ background: "rgba(255,255,255,0.13)" }}
+                          initial={{ clipPath: "inset(0 100% 0 0 round 1rem)" }}
+                          animate={{ clipPath: "inset(0 0% 0 0 round 1rem)" }}
+                          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.15 }}
+                        />
+                        <motion.span
+                          aria-hidden
+                          className="absolute inset-0 pointer-events-none"
+                          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.38) 50%, transparent 100%)" }}
+                          initial={{ x: "-110%" }}
+                          animate={{ x: "210%" }}
+                          transition={{ duration: 0.85, ease: "easeInOut", delay: 0.95 }}
+                        />
                         ads that perform
-                      </motion.span>
+                      </span>
                     </>
                   )}
-                </motion.h1>
+                </h1>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* ── MAIN CONTENT: h1 travels here, then projects fade in ── */}
-          {(phase === "settling" || phase === "done") && (
-            <div className="flex flex-col flex-1 min-h-0">
-              <motion.h1
-                layoutId={alreadySeen ? undefined : "hero-h1"}
-                className={`${H1_CLASS} shrink-0`}
-                layout
-                transition={{ type: "spring", stiffness: 160, damping: 26 }}
+          {/* ── MAIN CONTENT: always in DOM so FLIP has an accurate target position ── */}
+          <div className={`flex flex-col flex-1 min-h-0 ${(phase === "typing" || phase === "highlighting") ? "invisible pointer-events-none" : ""}`}>
+
+            <motion.h1
+              ref={settledH1Ref}
+              animate={controls}
+              className={`${H1_CLASS} shrink-0`}
+            >
+              Empowering advertisers to build<br />
+              <span
+                className="relative inline-block px-5 py-2 rounded-2xl overflow-hidden"
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}
               >
-                Empowering advertisers to build<br />
-                {/* Frosted pill with shimmer sweep — no color dependency */}
-                <span
-                  className="relative inline-block px-5 py-2 rounded-2xl overflow-hidden"
-                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}
-                >
+                {(phase === "done" || alreadySeen) && (
                   <motion.span
                     aria-hidden
                     className="absolute top-0 bottom-0 pointer-events-none"
-                    style={{
-                      width: "55%", left: 0,
-                      background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.11), transparent)",
-                    }}
-                    animate={{ x: ["-100%", "280%"] }}
-                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", repeatDelay: 2.5 }}
+                    style={{ width: "60%", left: 0, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)" }}
+                    initial={{ x: "-100%" }}
+                    animate={{ x: ["-100%", "240%"] }}
+                    transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut", repeatDelay: 3.2 }}
                   />
-                  ads that perform
-                </span>
-              </motion.h1>
+                )}
+                ads that perform
+              </span>
+            </motion.h1>
 
-              <motion.div
-                initial={alreadySeen ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: alreadySeen ? 0 : 0.95, duration: 0.45 }}
-                className="mt-8 lg:mt-10 xl:mt-12 2xl:mt-14 mb-3 lg:mb-4 xl:mb-6 shrink-0"
-              >
-                <span className="font-mono text-[13px] text-[#bbb] tracking-[0.06em] uppercase">Projects in the past year I designed</span>
-              </motion.div>
+            <motion.div
+              className="mt-8 lg:mt-10 xl:mt-12 2xl:mt-14 mb-3 lg:mb-4 xl:mb-6 shrink-0"
+              animate={{ opacity: (phase === "projects" || phase === "done") ? 1 : 0 }}
+              initial={alreadySeen ? false : { opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <span className="font-mono text-[13px] text-[#bbb] tracking-[0.06em] uppercase">
+                {alreadySeen ? LABEL : labelTyped}
+                {!alreadySeen && phase === "projects" && labelTyped.length < LABEL.length && (
+                  <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.5 }}>▍</motion.span>
+                )}
+              </span>
+            </motion.div>
 
-              <motion.div
-                initial={alreadySeen ? false : { opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: alreadySeen ? 0 : 1.15, duration: 0.6, ease: "easeOut" }}
-                className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0 lg:max-h-[360px] xl:max-h-[440px] 2xl:max-h-[540px] lg:items-start"
-              >
-                {cases.map(c => <CardBalanced key={c.href} c={c} />)}
-              </motion.div>
+            <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0 lg:max-h-[360px] xl:max-h-[440px] 2xl:max-h-[540px] lg:items-start">
+              {cases.map(c => (
+                <motion.div
+                  key={c.href}
+                  className="flex-1 min-w-0"
+                  initial={alreadySeen ? false : { opacity: 0, y: 20 }}
+                  animate={{
+                    opacity: (alreadySeen || c.index < visibleCards) ? 1 : 0,
+                    y: (alreadySeen || c.index < visibleCards) ? 0 : 20,
+                  }}
+                  transition={{ duration: 0.75, ease: "easeOut" }}
+                >
+                  <CardBalanced c={c} />
+                </motion.div>
+              ))}
             </div>
-          )}
+
+          </div>
 
         </div>
       </div>

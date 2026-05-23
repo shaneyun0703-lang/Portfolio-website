@@ -41,7 +41,7 @@ export default function Resume() {
               <h3 className="text-[0.9rem] font-bold">Meta</h3>
               <span className="text-[0.85rem] text-[#555] font-semibold">2021 – Present</span>
             </div>
-            <p className="text-[0.72rem] text-[#555] mt-0 italic">Senior Product Designer · Core Ads Growth — AI-powered advertising products serving millions of businesses</p>
+            <p className="text-[0.72rem] text-[#555] mt-0 italic">Senior Product Designer · Core Ads Growth org — AI-powered advertising products serving millions of businesses</p>
           </div>
 
           {/* Role 1 */}
@@ -51,11 +51,11 @@ export default function Resume() {
               <span className="text-[0.72rem] text-[#555] font-semibold">2024 – Present</span>
             </div>
             <ul className="text-[0.72rem] leading-[1.55] mt-1 space-y-0.5">
-              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Led design for Meta's <strong>unified ad campaign builder</strong> — merging fragmented catalog and static ad creation flows into a single AI-automated experience for eCommerce advertisers worldwide</span></li>
-              <li className="flex gap-1.5 pl-3"><span className="shrink-0 text-[#aaa]">–</span><span>Redesigned the <strong>targeting and conversion setup</strong> — launched targeting to 50% of advertisers (1.6% increase in audience reach) and conversions to 100%, directly unblocking a cross-channel commerce launch worth <strong>$150M+ in annual revenue</strong></span></li>
-              <li className="flex gap-1.5 pl-3"><span className="shrink-0 text-[#aaa]">–</span><span>Led design integrating <strong>product catalog media into the unified creative framework</strong> — enabling catalog advertisers to access the full AI-powered creative suite for the first time</span></li>
-              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Led design for <strong>AI-powered Search Ads</strong> (0→1) — shaped the end-to-end advertiser experience through 10+ concept explorations and a 3-phase research program with 14+ companies, securing leadership alignment for a 2027 alpha launch</span></li>
-              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Led design for <strong>WhatsApp Ads</strong> — scaled from 2 to 5 of Meta's 6 marketing objectives, drove cross-org alignment between WhatsApp and Ads leadership, shipped globally to <strong>28.8% eligibility rate</strong> (exceeding 27.6% target)</span></li>
+              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Led design for Meta's <strong>unified Sales campaign creation experience</strong> — bringing product catalog-driven and manual creative ad flows into a single end-to-end advertiser journey across 50%+ of Meta's total revenue</span></li>
+              <li className="flex gap-1.5 pl-3"><span className="shrink-0 text-[#aaa]">–</span><span>Redesigned the <strong>targeting and conversion setup</strong> to bring both ad flows to parity — launched to 100%, growing audience reach by 1.6% and enabling a <strong>$150M+ annual revenue cross-channel commerce launch</strong></span></li>
+              <li className="flex gap-1.5 pl-3"><span className="shrink-0 text-[#aaa]">–</span><span>Designed the <strong>ad-level creative experience</strong> — enabling product catalog and manual creative advertisers to share the same creative suite for the first time, now in scaled alpha with <strong>100K brands worldwide</strong></span></li>
+              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Defined Meta's <strong>Search AI Ads</strong> experience end-to-end — through 10+ concept explorations and a 3-phase research program with 14+ companies, securing leadership alignment for an alpha launch</span></li>
+              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Scaled <strong>WhatsApp Ads</strong> from 2 to 5 of Meta's 6 marketing objectives — drove cross-org alignment between WhatsApp and Ads leadership, shipped globally to <strong>28.8% eligibility rate</strong> (exceeding 27.6% target)</span></li>
               <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Led a team of 8 designers through a <strong>systematic usability audit</strong> of a high-revenue ad flow (40% of catalog ad revenue) — identified 64 issues, resolved 21 critical tasks on time, achieving the highest completion rate in the org</span></li>
             </ul>
           </div>
