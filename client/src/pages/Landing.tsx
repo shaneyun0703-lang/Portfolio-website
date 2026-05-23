@@ -105,13 +105,13 @@ function CardBalanced({ c }: { c: CaseStudyCard }) {
       style={{ marginTop: OFFSETS[c.index], transform: `rotate(${ROTS[c.index]}deg)`, background: "rgba(255,255,255,0.03)", border: `1px solid rgba(${c.accentRgb},0.12)`, boxShadow: `0 4px 28px rgba(0,0,0,0.35), 0 0 20px rgba(${c.accentRgb},0.04)` }}
       onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), 0 0 50px rgba(${c.accentRgb},0.1)`; el.style.borderColor = `rgba(${c.accentRgb},0.28)`; }}
       onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 4px 28px rgba(0,0,0,0.35), 0 0 20px rgba(${c.accentRgb},0.04)`; el.style.borderColor = `rgba(${c.accentRgb},0.12)`; }}>
-      <div className="h-[220px] xl:h-[280px] 2xl:h-[320px] relative overflow-hidden flex items-center justify-center"
+      <div className="h-[220px] xl:h-[300px] 2xl:h-[380px] relative overflow-hidden flex items-center justify-center"
         style={{ background: `linear-gradient(180deg, rgba(${c.accentRgb},0.28) 0%, rgba(${c.accentRgb},0.04) 100%)` }}>
         <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[130%] h-[85%] opacity-[0.28]"
           style={{ background: `radial-gradient(ellipse, rgba(${c.accentRgb},1) 0%, transparent 60%)`, filter: "blur(36px)" }} />
         <Tags c={c} />
         <span className="absolute top-3 left-4 z-20 font-mono text-[11px] text-white/20 tracking-[0.04em]">{String(c.index + 1).padStart(2, "0")}</span>
-        <div className="relative z-10 pt-14 pb-5 xl:pb-8 2xl:pb-10 w-full px-3"><GlassLaptop src={c.heroSrc} alt={c.heroAlt} accent={c.accent} /></div>
+        <div className="relative z-10 pt-14 pb-3 w-full px-3"><GlassLaptop src={c.heroSrc} alt={c.heroAlt} accent={c.accent} /></div>
       </div>
       <div className="shrink-0 px-4 py-3.5" style={{ borderTop: `1px solid rgba(${c.accentRgb},0.2)`, background: `rgba(${c.accentRgb},0.03)` }}>
         <p className="font-mono text-[10px] tracking-[0.06em] uppercase mb-1.5" style={{ color: `rgba(${c.accentRgb},0.8)` }}>{c.org}</p>
@@ -255,7 +255,7 @@ export default function Landing() {
                       /* Second line started — lock structure so no jump on highlight */
                       <>
                         Empowering advertisers to build<br />
-                        <span className="inline-block px-4 py-1.5 rounded-xl">
+                        <span className="inline-block px-5 py-2 rounded-2xl">
                           {typed.slice(HERO_PRE.length)}
                           {showCursor && (
                             <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.6 }}>|</motion.span>
@@ -264,15 +264,20 @@ export default function Landing() {
                       </>
                     )
                   ) : (
-                    /* Highlighting phase — frosted glass sweeps in left → right */
+                    /* Highlighting phase — accent gradient sweeps in left → right */
                     <>
                       Empowering advertisers to build<br />
-                      <span className="relative inline-block px-4 py-1.5 rounded-xl">
+                      <span className="relative inline-block px-5 py-2 rounded-2xl">
                         <motion.span
                           aria-hidden
-                          className="absolute inset-0 rounded-xl border border-white/30 bg-white/[0.06]"
-                          initial={{ clipPath: "inset(0 100% 0 0 round 0.75rem)" }}
-                          animate={{ clipPath: "inset(0 0% 0 0 round 0.75rem)" }}
+                          className="absolute inset-0 rounded-2xl"
+                          style={{
+                            background: "linear-gradient(135deg, rgba(110,142,255,0.18) 0%, rgba(110,142,255,0.07) 100%)",
+                            border: "1px solid rgba(110,142,255,0.3)",
+                            boxShadow: "0 0 28px rgba(110,142,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06)",
+                          }}
+                          initial={{ clipPath: "inset(0 100% 0 0 round 1rem)" }}
+                          animate={{ clipPath: "inset(0 0% 0 0 round 1rem)" }}
                           transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
                         />
                         <span className="relative z-10">ads that perform</span>
@@ -285,40 +290,44 @@ export default function Landing() {
           </AnimatePresence>
 
           {/* ── MAIN CONTENT: text settles at top, cards appear ── */}
-          <AnimatePresence>
-            {(phase === "settling" || phase === "done") && (
+          {(phase === "settling" || phase === "done") && (
+            <div className="flex flex-col flex-1 min-h-0">
+              <motion.h1
+                className={`${H1_CLASS} shrink-0`}
+                initial={alreadySeen ? false : { opacity: 0, y: 48 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+              >
+                Empowering advertisers to build<br />
+                <span
+                  className="inline-block px-5 py-2 rounded-2xl"
+                  style={{
+                    background: "linear-gradient(135deg, rgba(110,142,255,0.18) 0%, rgba(110,142,255,0.07) 100%)",
+                    border: "1px solid rgba(110,142,255,0.3)",
+                    boxShadow: "0 0 28px rgba(110,142,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06)",
+                  }}
+                >ads that perform</span>
+              </motion.h1>
+
               <motion.div
-                key="content"
-                className="flex flex-col flex-1 min-h-0"
                 initial={alreadySeen ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.55, ease: "easeOut" }}
+                transition={{ delay: 0.38, duration: 0.5 }}
+                className="mt-8 lg:mt-10 xl:mt-12 2xl:mt-14 mb-3 lg:mb-4 xl:mb-6 shrink-0"
               >
-                <h1 className={`${H1_CLASS} shrink-0`}>
-                  Empowering advertisers to build<br />
-                  <span className="inline-block px-4 py-1.5 rounded-xl border border-white/30 bg-white/[0.06]">ads that perform</span>
-                </h1>
-
-                <motion.div
-                  initial={alreadySeen ? false : { opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.32, duration: 0.4 }}
-                  className="mt-8 lg:mt-10 xl:mt-12 2xl:mt-14 mb-3 lg:mb-4 xl:mb-6 shrink-0"
-                >
-                  <span className="font-mono text-[13px] text-[#bbb] tracking-[0.06em] uppercase">Projects in the past year I designed</span>
-                </motion.div>
-
-                <motion.div
-                  initial={alreadySeen ? false : { opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.45 }}
-                  className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0 lg:max-h-[360px] xl:max-h-[440px] 2xl:max-h-[540px] lg:items-start"
-                >
-                  {cases.map(c => <CardBalanced key={c.href} c={c} />)}
-                </motion.div>
+                <span className="font-mono text-[13px] text-[#bbb] tracking-[0.06em] uppercase">Projects in the past year I designed</span>
               </motion.div>
-            )}
-          </AnimatePresence>
+
+              <motion.div
+                initial={alreadySeen ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.55, duration: 0.65, ease: "easeOut" }}
+                className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0 lg:max-h-[360px] xl:max-h-[440px] 2xl:max-h-[540px] lg:items-start"
+              >
+                {cases.map(c => <CardBalanced key={c.href} c={c} />)}
+              </motion.div>
+            </div>
+          )}
 
         </div>
       </div>
