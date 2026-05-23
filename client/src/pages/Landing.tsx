@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { Link } from "wouter";
 
 type CaseStudyCard = {
@@ -227,6 +227,7 @@ export default function Landing() {
         </aside>
 
         {/* ── RIGHT COLUMN ── */}
+        <LayoutGroup>
         <div className={`flex-1 flex flex-col relative ${hPad} py-6 lg:py-[36px] xl:py-[56px] 2xl:py-[72px] z-10`}>
 
           {/* ── INTRO: centered, animated text ── */}
@@ -235,16 +236,14 @@ export default function Landing() {
               <motion.div
                 key="intro"
                 className={`absolute inset-0 flex items-center ${hPad} z-20`}
-                exit={{
-                  opacity: 0,
-                  y: -110,
-                  transition: { duration: 0.75, ease: [0.4, 0, 0.2, 1] },
-                }}
+                exit={{ opacity: 0, transition: { duration: 0.12 } }}
               >
-                <h1 className={H1_CLASS}>
+                <motion.h1
+                  layoutId={alreadySeen ? undefined : "hero-h1"}
+                  className={H1_CLASS}
+                >
                   {phase === "typing" ? (
                     typed.length <= HERO_PRE.trimEnd().length ? (
-                      /* Still on first line */
                       <>
                         {typed}
                         {showCursor && (
@@ -252,7 +251,6 @@ export default function Landing() {
                         )}
                       </>
                     ) : (
-                      /* Second line started — lock structure so no jump on highlight */
                       <>
                         Empowering advertisers to build<br />
                         <span className="inline-block px-5 py-2 rounded-2xl">
@@ -264,55 +262,58 @@ export default function Landing() {
                       </>
                     )
                   ) : (
-                    /* Highlighting phase — accent gradient sweeps in left → right */
+                    /* Highlighting — frosted pill sweeps in left → right */
                     <>
                       Empowering advertisers to build<br />
-                      <span className="relative inline-block px-5 py-2 rounded-2xl">
-                        <motion.span
-                          aria-hidden
-                          className="absolute inset-0 rounded-2xl"
-                          style={{
-                            background: "linear-gradient(135deg, rgba(110,142,255,0.18) 0%, rgba(110,142,255,0.07) 100%)",
-                            border: "1px solid rgba(110,142,255,0.3)",
-                            boxShadow: "0 0 28px rgba(110,142,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06)",
-                          }}
-                          initial={{ clipPath: "inset(0 100% 0 0 round 1rem)" }}
-                          animate={{ clipPath: "inset(0 0% 0 0 round 1rem)" }}
-                          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-                        />
-                        <span className="relative z-10">ads that perform</span>
-                      </span>
+                      <motion.span
+                        className="inline-block px-5 py-2 rounded-2xl overflow-hidden"
+                        style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}
+                        initial={{ clipPath: "inset(0 100% 0 0 round 1rem)" }}
+                        animate={{ clipPath: "inset(0 0% 0 0 round 1rem)" }}
+                        transition={{ duration: 0.65, ease: [0.25, 0.46, 0.45, 0.94] }}
+                      >
+                        ads that perform
+                      </motion.span>
                     </>
                   )}
-                </h1>
+                </motion.h1>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* ── MAIN CONTENT: text settles at top, cards appear ── */}
+          {/* ── MAIN CONTENT: h1 travels here, then projects fade in ── */}
           {(phase === "settling" || phase === "done") && (
             <div className="flex flex-col flex-1 min-h-0">
               <motion.h1
+                layoutId={alreadySeen ? undefined : "hero-h1"}
                 className={`${H1_CLASS} shrink-0`}
-                initial={alreadySeen ? false : { opacity: 0, y: 48 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+                layout
+                transition={{ type: "spring", stiffness: 160, damping: 26 }}
               >
                 Empowering advertisers to build<br />
+                {/* Frosted pill with shimmer sweep — no color dependency */}
                 <span
-                  className="inline-block px-5 py-2 rounded-2xl"
-                  style={{
-                    background: "linear-gradient(135deg, rgba(110,142,255,0.18) 0%, rgba(110,142,255,0.07) 100%)",
-                    border: "1px solid rgba(110,142,255,0.3)",
-                    boxShadow: "0 0 28px rgba(110,142,255,0.12), inset 0 1px 0 rgba(255,255,255,0.06)",
-                  }}
-                >ads that perform</span>
+                  className="relative inline-block px-5 py-2 rounded-2xl overflow-hidden"
+                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}
+                >
+                  <motion.span
+                    aria-hidden
+                    className="absolute top-0 bottom-0 pointer-events-none"
+                    style={{
+                      width: "55%", left: 0,
+                      background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.11), transparent)",
+                    }}
+                    animate={{ x: ["-100%", "280%"] }}
+                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut", repeatDelay: 2.5 }}
+                  />
+                  ads that perform
+                </span>
               </motion.h1>
 
               <motion.div
                 initial={alreadySeen ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.38, duration: 0.5 }}
+                transition={{ delay: alreadySeen ? 0 : 0.95, duration: 0.45 }}
                 className="mt-8 lg:mt-10 xl:mt-12 2xl:mt-14 mb-3 lg:mb-4 xl:mb-6 shrink-0"
               >
                 <span className="font-mono text-[13px] text-[#bbb] tracking-[0.06em] uppercase">Projects in the past year I designed</span>
@@ -321,7 +322,7 @@ export default function Landing() {
               <motion.div
                 initial={alreadySeen ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.55, duration: 0.65, ease: "easeOut" }}
+                transition={{ delay: alreadySeen ? 0 : 1.15, duration: 0.6, ease: "easeOut" }}
                 className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0 lg:max-h-[360px] xl:max-h-[440px] 2xl:max-h-[540px] lg:items-start"
               >
                 {cases.map(c => <CardBalanced key={c.href} c={c} />)}

@@ -22,7 +22,6 @@ export default function Resume() {
           <div className="flex justify-between items-end mb-0.5">
             <div>
               <h1 className="text-[2.2rem] font-black tracking-[-0.02em] leading-none" style={{ fontFamily: "'Syne', sans-serif" }}>SHANE YUN</h1>
-              <p className="text-[0.7rem] tracking-[0.25em] uppercase text-[#666] mt-1 font-medium">Senior Product Designer</p>
             </div>
             <div className="text-right text-[0.72rem] text-[#666] leading-[1.6]">
               <div>shane.yun0703@gmail.com</div>
@@ -32,17 +31,17 @@ export default function Resume() {
           </div>
 
           {/* Experience header */}
-          <div className="border-t-[2px] border-[#1a1a1a] mt-3 pt-2.5">
-            <h2 className="text-[0.65rem] font-bold tracking-[0.25em] uppercase">Experience</h2>
+          <div className="border-t-[2px] border-[#1a1a1a] mt-3 pt-5">
+            <h2 className="text-[0.8rem] font-bold tracking-[0.25em] uppercase">Experience</h2>
           </div>
 
           {/* Meta */}
           <div className="mt-2.5">
             <div className="flex justify-between items-baseline">
-              <h3 className="text-[1rem] font-bold">Meta</h3>
+              <h3 className="text-[0.9rem] font-bold">Meta</h3>
               <span className="text-[0.85rem] text-[#555] font-semibold">2021 – Present</span>
             </div>
-            <p className="text-[0.72rem] text-[#555] mt-0.5 italic">Senior Product Designer · Core Ads Growth — AI-powered advertising products serving millions of businesses</p>
+            <p className="text-[0.72rem] text-[#555] mt-0 italic">Senior Product Designer · Core Ads Growth — AI-powered advertising products serving millions of businesses</p>
           </div>
 
           {/* Role 1 */}
@@ -95,12 +94,12 @@ export default function Resume() {
         <div className="resume-footer mt-5 border-t-[2px] border-[#1a1a1a] mx-16">
           <div className="py-5 flex gap-20">
             <div>
-              <h2 className="text-[0.65rem] font-bold tracking-[0.25em] uppercase mb-2">Education</h2>
+              <h2 className="text-[0.8rem] font-bold tracking-[0.25em] uppercase mb-2">Education</h2>
               <h3 className="text-[0.82rem] font-bold">Cornell University</h3>
               <p className="text-[0.72rem] text-[#555]">B.A. Information Science (UX Concentration)</p>
             </div>
             <div>
-              <h2 className="text-[0.65rem] font-bold tracking-[0.25em] uppercase mb-2">AI Tools</h2>
+              <h2 className="text-[0.8rem] font-bold tracking-[0.25em] uppercase mb-2">AI Tools</h2>
               <p className="text-[0.72rem] text-[#555]">Claude, Figma Make & MCP, Manus, Cursor</p>
             </div>
           </div>
