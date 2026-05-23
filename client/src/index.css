@@ -186,8 +186,8 @@ html, body {
 
   .display-1 {
     font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 700;
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
     line-height: 1.02;
     letter-spacing: -0.035em;
     color: var(--ink);

@@ -771,7 +771,7 @@ export default function CommerceAds() {
       <section className="container pt-28 pb-8 md:pt-32 md:pb-10">
         <div className="max-w-4xl">
           <span className="kicker">Commerce ads on Meta</span>
-          <h1 className="display-1 mt-4" style={{ fontSize: "clamp(1.8rem, 3.6vw, 2.7rem)" }}>
+          <h1 className="display-1 mt-4">
             Unifying Meta's split<br />eCommerce ad builder
           </h1>
           <div className="flex items-center gap-2 mt-5 flex-wrap">

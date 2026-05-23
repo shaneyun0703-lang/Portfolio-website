@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 
 type CaseStudyCard = {
@@ -97,38 +98,6 @@ function Tags({ c }: { c: CaseStudyCard }) {
   );
 }
 
-// ─────────────────────────────────────────────
-// ORIGINAL
-// ─────────────────────────────────────────────
-function CardOriginal({ c }: { c: CaseStudyCard }) {
-  return (
-    <Link href={c.href}
-      className="group flex-1 min-w-0 flex flex-col rounded-lg overflow-hidden transition-all duration-500 ease-out hover:!rotate-0 hover:!translate-y-[-6px]"
-      style={{ marginTop: OFFSETS[c.index], transform: `rotate(${ROTS[c.index]}deg)`, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", boxShadow: "0 4px 24px rgba(0,0,0,0.3)" }}
-      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 16px 50px rgba(0,0,0,0.5), 0 0 40px rgba(${c.accentRgb},0.08)`; el.style.borderColor = `rgba(${c.accentRgb},0.15)`; }}
-      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "0 4px 24px rgba(0,0,0,0.3)"; el.style.borderColor = "rgba(255,255,255,0.06)"; }}>
-      <div className="h-[220px] xl:h-[280px] 2xl:h-[320px] relative overflow-hidden flex items-center justify-center"
-        style={{ background: `linear-gradient(180deg, rgba(${c.accentRgb},0.2) 0%, rgba(${c.accentRgb},0.03) 100%)` }}>
-        <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[120%] h-[80%] opacity-20"
-          style={{ background: `radial-gradient(ellipse, rgba(${c.accentRgb},1) 0%, transparent 60%)`, filter: "blur(40px)" }} />
-        <Tags c={c} />
-        <span className="absolute top-3 left-4 z-20 font-mono text-[11px] text-white/15 tracking-[0.04em]">{String(c.index + 1).padStart(2, "0")}</span>
-        <div className="relative z-10 pt-14 pb-3 w-full px-3"><GlassLaptop src={c.heroSrc} alt={c.heroAlt} accent={c.accent} /></div>
-      </div>
-      <div className="shrink-0 p-2.5" style={{ background: `rgba(${c.accentRgb},0.03)` }}>
-        <div className="rounded-xl px-4 py-3.5 backdrop-blur-lg" style={{ background: `rgba(${c.accentRgb},0.03)`, border: `1px solid rgba(${c.accentRgb},0.08)`, boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)" }}>
-          <p className="font-mono text-[10px] tracking-[0.06em] uppercase mb-1.5" style={{ color: `rgba(${c.accentRgb},0.7)` }}>{c.org}</p>
-          <h2 className="font-display text-[1.05rem] font-bold leading-[1.2] tracking-[-0.015em] text-white/90">{c.title}</h2>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// ─────────────────────────────────────────────
-// BALANCED — original × vivid midpoint
-// Bloom at 28%, accent border, richer info panel
-// ─────────────────────────────────────────────
 function CardBalanced({ c }: { c: CaseStudyCard }) {
   return (
     <Link href={c.href}
@@ -152,126 +121,6 @@ function CardBalanced({ c }: { c: CaseStudyCard }) {
   );
 }
 
-// ─────────────────────────────────────────────
-// INVERTED — title on top, image below
-// Text is the hook; screenshot supports it
-// ─────────────────────────────────────────────
-function CardInverted({ c }: { c: CaseStudyCard }) {
-  return (
-    <Link href={c.href}
-      className="group flex-1 min-w-0 flex flex-col rounded-xl overflow-hidden transition-all duration-500 ease-out hover:!rotate-0 hover:!translate-y-[-6px]"
-      style={{ marginTop: OFFSETS[c.index], transform: `rotate(${ROTS[c.index]}deg)`, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 4px 24px rgba(0,0,0,0.35)" }}
-      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(${c.accentRgb},0.08)`; el.style.borderColor = `rgba(${c.accentRgb},0.2)`; }}
-      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "0 4px 24px rgba(0,0,0,0.35)"; el.style.borderColor = "rgba(255,255,255,0.07)"; }}>
-      {/* Info on top */}
-      <div className="shrink-0 px-5 pt-5 pb-4" style={{ background: `rgba(${c.accentRgb},0.04)`, borderBottom: `1px solid rgba(${c.accentRgb},0.1)` }}>
-        <div className="flex items-center justify-between mb-3">
-          <p className="font-mono text-[10px] tracking-[0.06em] uppercase" style={{ color: `rgba(${c.accentRgb},0.75)` }}>{c.org}</p>
-          <span className="font-mono text-[10px] tracking-[0.03em] uppercase px-2.5 py-1 rounded-full"
-            style={{ border: `1px solid rgba(${c.accentRgb},0.25)`, background: `rgba(${c.accentRgb},0.08)`, color: `rgba(${c.accentRgb},0.9)` }}>
-            {c.outcome}
-          </span>
-        </div>
-        <h2 className="font-display text-[1.05rem] font-bold leading-[1.25] tracking-[-0.015em] text-white/95">{c.title}</h2>
-        {c.badge2 && (
-          <span className="inline-block mt-2.5 font-mono text-[10px] tracking-[0.03em] uppercase px-2.5 py-1 rounded-full"
-            style={{ border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.6)" }}>
-            {c.badge2}
-          </span>
-        )}
-      </div>
-      {/* Image below */}
-      <div className="flex-1 relative overflow-hidden flex items-center justify-center min-h-[160px] xl:min-h-[200px]"
-        style={{ background: `linear-gradient(0deg, rgba(${c.accentRgb},0.18) 0%, rgba(${c.accentRgb},0.03) 100%)` }}>
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[120%] h-[80%] opacity-20"
-          style={{ background: `radial-gradient(ellipse, rgba(${c.accentRgb},1) 0%, transparent 60%)`, filter: "blur(36px)" }} />
-        <div className="relative z-10 pb-4 pt-4 w-full px-3"><GlassLaptop src={c.heroSrc} alt={c.heroAlt} accent={c.accent} /></div>
-      </div>
-    </Link>
-  );
-}
-
-// ─────────────────────────────────────────────
-// SPLIT — horizontal: image left | text right
-// More editorial, info reads like a byline
-// ─────────────────────────────────────────────
-function CardSplit({ c }: { c: CaseStudyCard }) {
-  return (
-    <Link href={c.href}
-      className="group flex-1 min-w-0 flex flex-row rounded-xl overflow-hidden transition-all duration-500 ease-out hover:!rotate-0 hover:!translate-y-[-6px]"
-      style={{ marginTop: OFFSETS[c.index], transform: `rotate(${ROTS[c.index]}deg)`, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 4px 24px rgba(0,0,0,0.35)", minHeight: "200px", maxHeight: "320px" }}
-      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(${c.accentRgb},0.08)`; el.style.borderColor = `rgba(${c.accentRgb},0.2)`; }}
-      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "0 4px 24px rgba(0,0,0,0.35)"; el.style.borderColor = "rgba(255,255,255,0.07)"; }}>
-      {/* Left — image */}
-      <div className="w-[58%] shrink-0 relative overflow-hidden flex items-center justify-center"
-        style={{ background: `linear-gradient(135deg, rgba(${c.accentRgb},0.22) 0%, rgba(${c.accentRgb},0.04) 100%)` }}>
-        <div className="absolute inset-0 opacity-20"
-          style={{ background: `radial-gradient(ellipse at 40% 40%, rgba(${c.accentRgb},1) 0%, transparent 65%)`, filter: "blur(30px)" }} />
-        <div className="relative z-10 w-full px-3 py-4"><GlassLaptop src={c.heroSrc} alt={c.heroAlt} accent={c.accent} /></div>
-      </div>
-      {/* Right — info */}
-      <div className="flex-1 flex flex-col justify-between px-4 py-4 min-w-0"
-        style={{ borderLeft: `1px solid rgba(${c.accentRgb},0.12)`, background: `rgba(${c.accentRgb},0.03)` }}>
-        <div>
-          <p className="font-mono text-[9px] tracking-[0.07em] uppercase mb-3" style={{ color: `rgba(${c.accentRgb},0.7)` }}>{c.org}</p>
-          <h2 className="font-display text-[0.95rem] font-bold leading-[1.25] tracking-[-0.015em] text-white/92">{c.title}</h2>
-        </div>
-        <div className="mt-3 flex flex-col gap-1.5">
-          <span className="font-mono text-[10px] tracking-[0.03em] uppercase px-2 py-0.5 rounded-full w-fit"
-            style={{ border: `1px solid rgba(${c.accentRgb},0.25)`, background: `rgba(${c.accentRgb},0.08)`, color: `rgba(${c.accentRgb},0.85)` }}>
-            {c.outcome}
-          </span>
-          {c.badge2 && (
-            <span className="font-mono text-[10px] tracking-[0.03em] uppercase px-2 py-0.5 rounded-full w-fit"
-              style={{ border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.55)" }}>
-              {c.badge2}
-            </span>
-          )}
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// ─────────────────────────────────────────────
-// FLOATING — no card box at all
-// Screenshot floats in space, text below as caption
-// Held by shadow + stagger, not a border
-// ─────────────────────────────────────────────
-function CardFloating({ c }: { c: CaseStudyCard }) {
-  return (
-    <Link href={c.href}
-      className="group flex-1 min-w-0 flex flex-col transition-all duration-500 ease-out hover:!rotate-0 hover:!translate-y-[-6px]"
-      style={{ marginTop: OFFSETS[c.index], transform: `rotate(${ROTS[c.index]}deg)` }}>
-      {/* Floating screenshot */}
-      <div className="relative overflow-hidden rounded-xl flex items-center justify-center"
-        style={{ background: `linear-gradient(180deg, rgba(${c.accentRgb},0.22) 0%, rgba(${c.accentRgb},0.04) 100%)`, boxShadow: `0 8px 40px rgba(0,0,0,0.5), 0 0 30px rgba(${c.accentRgb},0.08), inset 0 1px 0 rgba(255,255,255,0.08)`, border: "1px solid rgba(255,255,255,0.06)", minHeight: "160px" }}>
-        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[120%] h-[80%] opacity-[0.22]"
-          style={{ background: `radial-gradient(ellipse, rgba(${c.accentRgb},1) 0%, transparent 60%)`, filter: "blur(36px)" }} />
-        <div className="absolute top-2.5 right-2.5 z-20 flex gap-1.5 flex-wrap justify-end">
-          {c.badge2 && (
-            <span className="font-mono text-[10px] tracking-[0.03em] uppercase px-2.5 py-1 rounded-full backdrop-blur-md"
-              style={{ border: "1px solid rgba(255,255,255,0.13)", background: "rgba(255,255,255,0.05)", color: "rgba(255,255,255,0.65)" }}>
-              {c.badge2}
-            </span>
-          )}
-          <span className="font-mono text-[10px] tracking-[0.03em] uppercase px-2.5 py-1 rounded-full backdrop-blur-md"
-            style={{ border: `1px solid rgba(${c.accentRgb},0.3)`, background: `rgba(${c.accentRgb},0.1)`, color: `rgba(${c.accentRgb},0.95)` }}>
-            {c.outcome}
-          </span>
-        </div>
-        <div className="relative z-10 pt-12 pb-4 w-full px-3"><GlassLaptop src={c.heroSrc} alt={c.heroAlt} accent={c.accent} /></div>
-      </div>
-      {/* Caption below — no box */}
-      <div className="px-1 pt-3.5 pb-1">
-        <p className="font-mono text-[10px] tracking-[0.06em] uppercase mb-1.5" style={{ color: `rgba(${c.accentRgb},0.7)` }}>{c.org}</p>
-        <h2 className="font-display text-[1.0rem] font-bold leading-[1.25] tracking-[-0.015em] text-white/88">{c.title}</h2>
-      </div>
-    </Link>
-  );
-}
-
-// ─── Page background ───
 function Background() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -295,58 +144,182 @@ function EmailButton() {
       <span className="flex items-center justify-center w-8 h-8 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#555] group-hover/link:bg-[#222] transition-all duration-200">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover/link:stroke-white transition-colors duration-200"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
       </span>
-      <span className={`font-display text-[15px] font-medium transition-colors duration-200 ${copied ? "text-white" : "text-[#999] group-hover/link:text-white"}`}>
+      <span className={`font-display text-[15px] font-medium transition-colors duration-200 ${copied ? "text-white" : "text-[#ccc] group-hover/link:text-white"}`}>
         {copied ? "Copied!" : "Email"}
       </span>
     </button>
   );
 }
 
+const HERO_PRE = "Empowering advertisers to build ";
+const HERO_HL = "ads that perform";
+const HERO_FULL = HERO_PRE + HERO_HL;
+const H1_CLASS = "font-display text-[clamp(2.2rem,3.8vw,3.8rem)] font-bold leading-[1.35] tracking-[-0.04em] text-[var(--ink)]";
+
+type Phase = "typing" | "highlighting" | "settling" | "done";
 
 export default function Landing() {
+  const alreadySeen = typeof window !== "undefined" && !!sessionStorage.getItem("intro-seen");
+  const [phase, setPhase] = useState<Phase>(alreadySeen ? "done" : "typing");
+  const [typed, setTyped]   = useState(alreadySeen ? HERO_FULL : "");
+  const [showCursor, setShowCursor] = useState(!alreadySeen);
+
+  useEffect(() => {
+    if (alreadySeen) return;
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setTyped(HERO_FULL.slice(0, i));
+      if (i === HERO_FULL.length) {
+        clearInterval(id);
+        // cursor lingers, then fades
+        setTimeout(() => setShowCursor(false), 600);
+        // switch to highlight phase (text snaps to 2-line + selection sweep begins)
+        setTimeout(() => setPhase("highlighting"), 900);
+        // text slides up into position
+        setTimeout(() => setPhase("settling"), 900 + 2400);
+        // layout complete
+        setTimeout(() => {
+          sessionStorage.setItem("intro-seen", "1");
+          setPhase("done");
+        }, 900 + 2400 + 800);
+      }
+    }, 62);
+    return () => clearInterval(id);
+  }, []);
+
+  // shared horizontal padding to keep intro text aligned with final h1
+  const hPad = "px-6 lg:pl-6 lg:pr-7";
+
   return (
-    <div className="min-h-screen lg:h-screen lg:overflow-hidden lg:flex relative" style={{ background: "var(--paper)" }}>
+    <div className="min-h-screen lg:h-screen lg:overflow-hidden relative" style={{ background: "var(--paper)" }}>
       <Background />
 
-      {/* Sidebar */}
-      <aside className="lg:w-[220px] xl:w-[260px] 2xl:w-[280px] shrink-0 lg:h-full flex flex-col justify-between p-6 pt-10 lg:p-5 lg:pt-10 xl:p-6 xl:pt-14 2xl:p-8 2xl:pt-20 relative z-10">
-        <div>
-          <span className="font-display text-[2rem] font-extrabold leading-none tracking-[-0.02em] text-[var(--ink)]">Shane Yun</span>
-          <div className="mt-4 flex flex-col gap-1">
-            <span className="font-display text-[1rem] font-semibold text-[var(--ink)] leading-tight">Product Designer</span>
-            <span className="font-mono text-[11px] text-[var(--mid)] tracking-[0.06em] uppercase">Meta · Bay Area</span>
-          </div>
-        </div>
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-3">
-            <EmailButton />
-            <a href="https://www.linkedin.com/in/shane-yun" target="_blank" rel="noopener noreferrer" className="group/link flex items-center gap-2.5 w-fit">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#555] group-hover/link:bg-[#222] transition-all duration-200">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="#999" className="group-hover/link:fill-white transition-colors duration-200"><path d="M20.47 2H3.53A1.45 1.45 0 0 0 2 3.38v17.24A1.45 1.45 0 0 0 3.53 22h16.94A1.45 1.45 0 0 0 22 20.62V3.38A1.45 1.45 0 0 0 20.47 2ZM8.09 18.74h-3v-9h3ZM6.59 8.48a1.56 1.56 0 1 1 0-3.12 1.56 1.56 0 0 1 0 3.12ZM18.91 18.74h-3v-4.26c0-1.08-.43-1.82-1.44-1.82a1.43 1.43 0 0 0-1.35.95 1.72 1.72 0 0 0-.08.65v4.48h-3v-9h2.9v1.3a2.88 2.88 0 0 1 2.62-1.45c1.88 0 3.35 1.23 3.35 3.87Z"/></svg>
-              </span>
-              <span className="font-display text-[15px] font-medium text-[#999] group-hover/link:text-white transition-colors duration-200">LinkedIn</span>
-            </a>
-            <a href="/resume" target="_blank" rel="noopener noreferrer" className="group/link flex items-center gap-2.5 w-fit">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#555] group-hover/link:bg-[#222] transition-all duration-200">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover/link:stroke-white transition-colors duration-200"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
-              </span>
-              <span className="font-display text-[15px] font-medium text-[#999] group-hover/link:text-white transition-colors duration-200">Resume</span>
-            </a>
-          </div>
-          <span className="font-mono text-[9px] text-[#444] tracking-[0.06em] uppercase">© 2026 Shane Yun</span>
-        </div>
-      </aside>
+      <div className="lg:flex lg:h-screen lg:overflow-hidden">
 
-      {/* Right content */}
-      <div className="flex-1 flex flex-col py-6 px-6 lg:py-[36px] xl:py-[56px] 2xl:py-[72px] lg:pr-7 lg:pl-6 relative z-10">
-        <h1 className="font-mono text-[clamp(1.6rem,3vw,3.2rem)] font-normal leading-[1.45] tracking-[-0.01em] text-[var(--ink)] shrink-0">
-          Empowering advertisers to build <span className="inline-block px-4 py-1.5 rounded-xl border border-white/30 bg-white/[0.06]">ads that perform</span>
-        </h1>
-        <div className="mt-8 lg:mt-10 xl:mt-12 2xl:mt-14 mb-3 lg:mb-4 xl:mb-6">
-          <span className="font-mono text-[13px] text-[#888] tracking-[0.06em] uppercase">Projects in the past year I designed</span>
-        </div>
-        <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0 lg:max-h-[360px] xl:max-h-[440px] 2xl:max-h-[540px] lg:items-start">
-          {cases.map(c => <CardBalanced key={c.href} c={c} />)}
+        {/* ── SIDEBAR — always present ── */}
+        <aside className="lg:w-[220px] xl:w-[260px] 2xl:w-[280px] shrink-0 lg:h-full flex flex-col justify-between p-6 pt-10 lg:p-5 lg:pt-10 xl:p-6 xl:pt-14 2xl:p-8 2xl:pt-20 relative z-10">
+          <div>
+            <span className="font-display text-[2rem] font-extrabold leading-none tracking-[-0.02em] text-[var(--ink)]">Shane Yun</span>
+            <div className="mt-4 flex flex-col gap-1">
+              <span className="font-display text-[1rem] font-semibold text-[var(--ink)] leading-tight">Product Designer</span>
+              <span className="font-mono text-[11px] text-[var(--mid)] tracking-[0.06em] uppercase">Meta · Bay Area</span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-3">
+              <EmailButton />
+              <a href="https://www.linkedin.com/in/shane-yun" target="_blank" rel="noopener noreferrer" className="group/link flex items-center gap-2.5 w-fit">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#555] group-hover/link:bg-[#222] transition-all duration-200">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#999" className="group-hover/link:fill-white transition-colors duration-200"><path d="M20.47 2H3.53A1.45 1.45 0 0 0 2 3.38v17.24A1.45 1.45 0 0 0 3.53 22h16.94A1.45 1.45 0 0 0 22 20.62V3.38A1.45 1.45 0 0 0 20.47 2ZM8.09 18.74h-3v-9h3ZM6.59 8.48a1.56 1.56 0 1 1 0-3.12 1.56 1.56 0 0 1 0 3.12ZM18.91 18.74h-3v-4.26c0-1.08-.43-1.82-1.44-1.82a1.43 1.43 0 0 0-1.35.95 1.72 1.72 0 0 0-.08.65v4.48h-3v-9h2.9v1.3a2.88 2.88 0 0 1 2.62-1.45c1.88 0 3.35 1.23 3.35 3.87Z"/></svg>
+                </span>
+                <span className="font-display text-[15px] font-medium text-[#ccc] group-hover/link:text-white transition-colors duration-200">LinkedIn</span>
+              </a>
+              <a href="/resume" target="_blank" rel="noopener noreferrer" className="group/link flex items-center gap-2.5 w-fit">
+                <span className="flex items-center justify-center w-8 h-8 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#555] group-hover/link:bg-[#222] transition-all duration-200">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover/link:stroke-white transition-colors duration-200"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+                </span>
+                <span className="font-display text-[15px] font-medium text-[#ccc] group-hover/link:text-white transition-colors duration-200">Resume</span>
+              </a>
+            </div>
+            <span className="font-mono text-[9px] text-[#444] tracking-[0.06em] uppercase">© 2026 Shane Yun</span>
+          </div>
+        </aside>
+
+        {/* ── RIGHT COLUMN ── */}
+        <div className={`flex-1 flex flex-col relative ${hPad} py-6 lg:py-[36px] xl:py-[56px] 2xl:py-[72px] z-10`}>
+
+          {/* ── INTRO: centered, animated text ── */}
+          <AnimatePresence>
+            {(phase === "typing" || phase === "highlighting") && (
+              <motion.div
+                key="intro"
+                className={`absolute inset-0 flex items-center ${hPad} z-20`}
+                exit={{
+                  opacity: 0,
+                  y: -110,
+                  transition: { duration: 0.75, ease: [0.4, 0, 0.2, 1] },
+                }}
+              >
+                <h1 className={H1_CLASS}>
+                  {phase === "typing" ? (
+                    typed.length <= HERO_PRE.trimEnd().length ? (
+                      /* Still on first line */
+                      <>
+                        {typed}
+                        {showCursor && (
+                          <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.6 }}>|</motion.span>
+                        )}
+                      </>
+                    ) : (
+                      /* Second line started — lock structure so no jump on highlight */
+                      <>
+                        Empowering advertisers to build<br />
+                        <span className="inline-block px-4 py-1.5 rounded-xl">
+                          {typed.slice(HERO_PRE.length)}
+                          {showCursor && (
+                            <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.6 }}>|</motion.span>
+                          )}
+                        </span>
+                      </>
+                    )
+                  ) : (
+                    /* Highlighting phase — frosted glass sweeps in left → right */
+                    <>
+                      Empowering advertisers to build<br />
+                      <span className="relative inline-block px-4 py-1.5 rounded-xl">
+                        <motion.span
+                          aria-hidden
+                          className="absolute inset-0 rounded-xl border border-white/30 bg-white/[0.06]"
+                          initial={{ clipPath: "inset(0 100% 0 0 round 0.75rem)" }}
+                          animate={{ clipPath: "inset(0 0% 0 0 round 0.75rem)" }}
+                          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        />
+                        <span className="relative z-10">ads that perform</span>
+                      </span>
+                    </>
+                  )}
+                </h1>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* ── MAIN CONTENT: text settles at top, cards appear ── */}
+          <AnimatePresence>
+            {(phase === "settling" || phase === "done") && (
+              <motion.div
+                key="content"
+                className="flex flex-col flex-1 min-h-0"
+                initial={alreadySeen ? false : { opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.55, ease: "easeOut" }}
+              >
+                <h1 className={`${H1_CLASS} shrink-0`}>
+                  Empowering advertisers to build<br />
+                  <span className="inline-block px-4 py-1.5 rounded-xl border border-white/30 bg-white/[0.06]">ads that perform</span>
+                </h1>
+
+                <motion.div
+                  initial={alreadySeen ? false : { opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.32, duration: 0.4 }}
+                  className="mt-8 lg:mt-10 xl:mt-12 2xl:mt-14 mb-3 lg:mb-4 xl:mb-6 shrink-0"
+                >
+                  <span className="font-mono text-[13px] text-[#bbb] tracking-[0.06em] uppercase">Projects in the past year I designed</span>
+                </motion.div>
+
+                <motion.div
+                  initial={alreadySeen ? false : { opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.45 }}
+                  className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0 lg:max-h-[360px] xl:max-h-[440px] 2xl:max-h-[540px] lg:items-start"
+                >
+                  {cases.map(c => <CardBalanced key={c.href} c={c} />)}
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
         </div>
       </div>
     </div>
