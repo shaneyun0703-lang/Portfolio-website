@@ -111,11 +111,11 @@ function CardBalanced({ c }: { c: CaseStudyCard }) {
           style={{ background: `radial-gradient(ellipse, rgba(${c.accentRgb},1) 0%, transparent 60%)`, filter: "blur(36px)" }} />
         <Tags c={c} />
         <span className="absolute top-3 left-4 z-20 font-mono text-[11px] text-white/20 tracking-[0.04em]">{String(c.index + 1).padStart(2, "0")}</span>
-        <div className="relative z-10 pt-14 pb-3 w-full px-3"><GlassLaptop src={c.heroSrc} alt={c.heroAlt} accent={c.accent} /></div>
+        <div className="relative z-10 pt-14 pb-5 xl:pb-8 2xl:pb-10 w-full px-3"><GlassLaptop src={c.heroSrc} alt={c.heroAlt} accent={c.accent} /></div>
       </div>
       <div className="shrink-0 px-4 py-3.5" style={{ borderTop: `1px solid rgba(${c.accentRgb},0.2)`, background: `rgba(${c.accentRgb},0.03)` }}>
         <p className="font-mono text-[10px] tracking-[0.06em] uppercase mb-1.5" style={{ color: `rgba(${c.accentRgb},0.8)` }}>{c.org}</p>
-        <h2 className="font-display text-[1.05rem] font-bold leading-[1.2] tracking-[-0.015em] text-white/95 min-h-[2.52rem]">{c.title}</h2>
+        <h2 className="font-display text-[1.05rem] font-bold leading-[1.2] tracking-[-0.015em] text-white/95">{c.title}</h2>
       </div>
     </Link>
   );
@@ -173,16 +173,16 @@ export default function Landing() {
       if (i === HERO_FULL.length) {
         clearInterval(id);
         // cursor lingers, then fades
-        setTimeout(() => setShowCursor(false), 600);
+        setTimeout(() => setShowCursor(false), 400);
         // switch to highlight phase (text snaps to 2-line + selection sweep begins)
-        setTimeout(() => setPhase("highlighting"), 900);
+        setTimeout(() => setPhase("highlighting"), 600);
         // text slides up into position
-        setTimeout(() => setPhase("settling"), 900 + 2400);
+        setTimeout(() => setPhase("settling"), 600 + 1600);
         // layout complete
         setTimeout(() => {
           sessionStorage.setItem("intro-seen", "1");
           setPhase("done");
-        }, 900 + 2400 + 800);
+        }, 600 + 1600 + 700);
       }
     }, 62);
     return () => clearInterval(id);
