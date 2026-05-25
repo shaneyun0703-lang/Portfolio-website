@@ -755,7 +755,7 @@ export default function WhatsApp() {
       </nav>
 
       {/* ─────────────── HERO ─────────────── */}
-      <section className="pt-28 pb-8 md:pt-32 md:pb-10">
+      <section className="pt-24 pb-8 md:pt-28 md:pb-10">
         <div className="container">
           <div className="max-w-4xl">
             <span className="kicker inline-flex items-center gap-2">

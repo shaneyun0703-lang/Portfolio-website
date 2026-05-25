@@ -18,7 +18,7 @@ export function Section({
   className?: string;
 }) {
   return (
-    <section id={id} className={`py-16 md:py-20 scroll-mt-16 border-t border-[var(--rule)] ${className}`}>
+    <section id={id} className={`py-14 md:py-16 xl:py-16 scroll-mt-16 border-t border-[var(--rule)] ${className}`}>
       <div className="container">
         <SectionHeader kicker={kicker} number={number} title={title} lede={lede} />
         {children}
@@ -60,7 +60,7 @@ export function SectionHeader({
     return () => obs.disconnect();
   }, []);
   return (
-    <div ref={ref} className={`reveal ${revealed ? "in" : ""} max-w-3xl mb-10 md:mb-14`}>
+    <div ref={ref} className={`reveal ${revealed ? "in" : ""} max-w-3xl mb-8 md:mb-12`}>
       <div className="flex items-baseline gap-4 mb-4">
         {number && (
           <span className="font-mono text-xs text-[var(--case-accent)]">

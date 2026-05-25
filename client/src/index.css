@@ -174,7 +174,7 @@ html, body {
     .container { padding-left: 3rem; padding-right: 3rem; max-width: 1100px; }
   }
   @media (min-width: 1280px) {
-    .container { padding-right: 18rem; }
+    .container { padding-right: 15rem; }
   }
 
   /* ── Typography ── */
@@ -250,7 +250,7 @@ html, body {
   }
   @media (min-width: 1280px) {
     .rule {
-      width: calc(100% - 17rem);
+      width: calc(100% - 14rem);
     }
   }
 
@@ -259,7 +259,7 @@ html, body {
   }
   @media (min-width: 1280px) {
     .rule--full {
-      width: calc(100% - 17rem);
+      width: calc(100% - 14rem);
     }
   }
 

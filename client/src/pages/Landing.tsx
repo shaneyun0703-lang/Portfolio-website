@@ -110,7 +110,7 @@ function CardBalanced({ c }: { c: CaseStudyCard }) {
       style={{ marginTop: OFFSETS[c.index], transform: `rotate(${ROTS[c.index]}deg)`, background: "rgba(255,255,255,0.05)", border: `1px solid rgba(${c.accentRgb},0.2)`, boxShadow: `0 4px 28px rgba(0,0,0,0.35), 0 0 20px rgba(${c.accentRgb},0.09)` }}
       onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), 0 0 50px rgba(${c.accentRgb},0.18)`; el.style.borderColor = `rgba(${c.accentRgb},0.4)`; }}
       onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 4px 28px rgba(0,0,0,0.35), 0 0 20px rgba(${c.accentRgb},0.09)`; el.style.borderColor = `rgba(${c.accentRgb},0.2)`; }}>
-      <div className="h-[220px] xl:h-[300px] 2xl:h-[380px] relative overflow-hidden flex items-center justify-center"
+      <div className="h-[220px] xl:h-[255px] 2xl:h-[330px] relative overflow-hidden flex items-center justify-center"
         style={{ background: `linear-gradient(180deg, rgba(${c.accentRgb},0.38) 0%, rgba(${c.accentRgb},0.08) 100%)` }}>
         <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[130%] h-[85%] opacity-[0.4]"
           style={{ background: `radial-gradient(ellipse, rgba(${c.accentRgb},1) 0%, transparent 60%)`, filter: "blur(36px)" }} />
@@ -237,7 +237,7 @@ export default function Landing() {
       <div className="lg:flex lg:h-screen lg:overflow-hidden">
 
         {/* ── SIDEBAR — always present ── */}
-        <aside className="lg:w-[220px] xl:w-[260px] 2xl:w-[280px] shrink-0 lg:h-full flex flex-col justify-between p-6 pt-10 lg:p-5 lg:pt-10 xl:p-6 xl:pt-14 2xl:p-8 2xl:pt-20 relative z-10">
+        <aside className="lg:w-[220px] xl:w-[240px] 2xl:w-[260px] shrink-0 lg:h-full flex flex-col justify-between p-6 pt-10 lg:p-5 lg:pt-10 xl:p-5 xl:pt-10 2xl:p-8 2xl:pt-16 relative z-10">
           <div>
             <span className="font-display text-[2rem] font-extrabold leading-none tracking-[-0.02em] text-[var(--ink)]">Shane Yun</span>
             <div className="mt-4 flex flex-col gap-1">
@@ -266,7 +266,7 @@ export default function Landing() {
         </aside>
 
         {/* ── RIGHT COLUMN ── */}
-        <div className={`flex-1 flex flex-col relative ${hPad} py-6 lg:py-[36px] xl:py-[56px] 2xl:py-[72px] z-10`}>
+        <div className={`flex-1 flex flex-col relative ${hPad} py-6 lg:py-[36px] xl:py-[40px] 2xl:py-[64px] z-10`}>
 
           {/* ── INTRO OVERLAY: centered, exits instantly — FLIP handles the motion ── */}
           <AnimatePresence>
@@ -358,7 +358,7 @@ export default function Landing() {
             </motion.h1>
 
             <motion.div
-              className="mt-8 lg:mt-10 xl:mt-12 2xl:mt-14 mb-3 lg:mb-4 xl:mb-6 shrink-0"
+              className="mt-8 lg:mt-10 xl:mt-10 2xl:mt-12 mb-3 lg:mb-4 xl:mb-4 shrink-0"
               animate={{ opacity: (phase === "projects" || phase === "done") ? 1 : 0 }}
               initial={alreadySeen ? false : { opacity: 0 }}
               transition={{ duration: 0.2 }}
@@ -371,7 +371,7 @@ export default function Landing() {
               </span>
             </motion.div>
 
-            <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0 lg:max-h-[360px] xl:max-h-[440px] 2xl:max-h-[540px] lg:items-start">
+            <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0 lg:max-h-[360px] xl:max-h-[400px] 2xl:max-h-[500px] lg:items-start">
               {cases.map(c => (
                 <motion.div
                   key={c.href}

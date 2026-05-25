@@ -782,7 +782,7 @@ export default function CommerceAds() {
       </nav>
 
       {/* ─────────────── Hero ─────────────── */}
-      <section className="container pt-28 pb-8 md:pt-32 md:pb-10">
+      <section className="container pt-24 pb-8 md:pt-28 md:pb-10">
         <div className="max-w-4xl">
           <span className="kicker">Commerce ads on Meta</span>
           <h1 className="display-1 mt-4">
