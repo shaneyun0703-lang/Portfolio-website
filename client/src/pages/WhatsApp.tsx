@@ -700,7 +700,7 @@ function WaToc() {
               <a
                 href={`#${s.id}`}
                 data-active={active === s.id}
-                className={`toc-link flex items-baseline gap-2.5 py-1 px-2.5 rounded-lg transition-all duration-200 ${
+                className={`toc-link flex items-start gap-2.5 py-1 px-2.5 rounded-lg transition-all duration-200 ${
                   active === s.id
                     ? "text-[var(--ink)]"
                     : "hover:bg-[rgba(255,255,255,0.04)]"
