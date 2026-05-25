@@ -296,7 +296,7 @@ export default function SearchAds() {
       </nav>
 
       {/* ─────────────── HERO ─────────────── */}
-      <header className="relative pt-24 md:pt-28 pb-6 md:pb-8">
+      <header className="relative pt-28 md:pt-32 pb-6 md:pb-8">
         <div className="container">
           <div className="max-w-4xl">
             <div className="kicker mb-4">Search Ads in Meta Ads Manager</div>

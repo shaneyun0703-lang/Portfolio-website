@@ -35,7 +35,7 @@ export function TableOfContents() {
 
   return (
     <nav
-      className={`hidden xl:block fixed right-5 z-40 w-[240px] transition-all duration-500 ease-in-out ${scrolled ? "top-[calc(80px+1.75rem)]" : "top-[calc(72px+2.25rem)]"}`}
+      className={`hidden xl:block fixed right-7 z-40 w-[300px] transition-all duration-500 ease-in-out ${scrolled ? "top-[calc(80px+1.75rem)]" : "top-[calc(72px+2.25rem)]"}`}
       aria-label="Section navigation"
     >
       <div className="rounded-2xl p-5" style={{ background: "rgba(42,42,46,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" }}>
