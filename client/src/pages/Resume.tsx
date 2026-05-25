@@ -61,7 +61,7 @@ export default function Resume() {
           </div>
 
           {/* Role 2 */}
-          <div className="h-px bg-[#e5e5e5] mt-4 mb-4" />
+          <div className="border-t border-[#e5e5e5] mt-4 mb-4" />
           <div>
             <div className="flex justify-between items-baseline">
               <h4 className="text-[0.78rem] font-bold">Advertiser Automation Team</h4>
@@ -75,7 +75,7 @@ export default function Resume() {
           </div>
 
           {/* Role 3 */}
-          <div className="h-px bg-[#e5e5e5] mt-4 mb-4" />
+          <div className="border-t border-[#e5e5e5] mt-4 mb-4" />
           <div>
             <div className="flex justify-between items-baseline">
               <h4 className="text-[0.78rem] font-bold">App Ads & Privacy-Preserving AI Team</h4>
