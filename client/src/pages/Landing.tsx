@@ -48,7 +48,7 @@ const casesData = [
     lede: "Meta's first tools for search-driven advertising",
     role: "Design Lead", timeline: "H2 2025",
     outcome: "Design milestone aligned", badge2: "Research complete",
-    accent: "#a3baff", accentRgb: "110,142,255",
+    accent: "#ff79c6", accentRgb: "255,121,198",
     heroSrc: "/primer/final-2.png", heroAlt: "Search Themes final design",
   },
 ];
@@ -86,12 +86,16 @@ function Tags({ c }: { c: CaseStudyCard }) {
     <div className="absolute top-3 right-3 z-20 flex gap-1.5 items-center flex-wrap justify-end">
       {c.badge2 && (
         <span className="font-mono text-[10px] tracking-[0.03em] uppercase px-2.5 py-1 rounded-full backdrop-blur-md"
-          style={{ border: "1px solid rgba(255,255,255,0.15)", background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.7)" }}>
+          style={{ border: "1px solid rgba(255,255,255,0.35)", background: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.95)" }}>
           {c.badge2}
         </span>
       )}
       <span className="font-mono text-[10px] tracking-[0.03em] uppercase px-2.5 py-1 rounded-full backdrop-blur-md"
-        style={{ border: `1px solid rgba(${c.accentRgb},0.3)`, background: `rgba(${c.accentRgb},0.1)`, color: `rgba(${c.accentRgb},0.95)` }}>
+        style={{
+          border: `1px solid rgba(${c.accentRgb},${c.index === 2 ? 0.7 : 0.5})`,
+          background: `rgba(${c.accentRgb},${c.index === 2 ? 0.35 : 0.25})`,
+          color: c.index === 2 ? "rgba(255,255,255,0.95)" : `rgba(${c.accentRgb},0.95)`,
+        }}>
         {c.outcome}
       </span>
     </div>
@@ -102,18 +106,18 @@ function CardBalanced({ c }: { c: CaseStudyCard }) {
   return (
     <Link href={c.href}
       className="group flex-1 min-w-0 flex flex-col rounded-xl overflow-hidden transition-all duration-500 ease-out hover:!rotate-0 hover:!translate-y-[-6px]"
-      style={{ marginTop: OFFSETS[c.index], transform: `rotate(${ROTS[c.index]}deg)`, background: "rgba(255,255,255,0.03)", border: `1px solid rgba(${c.accentRgb},0.12)`, boxShadow: `0 4px 28px rgba(0,0,0,0.35), 0 0 20px rgba(${c.accentRgb},0.04)` }}
-      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), 0 0 50px rgba(${c.accentRgb},0.1)`; el.style.borderColor = `rgba(${c.accentRgb},0.28)`; }}
-      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 4px 28px rgba(0,0,0,0.35), 0 0 20px rgba(${c.accentRgb},0.04)`; el.style.borderColor = `rgba(${c.accentRgb},0.12)`; }}>
+      style={{ marginTop: OFFSETS[c.index], transform: `rotate(${ROTS[c.index]}deg)`, background: "rgba(255,255,255,0.05)", border: `1px solid rgba(${c.accentRgb},0.2)`, boxShadow: `0 4px 28px rgba(0,0,0,0.35), 0 0 20px rgba(${c.accentRgb},0.09)` }}
+      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), 0 0 50px rgba(${c.accentRgb},0.18)`; el.style.borderColor = `rgba(${c.accentRgb},0.4)`; }}
+      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 4px 28px rgba(0,0,0,0.35), 0 0 20px rgba(${c.accentRgb},0.09)`; el.style.borderColor = `rgba(${c.accentRgb},0.2)`; }}>
       <div className="h-[220px] xl:h-[300px] 2xl:h-[380px] relative overflow-hidden flex items-center justify-center"
-        style={{ background: `linear-gradient(180deg, rgba(${c.accentRgb},0.28) 0%, rgba(${c.accentRgb},0.04) 100%)` }}>
-        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[130%] h-[85%] opacity-[0.28]"
+        style={{ background: `linear-gradient(180deg, rgba(${c.accentRgb},0.38) 0%, rgba(${c.accentRgb},0.08) 100%)` }}>
+        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[130%] h-[85%] opacity-[0.4]"
           style={{ background: `radial-gradient(ellipse, rgba(${c.accentRgb},1) 0%, transparent 60%)`, filter: "blur(36px)" }} />
         <Tags c={c} />
         <span className="absolute top-3 left-4 z-20 font-mono text-[11px] text-white/20 tracking-[0.04em]">{String(c.index + 1).padStart(2, "0")}</span>
         <div className="relative z-10 pt-14 pb-3 w-full px-3"><GlassLaptop src={c.heroSrc} alt={c.heroAlt} accent={c.accent} /></div>
       </div>
-      <div className="shrink-0 px-4 py-3.5" style={{ borderTop: `1px solid rgba(${c.accentRgb},0.2)`, background: `rgba(${c.accentRgb},0.03)` }}>
+      <div className="shrink-0 px-4 py-3.5" style={{ borderTop: `1px solid rgba(${c.accentRgb},0.22)`, background: `rgba(${c.accentRgb},0.06)` }}>
         <p className="font-mono text-[10px] tracking-[0.06em] uppercase mb-1.5" style={{ color: `rgba(${c.accentRgb},0.8)` }}>{c.org}</p>
         <h2 className="font-display text-[1.05rem] font-bold leading-[1.2] tracking-[-0.015em] text-white/95">{c.title}</h2>
       </div>
@@ -127,7 +131,7 @@ function Background() {
       <div className="absolute -top-[30%] -right-[15%] w-[900px] h-[900px] rounded-full opacity-[0.06]"
         style={{ background: "radial-gradient(circle, #f5c842 0%, transparent 70%)" }} />
       <div className="absolute -bottom-[25%] -left-[10%] w-[600px] h-[600px] rounded-full opacity-[0.04]"
-        style={{ background: "radial-gradient(circle, #6e8eff 0%, transparent 70%)" }} />
+        style={{ background: "radial-gradient(circle, #ec4899 0%, transparent 70%)" }} />
       <div className="absolute inset-0 opacity-[0.04]"
         style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
       <div className="absolute inset-0"

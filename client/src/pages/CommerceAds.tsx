@@ -820,9 +820,9 @@ export default function CommerceAds() {
         <Prose>
           <p>
             When a business sets up a sales ad on Meta, two flows
-            are available — each making up XX% of Meta's ad revenue:
+            are available — together accounting for 50%+ of Meta's total revenue:
           </p>
-          <ol className="list-decimal pl-5 space-y-1 text-[var(--ink)]">
+          <ol className="list-decimal pl-5 space-y-1 text-[var(--ink)] mt-5">
             <li><strong>Static ad flow:</strong> the advertiser hand-picks the exact media they want shown</li>
             <li><strong>Catalog-driven ad flow</strong> (added in 2016)<strong>:</strong> the advertiser connects a product feed (catalog) and lets Meta pick which products to show each shopper automatically</li>
           </ol>
@@ -964,8 +964,8 @@ export default function CommerceAds() {
             This case study covers one piece of that execution:
             the <em>product media</em> section, where advertisers
             control what their ads look like — and where the
-            catalog-driven features that account for{" "}
-            <strong>XX% of Meta's ad revenue</strong> needed a new
+            catalog-driven features that drive{" "}
+            <strong>45% of catalog ads revenue</strong> needed a new
             home.
           </p>
         </Prose>

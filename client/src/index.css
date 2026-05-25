@@ -112,6 +112,13 @@ html, body {
   --case-accent-soft: rgba(14, 233, 214, 0.1);
 }
 
+/* Search-ads — pink */
+.theme-search {
+  --primary: #f472b6;
+  --case-accent: #f472b6;
+  --case-accent-soft: rgba(244, 114, 182, 0.1);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -352,8 +359,9 @@ html, body {
     position: absolute;
     top: 0.75rem;
     right: 0.75rem;
-    background: rgba(255, 255, 255, 0.12);
-    color: var(--ink);
+    background: rgba(0, 0, 0, 0.65);
+    color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     font-family: var(--font-mono);
     font-size: 0.65rem;
     font-weight: 500;

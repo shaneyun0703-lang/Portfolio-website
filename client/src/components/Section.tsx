@@ -108,7 +108,7 @@ export function Aside({
   children: ReactNode;
 }) {
   return (
-    <aside className="max-w-2xl my-10 rounded-lg p-5 border border-[rgba(110,142,255,0.15)] bg-[rgba(110,142,255,0.06)]">
+    <aside className="max-w-2xl my-10 rounded-lg p-5" style={{ border: "1px solid var(--case-accent-soft)", background: "var(--case-accent-soft)" }}>
       <div className="caption-label mb-2">{label}</div>
       <div className="prose-body">{children}</div>
     </aside>

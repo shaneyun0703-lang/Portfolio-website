@@ -53,7 +53,7 @@ export function TableOfContents() {
                     ? "text-[var(--ink)]"
                     : "hover:bg-[rgba(255,255,255,0.04)]"
                 }`}
-                style={active === s.id ? { background: "rgba(110,142,255,0.1)", border: "1px solid rgba(110,142,255,0.12)", boxShadow: "0 2px 8px rgba(110,142,255,0.08)" } : { border: "1px solid transparent" }}
+                style={active === s.id ? { background: "var(--case-accent-soft)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" } : { border: "1px solid transparent" }}
               >
                 <span className="toc-num">{String(i + 1).padStart(2, "0")}</span>
                 <span className="font-display font-medium">{s.label}</span>

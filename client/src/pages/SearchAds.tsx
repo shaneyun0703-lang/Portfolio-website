@@ -273,7 +273,7 @@ export default function SearchAds() {
   useScrollToTop();
   const scrolled = useScrolled(40);
   return (
-    <div className="min-h-screen">
+    <div className="theme-search min-h-screen">
       <TableOfContents />
 
       {/* Nav — expands at top, compacts on scroll */}
@@ -304,15 +304,15 @@ export default function SearchAds() {
               Making Meta a real<br />search ads player
             </h1>
             <div className="flex items-center gap-2 mt-5 flex-wrap">
-              <span className="font-display text-[12px] font-medium text-[var(--case-accent)] bg-[rgba(110,142,255,0.08)] border border-[rgba(110,142,255,0.18)] px-3.5 py-1 rounded-full">Design milestone aligned</span>
+              <span className="font-display text-[12px] font-medium text-[var(--case-accent)] bg-[rgba(244,114,182,0.08)] border border-[rgba(244,114,182,0.18)] px-3.5 py-1 rounded-full">Design milestone aligned</span>
             </div>
           </div>
 
           {/* TLDR */}
           <div className="mt-10 md:mt-12 max-w-4xl">
             <TldrWithSwitcher
-              accentColor="#6e8eff"
-              accentRgb="110,142,255"
+              accentColor="#f472b6"
+              accentRgb="244,114,182"
               summary={<p><strong>I led the design of Search Themes and Negative Keywords</strong> — Meta's first search-specific tools in Ads Manager. Three research rounds with 14+ companies validated the direction and secured leadership alignment.</p>}
               role="Design lead"
               timeline={<span>H2 2025 · 3 months</span>}
@@ -438,7 +438,7 @@ export default function SearchAds() {
         <div className="my-10 max-w-4xl grid md:grid-cols-2 gap-5">
           <div className="border border-[var(--rule)] p-6 bg-[var(--tint)] rounded-lg">
             <span className="caption-label text-[var(--primary)]">Feature one</span>
-            <h4 className="display-3 mt-2 mb-2 text-xl">Search Themes</h4>
+            <h4 className="display-3 mt-2 mb-2 text-xl" style={{ color: "var(--case-accent)" }}>Search Themes</h4>
             <p className="prose-body text-[0.9rem]">
               An advertiser control — suggests to Meta which
               searches should trigger their ads.
@@ -447,14 +447,14 @@ export default function SearchAds() {
               <div className="text-[0.6rem] uppercase tracking-[0.1em] text-[var(--mid)] mb-2">Example</div>
               <div className="flex flex-wrap gap-1.5">
                 {["best running shoes", "marathon training gear", "trail runners 2025"].map((t) => (
-                  <span key={t} className="px-2 py-1 rounded text-[0.7rem] bg-[rgba(110,142,255,0.1)] text-[var(--primary)] border border-[var(--primary)]/20">{t}</span>
+                  <span key={t} className="px-2 py-1 rounded text-[0.7rem] bg-[rgba(244,114,182,0.1)] text-[var(--primary)] border border-[var(--primary)]/20">{t}</span>
                 ))}
               </div>
             </div>
           </div>
           <div className="border border-[var(--rule)] p-6 bg-[var(--tint)] rounded-lg">
-            <span className="caption-label text-[#ff5050]">Feature two</span>
-            <h4 className="display-3 mt-2 mb-2 text-xl" style={{ color: "#ff5050" }}>Negative Keywords</h4>
+            <span className="caption-label text-[#f87171]">Feature two</span>
+            <h4 className="display-3 mt-2 mb-2 text-xl" style={{ color: "#f87171" }}>Negative Keywords</h4>
             <p className="prose-body text-[0.9rem]">
               A brand safety control — lets advertisers block
               searches their ad should never appear next to.
@@ -463,7 +463,7 @@ export default function SearchAds() {
               <div className="text-[0.6rem] uppercase tracking-[0.1em] text-[var(--mid)] mb-2">Example</div>
               <div className="flex flex-wrap gap-1.5">
                 {["violence", "weapons", "counterfeit"].map((t) => (
-                  <span key={t} className="px-2 py-1 rounded text-[0.7rem] bg-[rgba(255,80,80,0.1)] text-[#ff5050] border border-[#ff5050]/20 line-through">{t}</span>
+                  <span key={t} className="px-2 py-1 rounded text-[0.7rem] bg-[rgba(248,113,113,0.1)] text-[#f87171] border border-[#f87171]/20 line-through">{t}</span>
                 ))}
               </div>
             </div>
@@ -674,21 +674,21 @@ export default function SearchAds() {
           </div>
           <div className="divide-y divide-[var(--rule)]">
             <div className="px-6 py-4 flex gap-4">
-              <span className="font-mono text-[0.7rem] text-[#ff5050] mt-0.5 shrink-0">✕</span>
+              <span className="font-mono text-[1.1rem] text-[#f87171] shrink-0 leading-none mt-0.5">✕</span>
               <div>
                 <div className="font-display text-[0.9rem] font-semibold text-[var(--ink)]">Concept A — Standalone card on the ad set</div>
                 <p className="font-display text-[0.82rem] text-[var(--mid)] mt-1 leading-snug">Drew the most attention, but too prominent for a new feature competing with established controls.</p>
               </div>
             </div>
             <div className="px-6 py-4 flex gap-4">
-              <span className="font-mono text-[0.7rem] text-[#ff5050] mt-0.5 shrink-0">✕</span>
+              <span className="font-mono text-[1.1rem] text-[#f87171] shrink-0 leading-none mt-0.5">✕</span>
               <div>
                 <div className="font-display text-[0.9rem] font-semibold text-[var(--ink)]">Concept B — Within the Audience card</div>
                 <p className="font-display text-[0.82rem] text-[var(--mid)] mt-1 leading-snug">Advertisers confused search themes with demographic targeting. Search ads are based on what someone searches, not who they are.</p>
               </div>
             </div>
             <div className="px-6 py-4 flex gap-4">
-              <span className="font-mono text-[0.7rem] text-[var(--primary)] mt-0.5 shrink-0">→</span>
+              <span className="font-mono text-[1.1rem] text-[var(--primary)] shrink-0 leading-none mt-0.5">→</span>
               <div>
                 <div className="font-display text-[0.9rem] font-semibold text-[var(--ink)]">Concepts C + D advanced to Round 2</div>
                 <p className="font-display text-[0.82rem] text-[var(--mid)] mt-1 leading-snug">These resonated most closely with how advertisers perceive search themes and the use cases to customize this feature.</p>
@@ -846,7 +846,7 @@ export default function SearchAds() {
               </div>
             </div>
             <div className="bg-[var(--paper)] p-5">
-              <span className="font-mono text-[0.6rem] tracking-[0.12em] uppercase text-[#ff5050]">Feature 02</span>
+              <span className="font-mono text-[0.6rem] tracking-[0.12em] uppercase text-[#f87171]">Feature 02</span>
               <div className="font-display text-[1rem] font-bold text-[var(--ink)] mt-1 mb-3">Negative Keywords</div>
               <div className="space-y-1.5 text-[0.92rem]">
                 <div className="flex gap-2"><span className="font-semibold text-[var(--ink)] min-w-[5.5rem] shrink-0">Lives on</span><span className="text-[var(--mid)]">Brand Safety Center</span></div>
@@ -885,7 +885,7 @@ export default function SearchAds() {
 
           <div className="flex flex-col md:flex-row gap-0 items-stretch">
             {/* Center visualization — Meta AI hub */}
-            <div className="shrink-0 w-[260px] flex flex-col items-center justify-center relative py-6" style={{ background: "rgba(110,142,255,0.04)", borderRadius: "16px 0 0 16px", border: "1px solid rgba(110,142,255,0.1)", borderRight: "none" }}>
+            <div className="shrink-0 w-[260px] flex flex-col items-center justify-center relative py-6" style={{ background: "rgba(244,114,182,0.04)", borderRadius: "16px 0 0 16px", border: "1px solid rgba(244,114,182,0.1)", borderRight: "none" }}>
               {/* Meta AI logo */}
               {/* Meta AI logo */}
               <div className="w-16 h-16 rounded-2xl overflow-hidden mb-3 shadow-[0_4px_24px_rgba(0,132,255,0.3)]">
@@ -924,11 +924,11 @@ export default function SearchAds() {
                 <div key={d.num} className="flex-1 flex items-center" style={{ borderBottom: i < 2 ? "1px solid rgba(255,255,255,0.04)" : undefined }}>
                   {/* Connection line */}
                   <div className="w-8 shrink-0 flex items-center justify-center relative">
-                    <div className="w-full h-px" style={{ background: "rgba(110,142,255,0.2)" }} />
-                    <div className="absolute w-2 h-2 rounded-full" style={{ background: "rgba(110,142,255,0.4)", boxShadow: "0 0 8px rgba(110,142,255,0.3)" }} />
+                    <div className="w-full h-px" style={{ background: "rgba(244,114,182,0.2)" }} />
+                    <div className="absolute w-2 h-2 rounded-full" style={{ background: "rgba(244,114,182,0.4)", boxShadow: "0 0 8px rgba(244,114,182,0.3)" }} />
                   </div>
                   {/* Card */}
-                  <div className="flex-1 px-5 py-4 rounded-r-lg backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderLeft: "2px solid rgba(110,142,255,0.2)", marginLeft: -1 }}>
+                  <div className="flex-1 px-5 py-4 rounded-r-lg backdrop-blur-sm" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderLeft: "2px solid rgba(244,114,182,0.2)", marginLeft: -1 }}>
                     <div className="flex items-baseline gap-2 mb-1">
                       <span className="font-mono text-[0.6rem] text-[var(--mid)] opacity-50">{d.num}</span>
                       <h4 className="font-display font-semibold text-[var(--ink)] text-[1rem]">{d.head}</h4>
