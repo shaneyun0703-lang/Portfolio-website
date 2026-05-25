@@ -411,7 +411,7 @@ function FeatureDecisionMatrix() {
             key={r.feature}
             className={`grid grid-cols-12 gap-4 px-5 py-3.5 ${
               i > 0 ? "border-t border-[var(--rule)]" : ""
-            } ${i % 2 === 1 ? "bg-[var(--paper)]" : "bg-[var(--paper)]"}`}
+            } ${i % 2 === 1 ? "bg-[var(--tint)]" : "bg-[var(--paper)]"}`}
           >
             <div className="col-span-4 font-display text-[0.95rem] text-[var(--ink)] leading-snug">
               {r.feature}
@@ -510,7 +510,6 @@ function ThreeToOneVisual() {
         </div>
       </div>
 
-      <figcaption className="caption mt-4 max-w-2xl" />
     </figure>
   );
 }

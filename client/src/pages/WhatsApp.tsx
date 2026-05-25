@@ -381,7 +381,7 @@ function TimelineFigure() {
     },
     {
       month: "September 2025",
-      name: "General Audience",
+      name: "General Availability",
       body: "Opened the placement to every advertiser globally. Two marketing objectives supported.",
       mode: "past" as const,
     },
@@ -711,7 +711,7 @@ export default function WhatsApp() {
   useScrollToTop();
   const scrolled = useScrolled(40);
   return (
-    <div className="theme-whatsapp min-h-screen">
+    <div className="theme-whatsapp min-h-screen bg-[var(--paper)]">
       <WaToc />
 
       {/* Nav — expands at top, compacts on scroll */}

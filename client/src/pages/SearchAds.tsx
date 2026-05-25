@@ -273,7 +273,7 @@ export default function SearchAds() {
   useScrollToTop();
   const scrolled = useScrolled(40);
   return (
-    <div className="theme-search min-h-screen">
+    <div className="theme-search min-h-screen bg-[var(--paper)]">
       <TableOfContents />
 
       {/* Nav — expands at top, compacts on scroll */}
@@ -399,7 +399,6 @@ export default function SearchAds() {
         number="02"
         kicker="Scoping the features"
         title="Sixteen advertiser conversations narrowed a long wishlist down to two."
-        lede="Sixteen advertiser conversations narrowed a long wishlist down to two features."
       >
         <Prose>
           <p>
@@ -438,7 +437,7 @@ export default function SearchAds() {
         <div className="my-10 max-w-4xl grid md:grid-cols-2 gap-5">
           <div className="border border-[var(--rule)] p-6 bg-[var(--tint)] rounded-lg">
             <span className="caption-label text-[var(--primary)]">Feature one</span>
-            <h4 className="display-3 mt-2 mb-2 text-xl" style={{ color: "var(--case-accent)" }}>Search Themes</h4>
+            <h4 className="display-3 text-[1.1rem] mt-2 mb-2" style={{ color: "var(--case-accent)" }}>Search Themes</h4>
             <p className="prose-body text-[0.9rem]">
               An advertiser control — suggests to Meta which
               searches should trigger their ads.
@@ -454,7 +453,7 @@ export default function SearchAds() {
           </div>
           <div className="border border-[var(--rule)] p-6 bg-[var(--tint)] rounded-lg">
             <span className="caption-label text-[#f87171]">Feature two</span>
-            <h4 className="display-3 mt-2 mb-2 text-xl" style={{ color: "#f87171" }}>Negative Keywords</h4>
+            <h4 className="display-3 text-[1.1rem] mt-2 mb-2" style={{ color: "#f87171" }}>Negative Keywords</h4>
             <p className="prose-body text-[0.9rem]">
               A brand safety control — lets advertisers block
               searches their ad should never appear next to.
@@ -542,8 +541,8 @@ export default function SearchAds() {
             offers today.
           </h3>
           <div className="grid md:grid-cols-2 gap-0 border border-[var(--rule)] rounded-lg overflow-hidden">
-            <div className="p-6 border-b md:border-b-0 md:border-r border-[var(--rule)] bg-[var(--paper)]">
-              <div className="caption-label mb-4 text-[var(--mid)]">
+            <div className="p-6 border-b md:border-b-0 md:border-r border-[var(--rule)]" style={{ background: "rgba(66,133,244,0.06)" }}>
+              <div className="caption-label mb-4 text-[#4285f4]">
                 Google Performance Max
               </div>
               <div className="space-y-4">
@@ -568,8 +567,8 @@ export default function SearchAds() {
                 Source: Google Ads Help · Performance Max, 2025.
               </p>
             </div>
-            <div className="p-6 bg-[var(--tint)]">
-              <div className="caption-label mb-4 text-[var(--mid)]">
+            <div className="p-6" style={{ background: "rgba(167,139,250,0.08)" }}>
+              <div className="caption-label mb-4" style={{ color: "var(--case-accent)" }}>
                 Meta Sales campaign
               </div>
               <div>
@@ -674,23 +673,23 @@ export default function SearchAds() {
           </div>
           <div className="divide-y divide-[var(--rule)]">
             <div className="px-6 py-4 flex gap-4">
-              <span className="font-mono text-[1.1rem] text-[#f87171] shrink-0 leading-none mt-0.5">✕</span>
+              <span className="font-mono text-[1.1rem] text-[#ef4444] shrink-0 leading-none mt-0.5">✕</span>
               <div>
                 <div className="font-display text-[0.9rem] font-semibold text-[var(--ink)]">Concept A — Standalone card on the ad set</div>
                 <p className="font-display text-[0.82rem] text-[var(--mid)] mt-1 leading-snug">Drew the most attention, but too prominent for a new feature competing with established controls.</p>
               </div>
             </div>
             <div className="px-6 py-4 flex gap-4">
-              <span className="font-mono text-[1.1rem] text-[#f87171] shrink-0 leading-none mt-0.5">✕</span>
+              <span className="font-mono text-[1.1rem] text-[#ef4444] shrink-0 leading-none mt-0.5">✕</span>
               <div>
                 <div className="font-display text-[0.9rem] font-semibold text-[var(--ink)]">Concept B — Within the Audience card</div>
                 <p className="font-display text-[0.82rem] text-[var(--mid)] mt-1 leading-snug">Advertisers confused search themes with demographic targeting. Search ads are based on what someone searches, not who they are.</p>
               </div>
             </div>
-            <div className="px-6 py-4 flex gap-4">
-              <span className="font-mono text-[1.1rem] text-[var(--primary)] shrink-0 leading-none mt-0.5">→</span>
+            <div className="px-6 py-4 flex gap-4" style={{ background: "rgba(244,114,182,0.06)" }}>
+              <span className="font-mono text-[1.1rem] text-[var(--case-accent)] shrink-0 leading-none mt-0.5">→</span>
               <div>
-                <div className="font-display text-[0.9rem] font-semibold text-[var(--ink)]">Concepts C + D advanced to Round 2</div>
+                <div className="font-display text-[0.9rem] font-semibold text-[var(--case-accent)]">Concepts C + D advanced to Round 2</div>
                 <p className="font-display text-[0.82rem] text-[var(--mid)] mt-1 leading-snug">These resonated most closely with how advertisers perceive search themes and the use cases to customize this feature.</p>
               </div>
             </div>
@@ -698,8 +697,8 @@ export default function SearchAds() {
         </div>
 
         <div className="mt-2 mb-6 max-w-3xl border border-[var(--rule)] rounded-lg p-4">
-          <span className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-[var(--mid)]">Also in Round 1</span>
-          <p className="font-display text-[0.82rem] text-[var(--ink)] mt-1.5 leading-snug opacity-80">
+          <span className="font-mono text-[0.65rem] uppercase tracking-[0.1em] text-white">Also in Round 1</span>
+          <p className="font-display text-[0.82rem] text-white mt-1.5 leading-snug">
             Negative Keywords found its home in the account-level Brand Safety Center — advertisers saw it as a one-time list that protects every campaign.
           </p>
         </div>
