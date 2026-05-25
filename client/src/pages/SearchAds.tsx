@@ -315,8 +315,8 @@ export default function SearchAds() {
               accentRgb="244,114,182"
               summary={<p><strong>I led the design of Search Themes and Negative Keywords</strong> — Meta's first search-specific tools in Ads Manager. Three research rounds with 14+ companies validated the direction and secured leadership alignment.</p>}
               role="Design lead"
-              timeline={<span>H2 2025 · 3 months</span>}
-              outcome={<><span className="block">Research validated</span><span className="block">Leadership aligned</span></>}
+              timeline={<span>H2 2025 · 5 months</span>}
+              outcome={<><span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Research validated</span><span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Leadership aligned</span></>}
               team={<ul className="list-disc pl-3.5 space-y-1"><li>Me :)</li><li>Content designer</li><li>Product manager</li><li>UX researcher</li><li>Tech lead</li><li>4+ partner teams</li></ul>}
               audience={<span>US Retail, eCommerce, and CPG brands actively investing in search ads on other platforms</span>}
             />
@@ -799,7 +799,7 @@ export default function SearchAds() {
 
         {/* Stat strip */}
         <div className="my-6 max-w-3xl border border-[var(--rule)] bg-[var(--paper)] rounded-lg overflow-hidden">
-          <div className="grid grid-cols-2 md:grid-cols-4 divide-y divide-[var(--rule)] md:divide-y-0 md:divide-x">
+          <div className="grid grid-cols-2 md:grid-cols-3 divide-y divide-[var(--rule)] md:divide-y-0 md:divide-x">
             {[
               { num: "3", label: "research rounds" },
               { num: "14+", label: "advertiser accounts" },

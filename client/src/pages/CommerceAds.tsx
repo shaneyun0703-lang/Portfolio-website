@@ -786,7 +786,7 @@ export default function CommerceAds() {
             summary={<p><strong>I led design of the product media section inside Meta's new unified eCommerce ad builder</strong> — integrating 7 product catalog features from 3 separate legacy flows. This new ads flow shipped to a scaled alpha with 100K brands.</p>}
             role="Design lead"
             timeline={<span>H1 2026 · 3 months</span>}
-            outcome={<span>Scaled alpha · 100K brands</span>}
+            outcome={<span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Scaled alpha · 100K brands</span>}
             team={<ul className="list-disc pl-3.5 space-y-1"><li>Me :)</li><li>2 design teams<span className="block text-[0.72rem] text-white/60 mt-0.5 leading-snug">2 managers, 1 director, 3 ICs</span></li><li>Content designer</li><li>Product manager</li><li>UX researcher</li><li>Tech lead</li></ul>}
             audience={<span>High spend eCommerce, Retail, and CPG advertisers</span>}
           />

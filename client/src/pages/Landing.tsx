@@ -27,7 +27,7 @@ const casesData = [
     title: "Unifying Meta's split eCommerce ad builder",
     lede: "Unifying how eCommerce advertisers build ads on Meta",
     role: "Design Lead", timeline: "H1 2026",
-    outcome: "Scaled alpha (100K brands)",
+    outcome: "Scaled alpha · 100K brands",
     accent: "#0ee9d6", accentRgb: "14,233,214",
     heroSrc: "/primer/commerce-hero.png", heroAlt: "Unified ad creation flow",
   },
@@ -158,7 +158,7 @@ function EmailButton() {
 const HERO_PRE = "Empowering advertisers to build ";
 const HERO_HL = "ads that perform";
 const HERO_FULL = HERO_PRE + HERO_HL;
-const LABEL = "Projects in the past year I designed";
+const LABEL = "Selected work · past year";
 const H1_CLASS = "font-display text-[clamp(2.2rem,3.8vw,3.8rem)] font-bold leading-[1.35] tracking-[-0.04em] text-[var(--ink)]";
 
 type Phase = "typing" | "highlighting" | "settling" | "projects" | "done";
@@ -240,7 +240,7 @@ export default function Landing() {
           <div>
             <span className="font-display text-[2rem] font-extrabold leading-none tracking-[-0.02em] text-[var(--ink)]">Shane Yun</span>
             <div className="mt-4 flex flex-col gap-1">
-              <span className="font-display text-[1rem] font-semibold text-[var(--ink)] leading-tight">Product Designer</span>
+              <span className="font-display text-[1rem] font-semibold text-[var(--ink)] leading-tight">Senior Product Designer</span>
               <span className="font-mono text-[11px] text-[var(--mid)] tracking-[0.06em] uppercase">Meta · Bay Area</span>
             </div>
           </div>

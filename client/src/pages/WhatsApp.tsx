@@ -753,7 +753,7 @@ export default function WhatsApp() {
               summary={<p><strong>I led the expansion of WhatsApp Status ads from 2 to 5 of Meta's 6 marketing objectives.</strong> WhatsApp ads shipped globally to 100% rollout, hitting all revenue and advertiser experience goals.</p>}
               role="Design lead"
               timeline={<span>H2 2025 · 3 months</span>}
-              outcome={<span>100% global rollout</span>}
+              outcome={<span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>100% global rollout</span>}
               team={<ul className="list-disc pl-3.5 space-y-1"><li>Me :)</li><li>Co-design lead</li><li>Product designer</li><li>Content designer</li><li>Product manager</li><li>Tech lead + 2 ENG</li></ul>}
               audience={<ul className="list-disc pl-3.5 space-y-0.5"><li>SMBs using WhatsApp Business</li><li>Global brands extending reach to WhatsApp</li></ul>}
             />
