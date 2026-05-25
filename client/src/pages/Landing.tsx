@@ -11,6 +11,7 @@ type CaseStudyCard = {
   timeline: string;
   outcome: string;
   badge2?: string;
+  whiteTag?: boolean;
   accent: string;
   accentRgb: string;
   heroSrc: string;
@@ -21,6 +22,16 @@ type CaseStudyCard = {
 type CardStyle = "balanced";
 
 const casesData = [
+  {
+    href: "/search-ads",
+    org: "Meta · Search Ads",
+    title: "Making Meta a real search ads player",
+    lede: "Meta's first tools for search-driven advertising",
+    role: "Design Lead", timeline: "H2 2025",
+    outcome: "Alpha-ready", badge2: "Research complete",
+    accent: "#ff79c6", accentRgb: "255,121,198",
+    heroSrc: "/primer/final-2.png", heroAlt: "Search Themes final design",
+  },
   {
     href: "/commerce-ads",
     org: "Meta · Commerce Ads",
@@ -40,16 +51,6 @@ const casesData = [
     outcome: "Shipped globally",
     accent: "#1eff8a", accentRgb: "30,255,138",
     heroSrc: "/primer/sales-06-ad-creative.png", heroAlt: "WhatsApp Status ad creative",
-  },
-  {
-    href: "/search-ads",
-    org: "Meta · Search Ads",
-    title: "Making Meta a real search ads player",
-    lede: "Meta's first tools for search-driven advertising",
-    role: "Design Lead", timeline: "H2 2025",
-    outcome: "Design milestone aligned", badge2: "Research complete",
-    accent: "#ff79c6", accentRgb: "255,121,198",
-    heroSrc: "/primer/final-2.png", heroAlt: "Search Themes final design",
   },
 ];
 
@@ -92,9 +93,9 @@ function Tags({ c }: { c: CaseStudyCard }) {
       )}
       <span className="font-mono text-[10px] tracking-[0.03em] uppercase px-2.5 py-1 rounded-full backdrop-blur-md"
         style={{
-          border: `1px solid rgba(${c.accentRgb},${c.index === 2 ? 0.7 : 0.5})`,
-          background: `rgba(${c.accentRgb},${c.index === 2 ? 0.35 : 0.25})`,
-          color: c.index === 2 ? "rgba(255,255,255,0.95)" : `rgba(${c.accentRgb},0.95)`,
+          border: `1px solid rgba(${c.accentRgb},${c.whiteTag ? 0.7 : 0.5})`,
+          background: `rgba(${c.accentRgb},${c.whiteTag ? 0.35 : 0.25})`,
+          color: c.whiteTag ? "rgba(255,255,255,0.95)" : `rgba(${c.accentRgb},0.95)`,
         }}>
         {c.outcome}
       </span>

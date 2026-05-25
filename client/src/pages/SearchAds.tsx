@@ -233,14 +233,14 @@ const r2AltAdSlides: CarouselSlide[] = [
 // §06 — Use Case 1.1 walkthrough (the final flow signed off for further investment)
 const finalDesignSlides: CarouselSlide[] = [
   {
-    src: "/primer/final-1.png",
-    alt: "Final design — wireframe 1",
-    step: (<><strong>01</strong> · Placements card with Search Themes entry point.</>),
+    src: "/primer/Messaging for features.png",
+    alt: "Final design — messaging overview for Search Themes and Negative Keywords",
+    step: (<><strong>01</strong> · Messaging overview — how Search Themes and Negative Keywords are introduced to advertisers.</>),
   },
   {
     src: "/primer/final-2.png",
-    alt: "Final design — wireframe 2",
-    step: (<><strong>02</strong> · Search Themes expanded — adding themes as chips.</>),
+    alt: "Final design — Search Themes expanded and interacted with",
+    step: (<><strong>02</strong> · Search Themes entry point — a tooltip explains the feature to the advertiser.</>),
   },
   {
     src: "/primer/final-3.png",
@@ -250,12 +250,12 @@ const finalDesignSlides: CarouselSlide[] = [
   {
     src: "/primer/final-4.png",
     alt: "Final design — wireframe 4",
-    step: (<><strong>04</strong> · Search Themes configured and summarized.</>),
+    step: (<><strong>04</strong> · Search Themes configured and summarized — the advertiser is directed to Negative Keywords next.</>),
   },
   {
     src: "/primer/final-5.png",
     alt: "Final design — wireframe 5",
-    step: (<><strong>05</strong> · Brand Safety card — Negative Keywords summary.</>),
+    step: (<><strong>05</strong> · Brand Safety card — messaging directs the advertiser off-surface to the Brand Safety Center to manage Negative Keywords.</>),
   },
   {
     src: "/primer/final-6.png",
@@ -265,7 +265,7 @@ const finalDesignSlides: CarouselSlide[] = [
   {
     src: "/primer/final-7.png",
     alt: "Final design — wireframe 7",
-    step: (<><strong>07</strong> · Negative Keywords editor with bulk upload.</>),
+    step: (<><strong>07</strong> · Ads Manager — Negative Keywords entry point surfacing Brand Safety Center selections, view-only.</>),
   },
 ];
 
@@ -303,9 +303,6 @@ export default function SearchAds() {
             <h1 className="display-1">
               Making Meta a real<br />search ads player
             </h1>
-            <div className="flex items-center gap-2 mt-5 flex-wrap">
-              <span className="font-display text-[12px] font-medium text-[var(--case-accent)] bg-[rgba(244,114,182,0.08)] border border-[rgba(244,114,182,0.18)] px-3.5 py-1 rounded-full">Design milestone aligned</span>
-            </div>
           </div>
 
           {/* TLDR */}
@@ -316,7 +313,7 @@ export default function SearchAds() {
               summary={<p><strong>I led the design of Search Themes and Negative Keywords</strong> — Meta's first search-specific tools in Ads Manager. Three research rounds with 14+ companies validated the direction and secured leadership alignment.</p>}
               role="Design lead"
               timeline={<span>H2 2025 · 5 months</span>}
-              outcome={<><span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Research validated</span><span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Leadership aligned</span></>}
+              outcome={<><span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Research validated</span><span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Alpha-ready</span></>}
               team={<ul className="list-disc pl-3.5 space-y-1"><li>Me :)</li><li>Content designer</li><li>Product manager</li><li>UX researcher</li><li>Tech lead</li><li>4+ partner teams</li></ul>}
               audience={<span>US Retail, eCommerce, and CPG brands actively investing in search ads on other platforms</span>}
             />
@@ -330,48 +327,63 @@ export default function SearchAds() {
         number="01"
         kicker="The opportunity"
         title="Every AI company is betting on search. Meta's ad tools aren't ready."
-        lede="Search advertising is a $283B category that Meta has barely touched. The audience is already there — the tooling isn't."
+        lede=""
         className=""
       >
         {/* Beat 1: Industry push */}
         <Prose>
           <p>
             <strong>The search ads industry is accelerating.</strong>{" "}
-            Google offers dedicated search products like search
-            themes and negative keywords in Performance Max. OpenAI is testing ads inside
-            ChatGPT. TikTok and Amazon are shipping
-            search-plus-commerce experiences. Search advertising is
+            Google is doubling down with AI Max Search Campaigns and
+            Performance Max. OpenAI is testing ads inside ChatGPT.
+            TikTok and Amazon are shipping search-plus-commerce
+            experiences. Search advertising is
             a <strong>$283B category</strong> — and every major
             platform is racing to capture more of it.
           </p>
         </Prose>
 
-        <figure className="my-10 md:my-12 max-w-xs">
-          <span className="caption-label">Reference · A search ad on Google today</span>
-          <div className="mt-3 rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
-            <img
-              src="/primer/real-search-ad.jpg"
-              alt="A Google search results page showing sponsored product cards."
-              className="w-full h-auto block"
-            />
+        <div className="my-10 md:my-12 max-w-lg">
+          <span className="caption-label mb-3 block">Reference · Search ads today</span>
+          <div className="grid grid-cols-2 gap-4 items-start">
+            <figure>
+              <div className="rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+                <img
+                  src="/primer/real-search-ad.jpg"
+                  alt="A Google search results page showing a sponsored product ad."
+                  className="w-full h-auto block"
+                />
+              </div>
+              <figcaption className="mt-2.5">
+                <span className="font-mono text-[0.65rem] tracking-[0.1em] uppercase text-[var(--mid)]">Google search ad</span>
+              </figcaption>
+            </figure>
+            <figure>
+              <div className="rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+                <img
+                  src="/primer/Meta search ad.png"
+                  alt="A Meta search results page showing a sponsored product ad."
+                  className="w-full h-auto block"
+                />
+              </div>
+              <figcaption className="mt-2.5">
+                <span className="font-mono text-[0.65rem] tracking-[0.1em] uppercase text-[var(--mid)]">Meta search ad</span>
+              </figcaption>
+            </figure>
           </div>
-          <figcaption className="caption mt-3 max-w-2xl">
-            <strong>On Google, advertisers have full control</strong>
-            {" "}— they decide what searches trigger their ad, what
-            the ad looks like, and how much to spend on each click.
-          </figcaption>
-        </figure>
+        </div>
 
         {/* Beat 2: Meta's gap */}
         <Prose>
           <p>
-            <strong>Meta has the audience but not the tools.</strong>{" "}
+            <strong>Meta has the audience but not the right search ads capabilities.</strong>{" "}
             People search on Facebook and Instagram{" "}
-            <strong>tens of billions of times a month</strong> — but
-            an advertiser's only search control today is a checkbox
-            that turns search ads on or off. There's no way to
-            specify which search queries to appear against, and no
-            way to exclude the ones they want to avoid.
+            <strong>tens of billions of times a month</strong> — and
+            while advertisers have general campaign controls, there are
+            no search ads-specific tools.
+          </p>
+          <p>
+            <strong>Advertisers have no way to choose which searches trigger their ads, and no way to block the ones they don't want.</strong>
           </p>
         </Prose>
 
@@ -599,12 +611,20 @@ export default function SearchAds() {
             Given the importance of this project, <strong>we secured
             dedicated research investment</strong> to run three
             rounds of concept testing with real advertisers in a
-            compressed timeline. For scope and clarity, <strong>this
-            section follows the Search Themes journey</strong> —
-            Negative Keywords followed its own path to the
-            account-level Brand Safety Center.
+            compressed timeline.
           </p>
         </Prose>
+
+        <div className="my-6 max-w-2xl flex items-start gap-3 px-4 py-3.5 rounded-lg border border-[var(--case-accent)]/25 bg-[rgba(244,114,182,0.05)]">
+          <span className="font-mono text-[0.6rem] tracking-[0.12em] uppercase text-[var(--case-accent)] shrink-0 mt-0.5">Scope</span>
+          <p className="text-[0.88rem] text-[var(--mid)] leading-relaxed">
+            This case study is scoped to{" "}
+            <span className="text-[var(--ink)] font-semibold">Search Themes</span>.{" "}
+            Negative Keywords final designs are added in §6 for a holistic view.
+          </p>
+        </div>
+
+        <div className="rule my-8" />
 
         {/* ── Round 1 ── */}
         <div className="mt-12 mb-8 max-w-2xl">
@@ -819,7 +839,7 @@ export default function SearchAds() {
 
         <Prose>
           <p>
-            <strong>What started as a single checkbox evolved into a full search ads toolkit</strong> — two new advertiser controls designed to feel native within Ads Manager from day one. Three rounds of research with 14+ companies validated the direction, and the final system was signed off by design and product leads across four partner teams.
+            This case study is built around <strong>Search Themes</strong> — but Negative Keywords was scoped alongside it, and we wanted to show both. Three rounds of research with 14+ companies validated the direction and secured leadership alignment, with specs signed off across four partner teams.
           </p>
         </Prose>
 
@@ -836,7 +856,7 @@ export default function SearchAds() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[var(--rule)] border border-[var(--rule)] rounded-lg overflow-hidden">
             <div className="bg-[var(--paper)] p-5">
               <span className="font-mono text-[0.6rem] tracking-[0.12em] uppercase text-[var(--primary)]">Feature 01</span>
-              <div className="font-display text-[1rem] font-bold text-[var(--ink)] mt-1 mb-3">Search Themes</div>
+              <div className="font-display text-[1rem] font-bold text-[var(--primary)] mt-1 mb-3">Search Themes</div>
               <div className="space-y-1.5 text-[0.92rem]">
                 <div className="flex gap-2"><span className="font-semibold text-[var(--ink)] min-w-[5.5rem] shrink-0">Lives on</span><span className="text-[var(--mid)]">Placements card</span></div>
                 <div className="flex gap-2"><span className="font-semibold text-[var(--ink)] min-w-[5.5rem] shrink-0">Level</span><span className="text-[var(--mid)]">Ad set — one set per ad set</span></div>
@@ -846,7 +866,7 @@ export default function SearchAds() {
             </div>
             <div className="bg-[var(--paper)] p-5">
               <span className="font-mono text-[0.6rem] tracking-[0.12em] uppercase text-[#f87171]">Feature 02</span>
-              <div className="font-display text-[1rem] font-bold text-[var(--ink)] mt-1 mb-3">Negative Keywords</div>
+              <div className="font-display text-[1rem] font-bold text-[#f87171] mt-1 mb-3">Negative Keywords</div>
               <div className="space-y-1.5 text-[0.92rem]">
                 <div className="flex gap-2"><span className="font-semibold text-[var(--ink)] min-w-[5.5rem] shrink-0">Lives on</span><span className="text-[var(--mid)]">Brand Safety Center</span></div>
                 <div className="flex gap-2"><span className="font-semibold text-[var(--ink)] min-w-[5.5rem] shrink-0">Level</span><span className="text-[var(--mid)]">Account — one list for all campaigns</span></div>

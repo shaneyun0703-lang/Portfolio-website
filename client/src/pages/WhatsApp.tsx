@@ -549,7 +549,10 @@ function FlowCarousel({
   steps: { n: string; title: string; description: string; src?: string }[];
 }) {
   const [current, setCurrent] = useState(0);
+  const [open, setOpen] = useState(false);
+  const currentStep = steps[current];
   return (
+    <>
     <div className="my-8 xl:max-w-[calc(100%-17rem)]">
       <div className="flex items-center justify-between mb-4">
         <span className="caption-label">{objective} campaign flow</span>
@@ -568,7 +571,10 @@ function FlowCarousel({
               className="w-full shrink-0 bg-[var(--paper)]"
             >
               {step.src ? (
-                <img src={step.src} alt={step.title} className="w-full h-auto block" loading="lazy" />
+                <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => setOpen(true)}>
+                  <img src={step.src} alt={step.title} className="w-full h-auto block" loading="lazy" />
+                  <span className="expand-hint">CLICK TO ENLARGE</span>
+                </div>
               ) : (
                 <div
                   className="w-full flex items-center justify-center"
@@ -640,6 +646,13 @@ function FlowCarousel({
         </button>
       </div>
     </div>
+    {open && currentStep?.src && (
+      <div className="fixed inset-0 z-50 bg-[oklch(0.10_0.01_60_/_0.94)] flex items-center justify-center p-4 md:p-10" onClick={() => setOpen(false)}>
+        <button className="absolute top-5 right-5 text-paper font-display text-xs tracking-[0.18em] uppercase opacity-80 hover:opacity-100" onClick={() => setOpen(false)}>Close · Esc</button>
+        <img src={currentStep.src} alt={currentStep.title} className="max-w-full max-h-full object-contain" onClick={e => e.stopPropagation()} />
+      </div>
+    )}
+    </>
   );
 }
 
@@ -707,9 +720,20 @@ function WaToc() {
 
 // ─────────────────────────────────────────────────────────────────────────
 
+function PageLightbox({ src, onClose }: { src: string; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 bg-[oklch(0.10_0.01_60_/_0.94)] flex items-center justify-center p-4 md:p-10" onClick={onClose}>
+      <button className="absolute top-5 right-5 text-paper font-display text-xs tracking-[0.18em] uppercase opacity-80 hover:opacity-100" onClick={onClose}>Close · Esc</button>
+      <img src={src} className="max-w-full max-h-full object-contain" onClick={e => e.stopPropagation()} />
+    </div>
+  );
+}
+
 export default function WhatsApp() {
   useScrollToTop();
   const scrolled = useScrolled(40);
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const expand = (src: string) => setLightboxSrc(src);
   return (
     <div className="theme-whatsapp min-h-screen bg-[var(--paper)]">
       <WaToc />
@@ -740,9 +764,6 @@ export default function WhatsApp() {
             <h1 className="display-1 mt-4">
               Taking WhatsApp ads from launch to scale
             </h1>
-            <div className="flex items-center gap-2 mt-5 flex-wrap">
-              <span className="font-display text-[12px] font-medium text-[var(--case-accent)] bg-[var(--case-accent-soft)] border border-[var(--case-accent)]/20 px-3.5 py-1 rounded-full">Shipped · 100% rollout</span>
-            </div>
           </div>
 
           {/* TLDR */}
@@ -897,7 +918,7 @@ export default function WhatsApp() {
         number="04"
         kicker="The design work"
         title="Building the ad creation experience, one objective at a time."
-        lede="WhatsApp's encryption model meant ads here couldn't reuse existing infrastructure. Each objective the team added came with its own flow, its own constraints, and its own set of use cases to resolve."
+        lede=""
       >
         <StatStrip
           items={[
@@ -921,25 +942,22 @@ export default function WhatsApp() {
 
         <Prose>
           <p>
-            Each of the three new objectives required its own
-            end-to-end flow. Below is the Sales campaign flow —
-            the most prominent by revenue — followed by how other
-            objectives deviate from it.
+            <strong>Scaling WhatsApp ads meant designing each objective independently</strong> — its own flow, its own constraints, and its own set of use cases to resolve.
+          </p>
+          <p>
+            The Sales campaign flow (<strong>the highest-revenue objective</strong>) leads the section below, followed by ineligible states and how other objectives diverge from it, with Awareness as the example. One control runs through all of them: <strong>unknown age</strong>.
           </p>
         </Prose>
 
-        <aside className="my-8 border-l-2 pl-5 max-w-2xl" style={{ borderColor: "var(--case-accent)" }}>
-          <div className="font-display font-semibold text-[1rem] text-[var(--ink)] mb-2">
+        <div className="my-8 max-w-2xl rounded-lg border border-[var(--case-accent)]/25 bg-[rgba(34,197,94,0.05)] px-5 py-4">
+          <div className="font-mono text-[0.6rem] tracking-[0.12em] uppercase text-[var(--case-accent)] mb-2">Key concept</div>
+          <div className="font-display font-semibold text-[0.95rem] text-[var(--ink)] mb-1.5">
             Unknown age — a unique ads lever for WhatsApp
           </div>
-          <p className="font-display text-[0.9rem] text-[var(--mid)] leading-relaxed">
-            A critical control that allows WhatsApp ads to be
-            performant by including users whose age is unknown.
-            It appears <em>before</em> placement selection — the
-            entry point for WhatsApp ads — and had to work
-            correctly across every objective.
+          <p className="font-display text-[0.88rem] text-[var(--mid)] leading-relaxed">
+            A critical control that allows WhatsApp ads to be performant by including users whose age is unknown. It appears <em>before</em> placement selection and had to work correctly across every objective.
           </p>
-        </aside>
+        </div>
 
         <FlowCarousel
           objective="Sales"
@@ -989,33 +1007,16 @@ export default function WhatsApp() {
           ]}
         />
 
-        <Prose>
-          <p>
-            Unknown age and the controls shown above already existed
-            on two other objectives — Traffic and Engagement — from
-            the initial launch. <strong>The expansion brought them to
-            Sales, Leads, and Awareness.</strong> The complexity was
-            a thorough examination of every single lever across all
-            three objectives — ensuring WhatsApp ads are compatible
-            with each, and accounting for how different each campaign
-            flow is.
-          </p>
-        </Prose>
+        <div className="rule my-10" />
 
         {/* ── Sales deviation ── */}
         <div className="my-10">
-          <span className="caption-label">Deviation · Sales campaign</span>
-          <h3 className="font-display font-medium text-[1.05rem] text-[var(--ink)] mt-2 mb-3">
+          <h3 className="font-display font-medium text-[1.3rem] text-[var(--case-accent)] mb-3">
             When an input isn't compatible with WhatsApp.
           </h3>
           <Prose>
             <p>
-              When an advertiser selects an input that isn't compatible
-              with WhatsApp — like a product catalog — the flow
-              changes automatically. Unknown age disappears because
-              WhatsApp placements are disabled, making Status ads no
-              longer possible. The design had to handle these
-              ineligible states gracefully across every combination.
+              The flow above is the common path. Not every setup is compatible with WhatsApp — the example is shown below. <strong>30+ ineligible use cases had to be handled gracefully.</strong>
             </p>
           </Prose>
           <FlowCarousel
@@ -1060,33 +1061,34 @@ export default function WhatsApp() {
           />
         </div>
 
-        {/* ── Transition prose ── */}
-        <Prose>
-          <p>
-            Beyond ineligible states within Sales, <strong>the same
-            level of scrutiny applied to every other objective.</strong>{" "}
-            Below is Awareness — where the flow looks fundamentally
-            different because the campaign's goal is reach and
-            impressions, not purchases.
-          </p>
-        </Prose>
+        <div className="rule my-10" />
 
         {/* ── Awareness comparison ── */}
         <div className="my-10">
-          <span className="caption-label">Comparison · Awareness campaign</span>
-          <h3 className="font-display font-medium text-[1.05rem] text-[var(--ink)] mt-2 mb-3">
-            How the Awareness flow differs from Sales.
+          <h3 className="font-display font-medium text-[1.3rem] text-[var(--case-accent)] mb-3">
+            Each expanded objective brought a structurally different flow.
           </h3>
+          <Prose>
+            <p>
+              The Awareness campaign type has no conversions card and different placement controls. These structural differences required a deep understanding of the product and the UX implications of each campaign type — and each came with its own set of ineligibility cases to resolve.
+            </p>
+          </Prose>
           <div className="xl:max-w-[calc(100%-17rem)] space-y-4 my-4">
             <div className="border border-[var(--rule)] rounded-lg overflow-hidden">
-              <img src="/primer/awareness-conversion.png" alt="Awareness campaign — no conversions card" className="w-full h-auto block" loading="lazy" />
+              <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => expand("/primer/awareness-conversion.png")}>
+                <img src="/primer/awareness-conversion.png" alt="Awareness campaign — no conversions card" className="w-full h-auto block" loading="lazy" />
+                <span className="expand-hint">CLICK TO ENLARGE</span>
+              </div>
               <div className="p-4 border-t border-[var(--rule)]">
                 <div className="caption-label mb-1 text-[var(--case-accent)]">No conversions card</div>
                 <p className="font-display text-[0.8rem] text-[var(--mid)] leading-snug">Awareness campaigns don't produce sales — their objective is impression counts and awareness. No conversions card exists. The audience UX is also different from Sales.</p>
               </div>
             </div>
             <div className="border border-[var(--rule)] rounded-lg overflow-hidden">
-              <img src="/primer/awareness-placements.png" alt="Awareness campaign placements card" className="w-full h-auto block" loading="lazy" />
+              <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => expand("/primer/awareness-placements.png")}>
+                <img src="/primer/awareness-placements.png" alt="Awareness campaign placements card" className="w-full h-auto block" loading="lazy" />
+                <span className="expand-hint">CLICK TO ENLARGE</span>
+              </div>
               <div className="p-4 border-t border-[var(--rule)]">
                 <div className="caption-label mb-1 text-[var(--case-accent)]">Placements</div>
                 <p className="font-display text-[0.8rem] text-[var(--mid)] leading-snug">The placements card UX differs from Sales — WhatsApp Status is available but the controls and guidance change.</p>
@@ -1165,6 +1167,7 @@ export default function WhatsApp() {
       </Section>
 
       <div className="pb-20" />
+      {lightboxSrc && <PageLightbox src={lightboxSrc} onClose={() => setLightboxSrc(null)} />}
     </div>
   );
 }

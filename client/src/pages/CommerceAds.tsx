@@ -39,12 +39,14 @@ import { TldrWithSwitcher } from "@/components/TldrSection";
 
 function AdsManagerCarousel() {
   const [current, setCurrent] = useState(0);
+  const [open, setOpen] = useState(false);
   const slides = [
     { src: "/primer/campaign.png", label: "Campaign", caption: "The first screen — where the advertiser picks their goal (sales, leads, awareness) and sets the budget strategy." },
     { src: "/primer/adset.png", label: "Ad set", caption: "The second screen — where the advertiser defines who sees the ad, which placements it runs on, and how much to spend." },
     { src: "/primer/ad.png", label: "Ad", caption: "The third screen — where the advertiser builds the creative: the image, video, text, and destination people actually see." },
   ];
   return (
+    <>
     <figure className="my-8 xl:max-w-[calc(100%-17rem)]">
       <span className="caption-label">Reference · What a sales campaign looks like inside Ads Manager</span>
       <div className="mt-3 relative overflow-hidden rounded-lg border border-[var(--rule)]">
@@ -54,12 +56,15 @@ function AdsManagerCarousel() {
         >
           {slides.map((slide) => (
             <div key={slide.label} className="w-full shrink-0 bg-[var(--paper)]">
-              <img
-                src={slide.src}
-                alt={slide.label}
-                className="w-full h-auto block"
-                loading="lazy"
-              />
+              <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => setOpen(true)}>
+                <img
+                  src={slide.src}
+                  alt={slide.label}
+                  className="w-full h-auto block"
+                  loading="lazy"
+                />
+                <span className="expand-hint">CLICK TO ENLARGE</span>
+              </div>
               <div className="px-6 py-4">
                 <div className="flex items-baseline gap-3 mb-1">
                   <span className="font-mono text-[0.7rem]" style={{ color: "var(--case-accent)" }}>
@@ -109,6 +114,13 @@ function AdsManagerCarousel() {
         </button>
       </div>
     </figure>
+    {open && (
+      <div className="fixed inset-0 z-50 bg-[oklch(0.10_0.01_60_/_0.94)] flex items-center justify-center p-4 md:p-10" onClick={() => setOpen(false)}>
+        <button className="absolute top-5 right-5 text-paper font-display text-xs tracking-[0.18em] uppercase opacity-80 hover:opacity-100" onClick={() => setOpen(false)}>Close · Esc</button>
+        <img src={slides[current].src} alt={slides[current].label} className="max-w-full max-h-full object-contain" onClick={e => e.stopPropagation()} />
+      </div>
+    )}
+    </>
   );
 }
 
@@ -444,9 +456,9 @@ function FeatureDecisionMatrix() {
 
 function ThreeToOneVisual() {
   const flows = [
-    { n: "01", label: "Single image format", description: "One product image or video with dynamic media, frame overlays, and text fields.", count: "4 features", src: "/primer/format-single.png" },
-    { n: "02", label: "Carousel format", description: "Swipeable row of products. The most controls of any format — overlays, slideshows, end cards, and text.", count: "6 features", src: "/primer/format-carousel.png" },
-    { n: "03", label: "Collection format", description: "Cover image with a product grid. Dynamic media, featured products, and text fields.", count: "4 features", src: "/primer/format-collection.png" },
+    { n: "01", label: "Single image format", description: "One image or video. The simplest ad creative — one piece of media, one message.", count: "4 features", src: "/primer/format-single.png" },
+    { n: "02", label: "Carousel format", description: "A swipeable row of product cards, each with its own image and link.", count: "6 features", src: "/primer/format-carousel.png" },
+    { n: "03", label: "Collection format", description: "A hero image above a product grid. Tapping opens a full-screen browsing experience.", count: "4 features", src: "/primer/format-collection.png" },
   ];
   return (
     <figure className="my-10 xl:max-w-[calc(100%-17rem)]">
@@ -488,8 +500,9 @@ function ThreeToOneVisual() {
           After · One surface, no format selection needed
         </div>
         <div className="border border-[var(--case-accent)] rounded-lg overflow-hidden">
-          <div>
+          <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => expand("/primer/unified-after.png")}>
             <img src="/primer/unified-after.png" alt="The unified ad creative card with all media types in one surface" className="w-full h-auto block" loading="lazy" />
+            <span className="expand-hint">CLICK TO ENLARGE</span>
           </div>
           <div className="bg-[var(--paper)] px-6 py-5 border-t border-[var(--case-accent)]">
             <ul className="space-y-2">
@@ -740,6 +753,8 @@ function CommerceToc() {
 export default function CommerceAds() {
   useScrollToTop();
   const scrolled = useScrolled(40);
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const expand = (src: string) => setLightboxSrc(src);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setMounted] = useState(false);
   useEffect(() => {
@@ -773,9 +788,6 @@ export default function CommerceAds() {
           <h1 className="display-1 mt-4">
             Unifying Meta's split<br />eCommerce ad builder
           </h1>
-          <div className="flex items-center gap-2 mt-5 flex-wrap">
-            <span className="font-display text-[12px] font-medium text-[var(--case-accent)] bg-[var(--case-accent-soft)] border border-[var(--case-accent)]/20 px-3.5 py-1 rounded-full">Shipped to alpha</span>
-          </div>
         </div>
 
         {/* TLDR */}
@@ -858,7 +870,7 @@ export default function CommerceAds() {
                   </p>
                 </div>
                 <div className="flex justify-center">
-                  <div className="font-mono text-[0.6rem] text-[var(--mid)]">↓ produces ↓</div>
+                  <div className="font-mono text-[0.6rem] text-[var(--mid)]">↓ example ad ↓</div>
                 </div>
                 <div className="mx-auto max-w-[220px] rounded-xl overflow-hidden shadow-[0_2px_20px_rgba(0,0,0,0.15)]">
                   <img src="/primer/static-ad.png" alt="A static ad — hand-picked creative by the advertiser" className="w-full h-auto block" loading="lazy" />
@@ -874,7 +886,7 @@ export default function CommerceAds() {
                   </p>
                 </div>
                 <div className="flex justify-center">
-                  <div className="font-mono text-[0.6rem] text-[var(--mid)]">↓ produces ↓</div>
+                  <div className="font-mono text-[0.6rem] text-[var(--mid)]">↓ example ad ↓</div>
                 </div>
                 <div className="mx-auto max-w-[220px] rounded-xl overflow-hidden shadow-[0_2px_20px_rgba(0,0,0,0.15)]">
                   <img src="/primer/dynamic-ad.png" alt="A catalog-driven ad — products assembled automatically by Meta" className="w-full h-auto block" loading="lazy" />
@@ -884,8 +896,7 @@ export default function CommerceAds() {
           </div>
 
           <figcaption className="caption mt-4 max-w-2xl">
-            Same campaign goal, two diverging paths — and two
-            different ads.
+            Same campaign goal, two diverging paths — and two different ad styles. The ads shown are examples; many creative variations are possible within each flow.
           </figcaption>
         </figure>
 
@@ -972,7 +983,10 @@ export default function CommerceAds() {
         <figure className="my-8 xl:max-w-[calc(100%-17rem)]">
           <span className="caption-label">Reference · The Ad level in Ads Manager</span>
           <div className="mt-3 border border-[var(--rule)] rounded-lg overflow-hidden">
-            <img src="/primer/ad-setup-card.png" alt="The Ad level in Ads Manager showing the Ad setup card with format picker and ad preview" className="w-full h-auto block" loading="lazy" />
+            <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => expand("/primer/ad-setup-card.png")}>
+              <img src="/primer/ad-setup-card.png" alt="The Ad level in Ads Manager showing the Ad setup card with format picker and ad preview" className="w-full h-auto block" loading="lazy" />
+              <span className="expand-hint">CLICK TO ENLARGE</span>
+            </div>
           </div>
           <figcaption className="caption mt-3 max-w-2xl">
             The Ad setup card at the Ad level in Ads Manager.
@@ -985,8 +999,8 @@ export default function CommerceAds() {
             the advertiser reaches the <em>ad creative card</em> —
             where they control what their ad actually looks like.
             What appears in that card depends entirely on the format
-            selected here. Each of the three formats produces a
-            different creative editing experience.
+            selected here. <strong>Each of the three formats produces a
+            different creative editing experience.</strong>
           </p>
         </Prose>
 
@@ -1126,7 +1140,7 @@ export default function CommerceAds() {
                 {["Dynamic media", "Creative options", "Frame overlay", "Text inputs", "Product in feed", "Profile card", "Map card"].map((f) => (
                   <span
                     key={f}
-                    className="px-3 py-1.5 rounded-full border border-[var(--rule)] font-display text-[0.75rem] text-[var(--ink)] bg-[var(--tint)]"
+                    className="px-3 py-1.5 rounded-full border border-[var(--case-accent)]/40 font-display text-[0.75rem] text-[var(--ink)] bg-[var(--tint)]"
                   >
                     {f}
                   </span>
@@ -1147,9 +1161,19 @@ export default function CommerceAds() {
                   </div>
                 </div>
               </div>
-              {/* Final design */}
-              <div className="max-w-sm mx-auto border border-[var(--case-accent)] rounded-lg overflow-hidden">
+              {/* Accordion image */}
+              <div className="max-w-sm mx-auto border border-[var(--rule)] rounded-lg overflow-hidden">
                 <img src="/primer/accordion-fully-expanded.png" alt="The finalized product media accordion with all seven features" className="w-full h-auto block" loading="lazy" />
+              </div>
+            </div>
+          </figure>
+
+          <figure className="my-8 xl:max-w-[calc(100%-17rem)]">
+            <span className="caption-label">All up wireframe · Seven features, one destination</span>
+            <div className="mt-4 border border-[var(--rule)] rounded-lg overflow-hidden">
+              <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => expand("/primer/ProductMediaFinal.png")}>
+                <img src="/primer/ProductMediaFinal.png" alt="All up wireframe — seven catalog features unified in the product media accordion" className="w-full h-auto block" loading="lazy" />
+                <span className="expand-hint">CLICK TO ENLARGE</span>
               </div>
             </div>
           </figure>
@@ -1174,29 +1198,21 @@ export default function CommerceAds() {
 
         <Prose>
           <p>
-            <strong>Beyond the Figma work</strong>, much of the design effort went
-            into cross-pillar working sessions — walking through the
-            full flow together, surfacing every control whose
-            ownership was ambiguous, and resolving each one in the
-            room. The output was a shared decision log that became
-            the reference document for engineering.
+            Much of the work beyond Figma was coordination — cross-pillar sessions where we walked the full flow together, named every ambiguous ownership call, and resolved each one before it could block engineering. The output was a shared decision log that became the reference document for implementation.
           </p>
           <p>
-            <strong>We ran UX research</strong> with advertisers across the full
-            unified flow — not just the product media section. The
-            research signalled no risk for this section to launch,
-            with plans to run additional sessions from the scaled
-            alpha to de-risk the beta.
-          </p>
-          <p>
-            <strong>The alpha launched to ~100,000 advertisers.</strong> We're
-            tracking topline metrics including revenue regression,
-            ad creation rates, and product media usage.
+            UX research across the full unified flow validated the direction with no flagged risk for this section. <strong>The alpha shipped to ~100,000 advertisers.</strong> We're tracking revenue regression, ad creation rates, and product media usage as the baseline heading into beta.
           </p>
         </Prose>
       </Section>
 
       <div className="pb-20" />
+      {lightboxSrc && (
+        <div className="fixed inset-0 z-50 bg-[oklch(0.10_0.01_60_/_0.94)] flex items-center justify-center p-4 md:p-10" onClick={() => setLightboxSrc(null)}>
+          <button className="absolute top-5 right-5 text-paper font-display text-xs tracking-[0.18em] uppercase opacity-80 hover:opacity-100" onClick={() => setLightboxSrc(null)}>Close · Esc</button>
+          <img src={lightboxSrc} className="max-w-full max-h-full object-contain" onClick={e => e.stopPropagation()} />
+        </div>
+      )}
     </div>
   );
 }
