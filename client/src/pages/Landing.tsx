@@ -266,7 +266,7 @@ export default function Landing() {
         </aside>
 
         {/* ── RIGHT COLUMN ── */}
-        <div className={`flex-1 flex flex-col relative ${hPad} py-6 lg:py-[36px] xl:py-[56px] 2xl:py-[72px] z-10`}>
+        <div className={`flex-1 flex flex-col relative ${hPad} py-6 lg:py-[36px] xl:py-[42px] 2xl:py-[64px] z-10`}>
 
           {/* ── INTRO OVERLAY: centered, exits instantly — FLIP handles the motion ── */}
           <AnimatePresence>
@@ -358,7 +358,7 @@ export default function Landing() {
             </motion.h1>
 
             <motion.div
-              className="mt-8 lg:mt-10 xl:mt-12 2xl:mt-14 mb-3 lg:mb-4 xl:mb-6 shrink-0"
+              className="mt-8 lg:mt-10 xl:mt-10 2xl:mt-14 mb-3 lg:mb-4 xl:mb-4 shrink-0"
               animate={{ opacity: (phase === "projects" || phase === "done") ? 1 : 0 }}
               initial={alreadySeen ? false : { opacity: 0 }}
               transition={{ duration: 0.2 }}
