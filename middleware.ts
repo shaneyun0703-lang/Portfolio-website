@@ -62,11 +62,16 @@ function gatePage(error?: string): string {
     .toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);
       background:none;border:none;cursor:pointer;color:rgba(255,255,255,.3);
       display:flex;align-items:center;justify-content:center;padding:4px;
-      transition:color .2s;width:auto;margin:0}
-    .toggle:hover{color:rgba(255,255,255,.6);background:none;border:none}
+      transition:color .2s;width:18px;height:18px;flex-shrink:0}
+    .toggle:hover{color:rgba(255,255,255,.6)}
+    .toggle svg{position:absolute;top:0;left:0;transition:opacity .15s}
+    .toggle .eye-off{opacity:0}
+    .toggle.shown .eye-on{opacity:0}
+    .toggle.shown .eye-off{opacity:1}
     .err{color:#ff5050;font-size:12px;text-align:center;margin-top:8px}
-    .submit{width:100%;margin-top:16px;padding:14px;border-radius:12px;font-size:15px;
-      font-family:'Inter',system-ui,sans-serif;font-weight:500;letter-spacing:.01em;
+    .submit{width:100%;margin-top:16px;padding:14px;border-radius:12px;
+      font-family:'Inter',system-ui,sans-serif;font-size:15px;font-weight:500;
+      letter-spacing:.01em;
       color:#fff;cursor:pointer;transition:background .2s,border-color .2s;
       background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
     .submit:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25)}
@@ -87,15 +92,9 @@ function gatePage(error?: string): string {
         <div class="field">
           <input type="password" id="pw" name="password" placeholder="Enter password"
             autofocus autocomplete="current-password"/>
-          <button type="button" class="toggle" onclick="
-            var i=document.getElementById('pw');
-            var open=i.type==='text';
-            i.type=open?'password':'text';
-            this.innerHTML=open
-              ?'<svg width=18 height=18 viewBox=&quot;0 0 24 24&quot; fill=none stroke=currentColor stroke-width=1.5 stroke-linecap=round stroke-linejoin=round><path d=&quot;M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z&quot;/><circle cx=12 cy=12 r=3/></svg>'
-              :'<svg width=18 height=18 viewBox=&quot;0 0 24 24&quot; fill=none stroke=currentColor stroke-width=1.5 stroke-linecap=round stroke-linejoin=round><path d=&quot;M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94&quot;/><path d=&quot;M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19&quot;/><line x1=1 y1=1 x2=23 y2=23/></svg>';
-          ">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <button type="button" class="toggle" onclick="var i=document.getElementById('pw');i.type=i.type==='password'?'text':'password';this.classList.toggle('shown')">
+            <svg class="eye-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
           </button>
         </div>
         ${error ? `<p class="err">${error}</p>` : ""}
