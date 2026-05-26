@@ -23,7 +23,7 @@ function cookies(header: string | null): Record<string, string> {
   return out;
 }
 
-function gatePage(error?: string): string {
+function gatePage(redirect = "/", error?: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -89,6 +89,7 @@ function gatePage(error?: string): string {
     </div>
     <div class="box">
       <form method="POST" action="/auth">
+        <input type="hidden" name="redirect" value="${redirect}"/>
         <div class="field">
           <input type="password" id="pw" name="password" placeholder="Enter password"
             autofocus autocomplete="current-password"/>
@@ -117,9 +118,13 @@ export default async function middleware(
   // Handle password form POST
   if (req.method === "POST" && url.pathname === "/auth") {
     let submitted = "";
+    let redirect = "/";
     try {
       const form = await req.formData();
       submitted = (form.get("password") as string) ?? "";
+      const raw = (form.get("redirect") as string) ?? "/";
+      // Only allow same-origin paths (no open redirect)
+      redirect = raw.startsWith("/") ? raw : "/";
     } catch {
       // ignore parse errors
     }
@@ -128,13 +133,13 @@ export default async function middleware(
       return new Response(null, {
         status: 302,
         headers: {
-          Location: "/",
+          Location: redirect,
           "Set-Cookie": `${COOKIE}=${expected}; Path=/; HttpOnly; SameSite=Strict; Max-Age=604800`,
         },
       });
     }
 
-    return new Response(gatePage("Incorrect password — try again."), {
+    return new Response(gatePage(redirect, "Incorrect password — try again."), {
       status: 401,
       headers: { "Content-Type": "text/html; charset=utf-8" },
     });
@@ -144,7 +149,7 @@ export default async function middleware(
   const jar = cookies(req.headers.get("cookie"));
   if (jar[COOKIE] === expected) return undefined; // authenticated
 
-  return new Response(gatePage(), {
+  return new Response(gatePage(url.pathname), {
     status: 200,
     headers: { "Content-Type": "text/html; charset=utf-8" },
   });
