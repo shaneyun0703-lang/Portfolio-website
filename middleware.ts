@@ -54,6 +54,7 @@ function gatePage(error?: string): string {
       box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
     .field{position:relative}
     input{width:100%;padding:14px 48px 14px 16px;border-radius:12px;font-size:15px;outline:none;
+      font-family:'Inter',system-ui,sans-serif;
       background:rgba(255,255,255,.06);color:rgba(255,255,255,.9);transition:border-color .2s;
       border:1px solid ${error ? "rgba(255,80,80,0.5)" : "rgba(255,255,255,0.1)"}}
     input::placeholder{color:rgba(255,255,255,.25)}
