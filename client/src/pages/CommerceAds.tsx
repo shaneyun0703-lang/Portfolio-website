@@ -715,10 +715,10 @@ function CommerceToc() {
   }, []);
   return (
     <nav
-      className={`hidden xl:block fixed right-7 z-40 w-[272px] transition-all duration-500 ease-in-out ${scrolled ? "top-[calc(80px+1.75rem)]" : "top-[calc(72px+2.25rem)]"}`}
+      className={`hidden xl:block fixed right-7 z-40 w-[310px] transition-all duration-500 ease-in-out ${scrolled ? "top-[calc(80px+1.75rem)]" : "top-[calc(72px+2.25rem)]"}`}
       aria-label="Section navigation"
     >
-      <div className="rounded-2xl p-4 max-h-[calc(100vh-180px)] overflow-y-auto" style={{ background: "rgba(42,42,46,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" }}>
+      <div className="rounded-2xl p-4 max-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden" style={{ background: "rgba(42,42,46,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" }}>
         <div className="font-mono text-[13px] text-[var(--mid)] tracking-[0.1em] uppercase mb-3 font-medium">
           Sections
         </div>
@@ -728,7 +728,7 @@ function CommerceToc() {
               <a
                 href={`#${s.id}`}
                 data-active={active === s.id}
-                className={`toc-link flex items-start gap-2.5 py-1 px-2.5 rounded-lg transition-all duration-200 ${
+                className={`toc-link flex items-baseline gap-2.5 py-1.5 px-2.5 rounded-lg transition-all duration-200 ${
                   active === s.id
                     ? "text-[var(--ink)]"
                     : "hover:bg-[rgba(255,255,255,0.04)]"
