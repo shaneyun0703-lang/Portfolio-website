@@ -3,7 +3,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
-import { PasswordGate } from "./components/PasswordGate";
 import { ImageLightbox } from "./components/ImageLightbox";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Landing from "./pages/Landing";
@@ -29,15 +28,13 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <PasswordGate>
-        <ThemeProvider defaultTheme="light">
-          <TooltipProvider>
-            <Toaster />
-            <ImageLightbox />
-            <Router />
-          </TooltipProvider>
-        </ThemeProvider>
-      </PasswordGate>
+      <ThemeProvider defaultTheme="light">
+        <TooltipProvider>
+          <Toaster />
+          <ImageLightbox />
+          <Router />
+        </TooltipProvider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 }
