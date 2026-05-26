@@ -3,7 +3,18 @@ export default function Resume() {
     <>
       {/* Download bar — hidden when printing */}
       <div className="print:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-3 bg-[#1c1c1e] border-b border-[#2a2a2a]">
-        <span className="font-mono text-[12px] text-white tracking-[0.06em] uppercase font-semibold">Resume</span>
+        <div className="flex items-center gap-3">
+          <a
+            href="/"
+            className="font-mono text-[12px] tracking-[0.04em] uppercase px-4 py-2 rounded-lg transition-all duration-200 font-semibold"
+            style={{ background: "rgba(255,255,255,0.06)", color: "#ccc", border: "1px solid rgba(255,255,255,0.1)" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)"; (e.currentTarget as HTMLElement).style.color = "#fff"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)"; (e.currentTarget as HTMLElement).style.color = "#ccc"; }}
+          >
+            ← Portfolio
+          </a>
+          <span className="font-mono text-[12px] text-[#444] tracking-[0.06em] uppercase font-semibold">Resume</span>
+        </div>
         <button
           onClick={() => { const prev = document.title; document.title = "Shane Yun - Resume"; window.print(); document.title = prev; }}
           className="font-mono text-[12px] tracking-[0.04em] uppercase px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer font-semibold"
