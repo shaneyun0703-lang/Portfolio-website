@@ -65,9 +65,9 @@ function gatePage(error?: string): string {
       transition:color .2s;width:auto;margin:0}
     .toggle:hover{color:rgba(255,255,255,.6);background:none;border:none}
     .err{color:#ff5050;font-size:12px;text-align:center;margin-top:8px}
-    .submit{width:100%;margin-top:16px;padding:14px;border-radius:12px;font-size:14px;
-      font-family:'Syne',system-ui,sans-serif;font-weight:600;color:#fff;cursor:pointer;
-      transition:background .2s,border-color .2s;
+    .submit{width:100%;margin-top:16px;padding:14px;border-radius:12px;font-size:15px;
+      font-family:'Inter',system-ui,sans-serif;font-weight:500;letter-spacing:.01em;
+      color:#fff;cursor:pointer;transition:background .2s,border-color .2s;
       background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
     .submit:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25)}
     .foot{text-align:center;margin-top:24px;color:rgba(255,255,255,.4);font-size:13px}
