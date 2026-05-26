@@ -13,7 +13,7 @@ export default function Resume() {
           >
             ← Portfolio
           </a>
-          <span className="font-mono text-[12px] text-white tracking-[0.06em] uppercase font-semibold">Resume</span>
+          <span className="font-mono text-[15px] text-white tracking-[0.06em] uppercase font-semibold">Resume</span>
         </div>
         <button
           onClick={() => { const prev = document.title; document.title = "Shane Yun - Resume"; window.print(); document.title = prev; }}
