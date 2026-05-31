@@ -3,7 +3,7 @@ export default function Resume() {
     <>
       {/* Download bar — hidden when printing */}
       <div className="print:hidden fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-3 bg-[#1c1c1e] border-b border-[#2a2a2a]">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-6">
           <a
             href="/"
             className="font-mono text-[12px] tracking-[0.04em] uppercase px-4 py-2 rounded-lg transition-all duration-200 font-semibold"
