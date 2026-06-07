@@ -111,19 +111,19 @@ function CardOverlap({ c }: { c: CaseStudyCard }) {
         marginTop: OFFSETS[c.index],
         transform: `rotate(${ROTS[c.index]}deg)`,
         background: "#303030",
-        boxShadow: `0 4px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(${c.accentRgb},0.12)`,
+        boxShadow: `0 4px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(${c.accentRgb},0.2)`,
       }}
-      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(${c.accentRgb},0.28)`; el.style.background = `linear-gradient(rgba(${c.accentRgb},0.12), rgba(${c.accentRgb},0.12)), #303030`; }}
-      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 4px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(${c.accentRgb},0.12)`; el.style.background = "#303030"; }}>
+      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(${c.accentRgb},0.4)`; el.style.background = `linear-gradient(rgba(${c.accentRgb},0.12), rgba(${c.accentRgb},0.12)), #303030`; }}
+      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 4px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(${c.accentRgb},0.2)`; el.style.background = "#303030"; }}>
       <div className="h-[220px] xl:h-[300px] 2xl:h-[380px] relative overflow-hidden flex items-center justify-center"
-        style={{ background: `linear-gradient(180deg, rgba(${c.accentRgb},0.28) 0%, rgba(${c.accentRgb},0.08) 100%)` }}>
-        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[130%] h-[85%] opacity-[0.28]"
+        style={{ background: `linear-gradient(180deg, rgba(${c.accentRgb},0.42) 0%, rgba(${c.accentRgb},0.14) 100%)` }}>
+        <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[130%] h-[85%] opacity-[0.42]"
           style={{ background: `radial-gradient(ellipse, rgba(${c.accentRgb},1) 0%, transparent 60%)`, filter: "blur(36px)" }} />
         <Tags c={c} />
         <div className="relative z-10 pt-14 pb-3 w-full px-3"><GlassLaptop src={c.heroSrc} alt={c.heroAlt} accent={c.accent} /></div>
       </div>
-      <div className="shrink-0 px-4 py-3.5" style={{ borderTop: `1px solid rgba(${c.accentRgb},0.20)`, background: `rgba(${c.accentRgb},0.07)` }}>
-        <p className="font-mono text-[10px] tracking-[0.06em] uppercase mb-1.5" style={{ color: `rgba(${c.accentRgb},0.8)` }}>{c.org}</p>
+      <div className="shrink-0 px-4 py-3.5" style={{ borderTop: `1px solid rgba(${c.accentRgb},0.32)`, background: `rgba(${c.accentRgb},0.12)` }}>
+        <p className="font-mono text-[10px] tracking-[0.06em] uppercase mb-1.5" style={{ color: `rgba(${c.accentRgb},0.95)` }}>{c.org}</p>
         <h2 className="font-display text-[1.05rem] font-bold leading-[1.2] tracking-[-0.015em] text-white/95">{c.title}</h2>
       </div>
     </Link>
@@ -150,8 +150,8 @@ function EmailButton() {
   return (
     <button onClick={() => { navigator.clipboard.writeText("shane.yun0703@gmail.com"); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
       className="group/link flex items-center gap-2.5 w-fit cursor-pointer">
-      <span className="flex items-center justify-center w-9 h-9 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#555] group-hover/link:bg-[#222] transition-all duration-200">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover/link:stroke-white transition-colors duration-200"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      <span className="flex items-center justify-center w-9 h-9 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#cfcfcf] group-hover/link:bg-[#cfcfcf] transition-all duration-200">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover/link:stroke-[#1c1c1e] transition-colors duration-200"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
       </span>
       <span className={`font-display text-[16px] font-medium transition-colors duration-200 ${copied ? "text-white" : "text-[#ccc] group-hover/link:text-white"}`}>
         {copied ? "Copied!" : "Email"}
@@ -190,7 +190,7 @@ export default function LandingV3() {
       setTyped(HERO_FULL.slice(0, i));
       if (i === HERO_FULL.length) {
         clearInterval(id);
-        setTimeout(() => setShowCursor(false), 350);
+        setShowCursor(false);
         setTimeout(() => setPhase("highlighting"), 550);
         setTimeout(() => {
           if (introH1Ref.current) capturedTop.current = introH1Ref.current.getBoundingClientRect().top;
@@ -198,7 +198,7 @@ export default function LandingV3() {
         }, 550 + 2400);
         setTimeout(() => setPhase("projects"), 550 + 2400 + 1000);
       }
-    }, 60);
+    }, 52);
     return () => clearInterval(id);
   }, []);
 
@@ -217,7 +217,7 @@ export default function LandingV3() {
           setTimeout(() => { sessionStorage.setItem("intro-seen-v3", "1"); setPhase("done"); }, 500);
         }, 400 + 1000);
       }
-    }, 48);
+    }, 44);
     return () => clearInterval(id);
   }, [phase]);
 
@@ -252,14 +252,14 @@ export default function LandingV3() {
             <div className="flex flex-col gap-4">
               <EmailButton />
               <a href="https://www.linkedin.com/in/shane-yun" target="_blank" rel="noopener noreferrer" className="group/link flex items-center gap-2.5 w-fit">
-                <span className="flex items-center justify-center w-9 h-9 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#555] group-hover/link:bg-[#222] transition-all duration-200">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#999" className="group-hover/link:fill-white transition-colors duration-200"><path d="M20.47 2H3.53A1.45 1.45 0 0 0 2 3.38v17.24A1.45 1.45 0 0 0 3.53 22h16.94A1.45 1.45 0 0 0 22 20.62V3.38A1.45 1.45 0 0 0 20.47 2ZM8.09 18.74h-3v-9h3ZM6.59 8.48a1.56 1.56 0 1 1 0-3.12 1.56 1.56 0 0 1 0 3.12ZM18.91 18.74h-3v-4.26c0-1.08-.43-1.82-1.44-1.82a1.43 1.43 0 0 0-1.35.95 1.72 1.72 0 0 0-.08.65v4.48h-3v-9h2.9v1.3a2.88 2.88 0 0 1 2.62-1.45c1.88 0 3.35 1.23 3.35 3.87Z"/></svg>
+                <span className="flex items-center justify-center w-9 h-9 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#cfcfcf] group-hover/link:bg-[#cfcfcf] transition-all duration-200">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#999" className="group-hover/link:fill-[#1c1c1e] transition-colors duration-200"><path d="M20.47 2H3.53A1.45 1.45 0 0 0 2 3.38v17.24A1.45 1.45 0 0 0 3.53 22h16.94A1.45 1.45 0 0 0 22 20.62V3.38A1.45 1.45 0 0 0 20.47 2ZM8.09 18.74h-3v-9h3ZM6.59 8.48a1.56 1.56 0 1 1 0-3.12 1.56 1.56 0 0 1 0 3.12ZM18.91 18.74h-3v-4.26c0-1.08-.43-1.82-1.44-1.82a1.43 1.43 0 0 0-1.35.95 1.72 1.72 0 0 0-.08.65v4.48h-3v-9h2.9v1.3a2.88 2.88 0 0 1 2.62-1.45c1.88 0 3.35 1.23 3.35 3.87Z"/></svg>
                 </span>
                 <span className="font-display text-[16px] font-medium text-[#ccc] group-hover/link:text-white transition-colors duration-200">LinkedIn</span>
               </a>
               <a href="/resume" target="_blank" rel="noopener noreferrer" className="group/link flex items-center gap-2.5 w-fit">
-                <span className="flex items-center justify-center w-9 h-9 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#555] group-hover/link:bg-[#222] transition-all duration-200">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover/link:stroke-white transition-colors duration-200"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+                <span className="flex items-center justify-center w-9 h-9 rounded-full border border-[#333] bg-[#1a1a1a] group-hover/link:border-[#cfcfcf] group-hover/link:bg-[#cfcfcf] transition-all duration-200">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="group-hover/link:stroke-[#1c1c1e] transition-colors duration-200"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
                 </span>
                 <span className="font-display text-[16px] font-medium text-[#ccc] group-hover/link:text-white transition-colors duration-200">Resume</span>
               </a>
