@@ -12,6 +12,7 @@ type CaseStudyCard = {
   outcome: string;
   badge2?: string;
   whiteTag?: boolean;
+  darkTag?: boolean;
   accent: string;
   accentRgb: string;
   heroSrc: string;
@@ -46,7 +47,7 @@ const casesData = [
     title: "Taking WhatsApp ads from launch to scale",
     lede: "Making WhatsApp ads available to nearly every advertiser",
     role: "Design Lead", timeline: "H2 2025",
-    outcome: "Shipped globally",
+    outcome: "Shipped globally", darkTag: true,
     accent: "#1eff8a", accentRgb: "30,255,138",
     heroSrc: "/primer/sales-06-ad-creative.png", heroAlt: "WhatsApp Status ad creative",
   },
@@ -92,11 +93,19 @@ function Tags({ c }: { c: CaseStudyCard }) {
         </span>
       )}
       <span className="font-mono text-[10px] tracking-[0.03em] uppercase px-2.5 py-1 rounded-full backdrop-blur-md"
-        style={{
-          border: `1px solid rgba(${c.accentRgb},${c.whiteTag ? 0.7 : 0.5})`,
-          background: `rgba(${c.accentRgb},${c.whiteTag ? 0.35 : 0.25})`,
-          color: c.whiteTag ? "rgba(255,255,255,0.95)" : `rgba(${c.accentRgb},0.95)`,
-        }}>
+        style={
+          c.darkTag
+            ? {
+                border: `1px solid rgba(${c.accentRgb},0.9)`,
+                background: `rgba(${c.accentRgb},0.92)`,
+                color: "#11261b",
+              }
+            : {
+                border: `1px solid rgba(${c.accentRgb},${c.whiteTag ? 0.7 : 0.5})`,
+                background: `rgba(${c.accentRgb},${c.whiteTag ? 0.35 : 0.25})`,
+                color: c.whiteTag ? "rgba(255,255,255,0.95)" : `rgba(${c.accentRgb},0.95)`,
+              }
+        }>
         {c.outcome}
       </span>
     </div>
