@@ -46,9 +46,9 @@ function gatePage(redirect = "/", error?: string): string {
     .wrap{position:relative;z-index:10;width:100%;max-width:420px;padding:0 24px}
     .title{text-align:center;margin-bottom:48px}
     .title h1{font-family:'Syne',system-ui,sans-serif;font-size:3.5rem;font-weight:800;
-      letter-spacing:-.04em;color:#fff;line-height:1}
-    .title p{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:15px;
-      color:rgba(255,255,255,.5);letter-spacing:.15em;text-transform:uppercase}
+      letter-spacing:-.04em;color:#fff;line-height:1;white-space:nowrap}
+    .title p{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:17px;
+      color:rgba(255,255,255,.7);letter-spacing:.15em;text-transform:uppercase}
     .box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
       border-radius:16px;padding:28px;backdrop-filter:blur(12px);
       box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
