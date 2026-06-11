@@ -718,7 +718,7 @@ function CommerceToc() {
       className={`hidden xl:block fixed right-7 z-40 w-[310px] transition-all duration-500 ease-in-out ${scrolled ? "top-[calc(80px+1.75rem)]" : "top-[calc(72px+2.25rem)]"}`}
       aria-label="Section navigation"
     >
-      <div className="rounded-2xl p-4 max-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden" style={{ background: "rgba(42,42,46,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" }}>
+      <div className="rounded-xl p-4 max-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden" style={{ background: "rgba(54,54,58,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" }}>
         <div className="font-mono text-[13px] text-[var(--mid)] tracking-[0.1em] uppercase mb-3 font-medium">
           Sections
         </div>
@@ -766,7 +766,7 @@ export default function CommerceAds() {
       <CommerceToc />
 
       {/* Nav — expands at top, compacts on scroll */}
-      <nav className={`fixed z-50 transition-all duration-500 ease-in-out ${scrolled ? "top-4 left-4 right-7 rounded-2xl" : "top-0 left-0 right-0 border-b border-[#333]"}`} style={scrolled ? { background: "rgba(42,42,46,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" } : { background: "#232326" }}>
+      <nav className={`fixed z-50 transition-all duration-500 ease-in-out ${scrolled ? "top-4 left-4 right-7 rounded-xl" : "top-0 left-0 right-0 border-b border-[#333]"}`} style={scrolled ? { background: "rgba(54,54,58,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" } : { background: "#2c2c30" }}>
         <div className={`px-7 flex items-center justify-between transition-all duration-500 ease-in-out ${scrolled ? "py-3" : "py-6"}`}>
           <div className="flex items-center gap-4">
             <Link href="/" className="font-mono text-[13px] tracking-[0.04em] uppercase text-[#ccc] hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-[#444] hover:border-[#555] hover:bg-[rgba(255,255,255,0.04)]">
@@ -795,10 +795,10 @@ export default function CommerceAds() {
           <TldrWithSwitcher
             accentColor="#0ee9d6"
             accentRgb="14,233,214"
-            summary={<p><strong>I led design of the product media section inside Meta's new unified eCommerce ad builder</strong> — integrating 7 product catalog features from 3 separate legacy flows. This new ads flow shipped to a scaled alpha with 100K brands.</p>}
+            summary={<p><strong>I led design of the product media section inside Meta's new unified eCommerce ad builder</strong> — integrating 7 product catalog features from 3 separate legacy flows. This new ads flow shipped to beta with 150K brands.</p>}
             role="Design lead"
             timeline={<span>H1 2026 · 3 months</span>}
-            outcome={<span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Scaled alpha · 100K brands</span>}
+            outcome={<span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Shipped beta · 150K brands</span>}
             team={<ul className="list-disc pl-3.5 space-y-1"><li>Me :)</li><li>2 design teams<span className="block text-[0.72rem] text-white/60 mt-0.5 leading-snug">2 managers, 1 director, 3 ICs</span></li><li>Content designer</li><li>Product manager</li><li>UX researcher</li><li>Tech lead</li></ul>}
             audience={<span>High spend eCommerce, Retail, and CPG advertisers</span>}
           />
@@ -1192,7 +1192,7 @@ export default function CommerceAds() {
         id="alignment"
         number="05"
         kicker="Research, alignment, and launch"
-        title="Validated with advertisers, aligned across orgs, shipped to 100K."
+        title="Validated with advertisers, aligned across orgs, shipped to 150K."
       >
         <StatBannerStripe />
 
@@ -1201,7 +1201,7 @@ export default function CommerceAds() {
             Much of the work beyond Figma was coordination — cross-pillar sessions where we walked the full flow together, named every ambiguous ownership call, and resolved each one before it could block engineering. The output was a shared decision log that became the reference document for implementation.
           </p>
           <p>
-            UX research across the full unified flow validated the direction with no flagged risk for this section. <strong>The alpha shipped to ~100,000 advertisers.</strong> We're tracking revenue regression, ad creation rates, and product media usage as the baseline heading into beta.
+            UX research across the full unified flow validated the direction with no flagged risk for this section. <strong>The beta shipped to ~150,000 advertisers.</strong> We're tracking revenue regression, ad creation rates, and product media usage as the baseline heading into GA.
           </p>
         </Prose>
       </Section>

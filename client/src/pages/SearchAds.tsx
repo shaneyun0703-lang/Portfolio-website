@@ -277,7 +277,7 @@ export default function SearchAds() {
       <TableOfContents />
 
       {/* Nav — expands at top, compacts on scroll */}
-      <nav className={`fixed z-50 transition-all duration-500 ease-in-out ${scrolled ? "top-4 left-4 right-7 rounded-2xl" : "top-0 left-0 right-0 border-b border-[#333]"}`} style={scrolled ? { background: "rgba(42,42,46,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" } : { background: "#232326" }}>
+      <nav className={`fixed z-50 transition-all duration-500 ease-in-out ${scrolled ? "top-4 left-4 right-7 rounded-xl" : "top-0 left-0 right-0 border-b border-[#333]"}`} style={scrolled ? { background: "rgba(54,54,58,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" } : { background: "#2c2c30" }}>
         <div className={`px-7 flex items-center justify-between transition-all duration-500 ease-in-out ${scrolled ? "py-3" : "py-6"}`}>
           <div className="flex items-center gap-4">
             <Link
@@ -313,7 +313,7 @@ export default function SearchAds() {
               summary={<p><strong>I led the design of Search Themes and Negative Keywords</strong> — Meta's first search-specific tools in Ads Manager. Three research rounds with 14+ companies validated the direction and secured leadership alignment.</p>}
               role="Design lead"
               timeline={<span>H2 2025 · 5 months</span>}
-              outcome={<><span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Research validated</span><span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Alpha-ready</span></>}
+              outcome={<><span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>E2E design concept</span><span className="flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" style={{color:"var(--case-accent)",flexShrink:0}}><circle cx="6.5" cy="6.5" r="6" stroke="currentColor" strokeWidth="1.2"/><path d="M4 6.5l2 2 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>Research focus</span></>}
               team={<ul className="list-disc pl-3.5 space-y-1"><li>Me :)</li><li>Content designer</li><li>Product manager</li><li>UX researcher</li><li>Tech lead</li><li>4+ partner teams</li></ul>}
               audience={<span>US Retail, eCommerce, and CPG brands actively investing in search ads on other platforms</span>}
             />

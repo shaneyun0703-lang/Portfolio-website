@@ -21,24 +21,24 @@ type CaseStudyCard = {
 
 const casesData = [
   {
-    href: "/search-ads",
-    org: "Meta · Search Ads",
-    title: "Making Meta a real search ads player",
-    lede: "Meta's first tools for search-driven advertising",
-    role: "Design Lead", timeline: "H2 2025",
-    outcome: "Alpha-ready", badge2: "Research complete",
-    accent: "#ff79c6", accentRgb: "255,121,198",
-    heroSrc: "/primer/final-2.png", heroAlt: "Search Themes final design",
-  },
-  {
     href: "/commerce-ads",
     org: "Meta · Commerce Ads",
     title: "Unifying Meta's split eCommerce ad builder",
     lede: "Unifying how eCommerce advertisers build ads on Meta",
     role: "Design Lead", timeline: "H1 2026",
-    outcome: "Scaled alpha · 100K brands",
+    outcome: "Shipped beta · 150K brands",
     accent: "#0ee9d6", accentRgb: "14,233,214",
     heroSrc: "/primer/commerce-hero.png", heroAlt: "Unified ad creation flow",
+  },
+  {
+    href: "/search-ads",
+    org: "Meta · Search Ads",
+    title: "Making Meta a real search ads player",
+    lede: "Meta's first tools for search-driven advertising",
+    role: "Design Lead", timeline: "H2 2025",
+    outcome: "E2E design concept", badge2: "Research focus",
+    accent: "#ff79c6", accentRgb: "255,121,198",
+    heroSrc: "/primer/final-2.png", heroAlt: "Search Themes final design",
   },
   {
     href: "/whatsapp",
@@ -46,7 +46,7 @@ const casesData = [
     title: "Taking WhatsApp ads from launch to scale",
     lede: "Making WhatsApp ads available to nearly every advertiser",
     role: "Design Lead", timeline: "H2 2025",
-    outcome: "Shipped globally",
+    outcome: "Shipped public globally",
     accent: "#1eff8a", accentRgb: "30,255,138",
     heroSrc: "/primer/sales-06-ad-creative.png", heroAlt: "WhatsApp Status ad creative",
   },
@@ -110,11 +110,11 @@ function CardOverlap({ c }: { c: CaseStudyCard }) {
       style={{
         marginTop: OFFSETS[c.index],
         transform: `rotate(${ROTS[c.index]}deg)`,
-        background: "#303030",
+        background: "#3a3a3a",
         boxShadow: `0 4px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(${c.accentRgb},0.2)`,
       }}
-      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(${c.accentRgb},0.4)`; el.style.background = `linear-gradient(rgba(${c.accentRgb},0.12), rgba(${c.accentRgb},0.12)), #303030`; }}
-      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 4px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(${c.accentRgb},0.2)`; el.style.background = "#303030"; }}>
+      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(${c.accentRgb},0.4)`; el.style.background = `linear-gradient(rgba(${c.accentRgb},0.12), rgba(${c.accentRgb},0.12)), #3a3a3a`; }}
+      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 4px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(${c.accentRgb},0.2)`; el.style.background = "#3a3a3a"; }}>
       <div className="h-[220px] xl:h-[300px] 2xl:h-[380px] relative overflow-hidden flex items-center justify-center"
         style={{ background: `linear-gradient(180deg, rgba(${c.accentRgb},0.42) 0%, rgba(${c.accentRgb},0.14) 100%)` }}>
         <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[130%] h-[85%] opacity-[0.42]"
@@ -191,14 +191,14 @@ export default function LandingV3() {
       if (i === HERO_FULL.length) {
         clearInterval(id);
         setShowCursor(false);
-        setTimeout(() => setPhase("highlighting"), 550);
+        setTimeout(() => setPhase("highlighting"), 250);
         setTimeout(() => {
           if (introH1Ref.current) capturedTop.current = introH1Ref.current.getBoundingClientRect().top;
           setPhase("settling");
-        }, 550 + 2400);
-        setTimeout(() => setPhase("projects"), 550 + 2400 + 1000);
+        }, 250 + 1900);
+        setTimeout(() => setPhase("projects"), 250 + 1900 + 800);
       }
-    }, 52);
+    }, 62);
     return () => clearInterval(id);
   }, []);
 
