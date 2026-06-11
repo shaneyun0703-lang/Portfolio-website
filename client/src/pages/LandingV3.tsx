@@ -14,6 +14,7 @@ type CaseStudyCard = {
   whiteTag?: boolean;
   accent: string;
   accentRgb: string;
+  cardBg?: string;
   heroSrc: string;
   heroAlt: string;
   index: number;
@@ -37,7 +38,7 @@ const casesData = [
     lede: "Meta's first tools for search-driven advertising",
     role: "Design Lead", timeline: "H2 2025",
     outcome: "E2E design concept", badge2: "Research focus",
-    accent: "#ff79c6", accentRgb: "255,121,198",
+    accent: "#ff63cc", accentRgb: "255,99,204",
     heroSrc: "/primer/final-2.png", heroAlt: "Search Themes final design",
   },
   {
@@ -104,17 +105,18 @@ function Tags({ c }: { c: CaseStudyCard }) {
 }
 
 function CardOverlap({ c }: { c: CaseStudyCard }) {
+  const bg = c.cardBg ?? "#3a3a3a";
   return (
     <Link href={c.href}
       className="group flex-1 min-w-0 flex flex-col rounded-xl overflow-hidden transition-all duration-500 ease-out hover:!rotate-0 hover:!translate-y-[-6px]"
       style={{
         marginTop: OFFSETS[c.index],
         transform: `rotate(${ROTS[c.index]}deg)`,
-        background: "#3a3a3a",
+        background: bg,
         boxShadow: `0 4px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(${c.accentRgb},0.2)`,
       }}
-      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(${c.accentRgb},0.4)`; el.style.background = `linear-gradient(rgba(${c.accentRgb},0.12), rgba(${c.accentRgb},0.12)), #3a3a3a`; }}
-      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 4px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(${c.accentRgb},0.2)`; el.style.background = "#3a3a3a"; }}>
+      onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 20px 60px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(${c.accentRgb},0.4)`; el.style.background = `linear-gradient(rgba(${c.accentRgb},0.12), rgba(${c.accentRgb},0.12)), ${bg}`; }}
+      onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = `0 4px 28px rgba(0,0,0,0.35), inset 0 0 0 1px rgba(${c.accentRgb},0.2)`; el.style.background = bg; }}>
       <div className="h-[220px] xl:h-[300px] 2xl:h-[380px] relative overflow-hidden flex items-center justify-center"
         style={{ background: `linear-gradient(180deg, rgba(${c.accentRgb},0.42) 0%, rgba(${c.accentRgb},0.14) 100%)` }}>
         <div className="absolute top-[15%] left-1/2 -translate-x-1/2 w-[130%] h-[85%] opacity-[0.42]"
@@ -124,7 +126,7 @@ function CardOverlap({ c }: { c: CaseStudyCard }) {
       </div>
       <div className="shrink-0 px-4 py-3.5" style={{ borderTop: `1px solid rgba(${c.accentRgb},0.32)`, background: `rgba(${c.accentRgb},0.12)` }}>
         <p className="font-mono text-[10px] tracking-[0.06em] uppercase mb-1.5" style={{ color: `rgba(${c.accentRgb},0.95)` }}>{c.org}</p>
-        <h2 className="font-display text-[1.05rem] font-bold leading-[1.2] tracking-[-0.015em] text-white/95">{c.title}</h2>
+        <h2 className="font-display text-[1.05rem] font-bold leading-[1.2] tracking-[-0.015em] text-white/95 min-h-[2.52rem]">{c.title}</h2>
       </div>
     </Link>
   );
