@@ -34,12 +34,6 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.85) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.85) 1px, transparent 1px)", backgroundSize: "24px 24px, 24px 24px, 120px 120px, 120px 120px", backgroundPosition: "center center" }} />
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, transparent 30%, #1c1c1e 75%)" }} />
-        {/* Soft color behind the panel so the frosted glass has something to refract */}
-        <div className="absolute left-1/2 top-[54%] -translate-x-1/2 -translate-y-1/2 w-[460px] h-[360px]" style={{ zIndex: 1 }}>
-          <div className="absolute rounded-full" style={{ width: 230, height: 230, left: -26, top: -6, background: "radial-gradient(circle, #f5c842, transparent 70%)", filter: "blur(46px)", opacity: 0.5 }} />
-          <div className="absolute rounded-full" style={{ width: 210, height: 210, right: -26, bottom: 0, background: "radial-gradient(circle, #ec4899, transparent 70%)", filter: "blur(46px)", opacity: 0.45 }} />
-          <div className="absolute rounded-full" style={{ width: 190, height: 190, right: 6, top: -18, background: "radial-gradient(circle, #6e8eff, transparent 70%)", filter: "blur(46px)", opacity: 0.4 }} />
-        </div>
       </div>
 
       <div className="w-full max-w-[420px] px-6 relative z-10">
@@ -58,7 +52,7 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
               autoFocus
               className="w-full px-4 py-3.5 pr-12 rounded-[7px] text-[15px] text-white/90 placeholder:text-white/25 outline-none transition-all duration-200 focus:border-white/20"
               style={{
-                background: "rgba(16,16,20,0.9)",
+                background: "rgba(255,255,255,0.05)",
                 border: error ? "1px solid rgba(255,80,80,0.5)" : "1px solid rgba(255,255,255,0.12)",
               }}
             />
@@ -80,14 +74,14 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
           <button
             type="submit"
             className="w-full mt-4 px-4 py-3.5 rounded-[7px] font-display text-[14px] font-semibold text-white transition-all duration-200 cursor-pointer active:scale-[0.97]"
-            style={{ background: "rgba(44,44,50,0.95)", border: "1px solid rgba(255,255,255,0.12)" }}
+            style={{ background: "rgba(255,255,255,0.09)", border: "1px solid rgba(255,255,255,0.15)" }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "rgba(58,58,66,1)";
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.22)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.16)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.28)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "rgba(44,44,50,0.95)";
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.12)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.09)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.15)";
             }}
           >
             Enter
