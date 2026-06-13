@@ -32,7 +32,7 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ background: "#1c1c1e", fontFamily: "'Inter', system-ui, sans-serif" }}>
       {/* Background — grid with fade */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.85) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.85) 1px, transparent 1px)", backgroundSize: "24px 24px, 24px 24px, 120px 120px, 120px 120px" }} />
+        <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.85) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.85) 1px, transparent 1px)", backgroundSize: "24px 24px, 24px 24px, 120px 120px, 120px 120px", backgroundPosition: "center center" }} />
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, transparent 30%, #1c1c1e 75%)" }} />
       </div>
 
@@ -41,7 +41,7 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
           <h1 className="font-display text-[3.5rem] font-extrabold tracking-[-0.04em] text-white leading-none">Shane Yun</h1>
           <p className="font-mono text-[15px] text-white/50 tracking-[0.15em] uppercase mt-3">Portfolio</p>
         </div>
-        <div className="rounded-[10px] px-7 py-7 backdrop-blur-lg" style={{ background: "rgba(28,28,32,0.62)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" }}>
+        <div className="rounded-[10px] px-7 py-7 backdrop-blur-lg" style={{ background: "rgba(28,28,32,0.44)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" }}>
         <form onSubmit={handleSubmit}>
           <div className="relative">
             <input
@@ -50,10 +50,10 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
               onChange={(e) => { setPassword(e.target.value); setError(false); }}
               placeholder="Enter password"
               autoFocus
-              className="w-full px-4 py-3.5 pr-12 rounded-xl text-[15px] text-white/90 placeholder:text-white/25 outline-none transition-all duration-200 focus:border-white/20"
+              className="w-full px-4 py-3.5 pr-12 rounded-[7px] text-[15px] text-white/90 placeholder:text-white/25 outline-none transition-all duration-200 focus:border-white/20"
               style={{
-                background: "rgba(255,255,255,0.06)",
-                border: error ? "1px solid rgba(255,80,80,0.5)" : "1px solid rgba(255,255,255,0.1)",
+                background: "rgba(16,16,20,0.9)",
+                border: error ? "1px solid rgba(255,80,80,0.5)" : "1px solid rgba(255,255,255,0.12)",
               }}
             />
             <button
@@ -73,17 +73,15 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
           )}
           <button
             type="submit"
-            className="w-full mt-4 px-4 py-3.5 rounded-xl font-display text-[14px] font-semibold text-white transition-all duration-200 cursor-pointer active:scale-[0.97]"
-            style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.12)" }}
+            className="w-full mt-4 px-4 py-3.5 rounded-[7px] font-display text-[14px] font-semibold text-white transition-all duration-200 cursor-pointer active:scale-[0.97]"
+            style={{ background: "rgba(44,44,50,0.95)", border: "1px solid rgba(255,255,255,0.12)" }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.15)";
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.25)";
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 20px rgba(255,255,255,0.05)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(58,58,66,1)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.22)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(44,44,50,0.95)";
               (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.12)";
-              (e.currentTarget as HTMLElement).style.boxShadow = "none";
             }}
           >
             Enter

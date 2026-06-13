@@ -42,7 +42,7 @@ function gatePage(redirect = "/", error?: string): string {
         linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px),
         linear-gradient(rgba(255,255,255,.85) 1px,transparent 1px),
         linear-gradient(90deg,rgba(255,255,255,.85) 1px,transparent 1px);
-      background-size:24px 24px,24px 24px,120px 120px,120px 120px}
+      background-size:24px 24px,24px 24px,120px 120px,120px 120px;background-position:center center}
     .vignette{position:absolute;inset:0;pointer-events:none;
       background:radial-gradient(ellipse at 50% 50%,transparent 30%,#1c1c1e 75%)}
     .wrap{position:relative;z-index:10;width:100%;max-width:420px;padding:0 24px}
@@ -51,14 +51,14 @@ function gatePage(redirect = "/", error?: string): string {
       letter-spacing:-.04em;color:#fff;line-height:1}
     .title p{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:15px;
       color:rgba(255,255,255,.5);letter-spacing:.15em;text-transform:uppercase}
-    .box{background:rgba(28,28,32,.62);border:1px solid rgba(255,255,255,.1);
+    .box{background:rgba(28,28,32,.44);border:1px solid rgba(255,255,255,.1);
       border-radius:10px;padding:28px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
       box-shadow:0 8px 30px rgba(0,0,0,.5)}
     .field{position:relative}
-    input{width:100%;padding:14px 48px 14px 16px;border-radius:12px;font-size:15px;outline:none;
+    input{width:100%;padding:14px 48px 14px 16px;border-radius:7px;font-size:15px;outline:none;
       font-family:'Inter',system-ui,sans-serif;
-      background:rgba(255,255,255,.06);color:rgba(255,255,255,.9);transition:border-color .2s;
-      border:1px solid ${error ? "rgba(255,80,80,0.5)" : "rgba(255,255,255,0.1)"}}
+      background:rgba(16,16,20,.9);color:rgba(255,255,255,.9);transition:border-color .2s;
+      border:1px solid ${error ? "rgba(255,80,80,0.5)" : "rgba(255,255,255,0.12)"}}
     input::placeholder{color:rgba(255,255,255,.25)}
     input:focus{border-color:rgba(255,255,255,.2)}
     .toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);
@@ -71,12 +71,12 @@ function gatePage(redirect = "/", error?: string): string {
     .toggle.shown .eye-on{opacity:0}
     .toggle.shown .eye-off{opacity:1}
     .err{color:#ff5050;font-size:12px;text-align:center;margin-top:8px}
-    .submit{width:100%;margin-top:16px;padding:14px;border-radius:12px;
+    .submit{width:100%;margin-top:16px;padding:14px;border-radius:7px;
       font-family:'Inter',system-ui,sans-serif;font-size:15px;font-weight:500;
       letter-spacing:.01em;
       color:#fff;cursor:pointer;transition:background .2s,border-color .2s;
-      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)}
-    .submit:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25)}
+      background:rgba(44,44,50,.95);border:1px solid rgba(255,255,255,.12)}
+    .submit:hover{background:rgba(58,58,66,1);border-color:rgba(255,255,255,.22)}
     .foot{text-align:center;margin-top:24px;color:rgba(255,255,255,.4);font-size:13px}
     .foot span{color:rgba(255,255,255,.6);font-weight:500}
   </style>
