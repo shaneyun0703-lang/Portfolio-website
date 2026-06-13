@@ -139,8 +139,9 @@ function Background() {
         style={{ background: "radial-gradient(circle, #f5c842 0%, transparent 70%)" }} />
       <div className="absolute -bottom-[25%] -left-[10%] w-[600px] h-[600px] rounded-full opacity-[0.04]"
         style={{ background: "radial-gradient(circle, #ec4899 0%, transparent 70%)" }} />
-      <div className="absolute inset-0 opacity-[0.04]"
-        style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "60px 60px" }} />
+      {/* Graph pattern — fine 24px cells + bold 120px major lines */}
+      <div className="absolute inset-0 opacity-[0.06]"
+        style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.85) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.85) 1px, transparent 1px)", backgroundSize: "24px 24px, 24px 24px, 120px 120px, 120px 120px" }} />
       <div className="absolute inset-0"
         style={{ background: "radial-gradient(ellipse at 50% 50%, transparent 30%, var(--paper) 75%)" }} />
     </div>
@@ -286,7 +287,7 @@ export default function LandingV3() {
                       )}
                       {typed.length >= HERO_PRE.length && (
                         <><br />
-                          <span className="relative inline-block px-5 py-2 rounded-2xl overflow-hidden"
+                          <span className="relative inline-block px-5 py-2 rounded-lg overflow-hidden"
                             style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
                             {typed.slice(HERO_PRE.length)}
                             {showCursor && <motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, repeatType: "mirror", duration: 0.6 }}>|</motion.span>}
@@ -297,12 +298,12 @@ export default function LandingV3() {
                   ) : (
                     <>
                       Designing to translate business<br />
-                      <span className="relative inline-block px-5 py-2 rounded-2xl overflow-hidden"
+                      <span className="relative inline-block px-5 py-2 rounded-lg overflow-hidden"
                         style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
                         <motion.span aria-hidden className="absolute inset-0 pointer-events-none"
                           style={{ background: "rgba(255,255,255,0.13)" }}
-                          initial={{ clipPath: "inset(0 100% 0 0 round 1rem)" }}
-                          animate={{ clipPath: "inset(0 0% 0 0 round 1rem)" }}
+                          initial={{ clipPath: "inset(0 100% 0 0)" }}
+                          animate={{ clipPath: "inset(0 0% 0 0)" }}
                           transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.15 }} />
                         <motion.span aria-hidden className="absolute inset-0 pointer-events-none"
                           style={{ background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.38) 50%, transparent 100%)" }}
@@ -320,7 +321,7 @@ export default function LandingV3() {
           <div className={`flex flex-col flex-1 min-h-0 ${(phase === "typing" || phase === "highlighting") ? "invisible pointer-events-none" : ""}`}>
             <motion.h1 ref={settledH1Ref} animate={controls} className={`${H1_CLASS} shrink-0`}>
               Designing to translate business<br />
-              <span className="relative inline-block px-5 py-2 rounded-2xl overflow-hidden"
+              <span className="relative inline-block px-5 py-2 rounded-lg overflow-hidden"
                 style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
                 {(phase === "done" || alreadySeen) && (
                   <motion.span aria-hidden className="absolute top-0 bottom-0 pointer-events-none"

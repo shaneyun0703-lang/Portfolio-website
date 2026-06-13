@@ -276,8 +276,8 @@ export default function SearchAds() {
     <div className="theme-search min-h-screen bg-[var(--paper)]">
       <TableOfContents />
 
-      {/* Nav — expands at top, compacts on scroll */}
-      <nav className={`fixed z-50 transition-all duration-500 ease-in-out ${scrolled ? "top-4 left-4 right-7 rounded-xl" : "top-0 left-0 right-0 border-b border-[#333]"}`} style={scrolled ? { background: "rgba(54,54,58,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" } : { background: "#2c2c30" }}>
+      {/* Nav — darker glass panel, expands at top, compacts on scroll */}
+      <nav className={`fixed z-50 transition-all duration-500 ease-in-out ${scrolled ? "top-4 left-4 right-7 rounded-[10px]" : "top-0 left-0 right-0 border-b border-[#2f2f33]"}`} style={scrolled ? { background: "rgba(28,28,32,0.62)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" } : { background: "#1e1e22" }}>
         <div className={`px-7 flex items-center justify-between transition-all duration-500 ease-in-out ${scrolled ? "py-3" : "py-6"}`}>
           <div className="flex items-center gap-4">
             <Link
@@ -291,7 +291,6 @@ export default function SearchAds() {
               <div className={`font-display font-bold tracking-[-0.01em] text-[var(--ink)] transition-all duration-500 ease-in-out ${scrolled ? "text-[17px]" : "text-[20px]"}`}>{scrolled ? "Making Meta a real search ads player" : "Search Ads"}</div>
             </div>
           </div>
-          <span className={`font-display font-bold tracking-[-0.02em] text-[var(--ink)] transition-all duration-500 ease-in-out ${scrolled ? "text-[17px]" : "text-[20px]"}`}>Shane Yun</span>
         </div>
       </nav>
 

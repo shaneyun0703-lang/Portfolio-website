@@ -718,7 +718,7 @@ function CommerceToc() {
       className={`hidden xl:block fixed right-7 z-40 w-[310px] transition-all duration-500 ease-in-out ${scrolled ? "top-[calc(80px+1.75rem)]" : "top-[calc(72px+2.25rem)]"}`}
       aria-label="Section navigation"
     >
-      <div className="rounded-xl p-4 max-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden" style={{ background: "rgba(54,54,58,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" }}>
+      <div className="rounded-[10px] p-4 max-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden" style={{ background: "rgba(28,28,32,0.62)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" }}>
         <div className="font-mono text-[13px] text-[var(--mid)] tracking-[0.1em] uppercase mb-3 font-medium">
           Sections
         </div>
@@ -766,7 +766,7 @@ export default function CommerceAds() {
       <CommerceToc />
 
       {/* Nav — expands at top, compacts on scroll */}
-      <nav className={`fixed z-50 transition-all duration-500 ease-in-out ${scrolled ? "top-4 left-4 right-7 rounded-xl" : "top-0 left-0 right-0 border-b border-[#333]"}`} style={scrolled ? { background: "rgba(54,54,58,0.85)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)" } : { background: "#2c2c30" }}>
+      <nav className={`fixed z-50 transition-all duration-500 ease-in-out ${scrolled ? "top-4 left-4 right-7 rounded-[10px]" : "top-0 left-0 right-0 border-b border-[#2f2f33]"}`} style={scrolled ? { background: "rgba(28,28,32,0.62)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" } : { background: "#1e1e22" }}>
         <div className={`px-7 flex items-center justify-between transition-all duration-500 ease-in-out ${scrolled ? "py-3" : "py-6"}`}>
           <div className="flex items-center gap-4">
             <Link href="/" className="font-mono text-[13px] tracking-[0.04em] uppercase text-[#ccc] hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-[#444] hover:border-[#555] hover:bg-[rgba(255,255,255,0.04)]">
@@ -777,7 +777,6 @@ export default function CommerceAds() {
               <div className={`font-display font-bold tracking-[-0.01em] text-[var(--ink)] transition-all duration-500 ease-in-out ${scrolled ? "text-[17px]" : "text-[20px]"}`}>{scrolled ? "Unifying Meta's split eCommerce ad builder" : "Commerce Ads"}</div>
             </div>
           </div>
-          <span className={`font-display font-bold tracking-[-0.02em] text-[var(--ink)] transition-all duration-500 ease-in-out ${scrolled ? "text-[17px]" : "text-[20px]"}`}>Shane Yun</span>
         </div>
       </nav>
 
