@@ -45,13 +45,22 @@ function gatePage(redirect = "/", error?: string): string {
       background-size:24px 24px,24px 24px,120px 120px,120px 120px;background-position:center center}
     .vignette{position:absolute;inset:0;pointer-events:none;
       background:radial-gradient(ellipse at 50% 50%,transparent 30%,#1c1c1e 75%)}
+    .glow{position:absolute;left:50%;top:54%;transform:translate(-50%,-50%);
+      width:460px;height:360px;pointer-events:none;z-index:1}
+    .glow span{position:absolute;border-radius:50%;filter:blur(46px)}
+    .glow .g1{width:230px;height:230px;left:-26px;top:-6px;
+      background:radial-gradient(circle,#f5c842,transparent 70%);opacity:.5}
+    .glow .g2{width:210px;height:210px;right:-26px;bottom:0;
+      background:radial-gradient(circle,#ec4899,transparent 70%);opacity:.45}
+    .glow .g3{width:190px;height:190px;right:6px;top:-18px;
+      background:radial-gradient(circle,#6e8eff,transparent 70%);opacity:.4}
     .wrap{position:relative;z-index:10;width:100%;max-width:420px;padding:0 24px}
     .title{text-align:center;margin-bottom:48px}
     .title h1{font-family:'Syne',system-ui,sans-serif;font-size:3.5rem;font-weight:800;
       letter-spacing:-.04em;color:#fff;line-height:1}
     .title p{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:15px;
       color:rgba(255,255,255,.5);letter-spacing:.15em;text-transform:uppercase}
-    .box{background:rgba(28,28,32,.44);border:1px solid rgba(255,255,255,.1);
+    .box{background:rgba(28,28,32,.36);border:1px solid rgba(255,255,255,.1);
       border-radius:10px;padding:28px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
       box-shadow:0 8px 30px rgba(0,0,0,.5)}
     .field{position:relative}
@@ -84,6 +93,7 @@ function gatePage(redirect = "/", error?: string): string {
 <body>
   <div class="grid"></div>
   <div class="vignette"></div>
+  <div class="glow"><span class="g1"></span><span class="g2"></span><span class="g3"></span></div>
   <div class="wrap">
     <div class="title">
       <h1>Shane Yun</h1>

@@ -34,6 +34,12 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.85) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.85) 1px, transparent 1px)", backgroundSize: "24px 24px, 24px 24px, 120px 120px, 120px 120px", backgroundPosition: "center center" }} />
         <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, transparent 30%, #1c1c1e 75%)" }} />
+        {/* Soft color behind the panel so the frosted glass has something to refract */}
+        <div className="absolute left-1/2 top-[54%] -translate-x-1/2 -translate-y-1/2 w-[460px] h-[360px]" style={{ zIndex: 1 }}>
+          <div className="absolute rounded-full" style={{ width: 230, height: 230, left: -26, top: -6, background: "radial-gradient(circle, #f5c842, transparent 70%)", filter: "blur(46px)", opacity: 0.5 }} />
+          <div className="absolute rounded-full" style={{ width: 210, height: 210, right: -26, bottom: 0, background: "radial-gradient(circle, #ec4899, transparent 70%)", filter: "blur(46px)", opacity: 0.45 }} />
+          <div className="absolute rounded-full" style={{ width: 190, height: 190, right: 6, top: -18, background: "radial-gradient(circle, #6e8eff, transparent 70%)", filter: "blur(46px)", opacity: 0.4 }} />
+        </div>
       </div>
 
       <div className="w-full max-w-[420px] px-6 relative z-10">
@@ -41,7 +47,7 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
           <h1 className="font-display text-[3.5rem] font-extrabold tracking-[-0.04em] text-white leading-none">Shane Yun</h1>
           <p className="font-mono text-[15px] text-white/50 tracking-[0.15em] uppercase mt-3">Portfolio</p>
         </div>
-        <div className="rounded-[10px] px-7 py-7 backdrop-blur-lg" style={{ background: "rgba(28,28,32,0.44)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" }}>
+        <div className="rounded-[10px] px-7 py-7 backdrop-blur-lg relative z-10" style={{ background: "rgba(28,28,32,0.36)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" }}>
         <form onSubmit={handleSubmit}>
           <div className="relative">
             <input
