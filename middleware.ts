@@ -37,10 +37,12 @@ function gatePage(redirect = "/", error?: string): string {
     *{box-sizing:border-box;margin:0;padding:0}
     body{min-height:100vh;display:flex;align-items:center;justify-content:center;
       background:#1c1c1e;font-family:'Inter',system-ui,sans-serif;overflow:hidden;position:relative}
-    .grid{position:absolute;inset:0;opacity:.04;pointer-events:none;
-      background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);
-      background-size:60px 60px}
+    .grid{position:absolute;inset:0;opacity:.06;pointer-events:none;
+      background-image:linear-gradient(rgba(255,255,255,.3) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px),
+        linear-gradient(rgba(255,255,255,.85) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.85) 1px,transparent 1px);
+      background-size:24px 24px,24px 24px,120px 120px,120px 120px}
     .vignette{position:absolute;inset:0;pointer-events:none;
       background:radial-gradient(ellipse at 50% 50%,transparent 30%,#1c1c1e 75%)}
     .wrap{position:relative;z-index:10;width:100%;max-width:420px;padding:0 24px}
@@ -49,9 +51,9 @@ function gatePage(redirect = "/", error?: string): string {
       letter-spacing:-.04em;color:#fff;line-height:1}
     .title p{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:15px;
       color:rgba(255,255,255,.5);letter-spacing:.15em;text-transform:uppercase}
-    .box{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
-      border-radius:16px;padding:28px;backdrop-filter:blur(12px);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+    .box{background:rgba(28,28,32,.62);border:1px solid rgba(255,255,255,.1);
+      border-radius:10px;padding:28px;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+      box-shadow:0 8px 30px rgba(0,0,0,.5)}
     .field{position:relative}
     input{width:100%;padding:14px 48px 14px 16px;border-radius:12px;font-size:15px;outline:none;
       font-family:'Inter',system-ui,sans-serif;
