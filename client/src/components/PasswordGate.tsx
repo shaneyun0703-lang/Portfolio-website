@@ -32,8 +32,8 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden" style={{ background: "#1c1c1e", fontFamily: "'Inter', system-ui, sans-serif" }}>
       {/* Background — grid with fade */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.85) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.85) 1px, transparent 1px)", backgroundSize: "24px 24px, 24px 24px, 120px 120px, 120px 120px", backgroundPosition: "center center" }} />
-        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, transparent 58%, #1c1c1e 92%)" }} />
+        <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.85) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.85) 1px, transparent 1px)", backgroundSize: "24px 24px, 24px 24px, 120px 120px, 120px 120px", backgroundPosition: "center center" }} />
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, transparent 30%, #1c1c1e 75%)" }} />
       </div>
 
       <div className="w-full max-w-[420px] px-6 relative z-10">

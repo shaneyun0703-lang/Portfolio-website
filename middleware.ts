@@ -37,14 +37,14 @@ function gatePage(redirect = "/", error?: string): string {
     *{box-sizing:border-box;margin:0;padding:0}
     body{min-height:100vh;display:flex;align-items:center;justify-content:center;
       background:#1c1c1e;font-family:'Inter',system-ui,sans-serif;overflow:hidden;position:relative}
-    .grid{position:absolute;inset:0;opacity:.12;pointer-events:none;
+    .grid{position:absolute;inset:0;opacity:.06;pointer-events:none;
       background-image:linear-gradient(rgba(255,255,255,.3) 1px,transparent 1px),
         linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px),
         linear-gradient(rgba(255,255,255,.85) 1px,transparent 1px),
         linear-gradient(90deg,rgba(255,255,255,.85) 1px,transparent 1px);
       background-size:24px 24px,24px 24px,120px 120px,120px 120px;background-position:center center}
     .vignette{position:absolute;inset:0;pointer-events:none;
-      background:radial-gradient(ellipse at 50% 50%,transparent 58%,#1c1c1e 92%)}
+      background:radial-gradient(ellipse at 50% 50%,transparent 30%,#1c1c1e 75%)}
     .wrap{position:relative;z-index:10;width:100%;max-width:420px;padding:0 24px}
     .title{text-align:center;margin-bottom:48px}
     .title h1{font-family:'Syne',system-ui,sans-serif;font-size:3.5rem;font-weight:800;
