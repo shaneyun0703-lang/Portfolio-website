@@ -41,7 +41,7 @@ export function PasswordGate({ children }: { children: React.ReactNode }) {
           <h1 className="font-display text-[3.5rem] font-extrabold tracking-[-0.04em] text-white leading-none">Shane Yun</h1>
           <p className="font-mono text-[15px] text-white/50 tracking-[0.15em] uppercase mt-3">Portfolio</p>
         </div>
-        <div className="rounded-[10px] px-7 py-7 relative z-10" style={{ background: "rgba(28,28,32,0.36)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)", backdropFilter: "blur(9px)", WebkitBackdropFilter: "blur(9px)" }}>
+        <div className="rounded-[10px] px-7 py-7 relative z-10" style={{ background: "rgba(28,28,32,0.2)", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 8px 30px rgba(0,0,0,0.45)", backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)" }}>
         <form onSubmit={handleSubmit}>
           <div className="relative">
             <input
