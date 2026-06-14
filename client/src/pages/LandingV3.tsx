@@ -97,8 +97,7 @@ function Tags({ c }: { c: CaseStudyCard }) {
         style={{
           border: `1px solid rgba(${c.accentRgb},${c.whiteTag ? 0.7 : 0.6})`,
           background: `rgba(${c.accentRgb},${c.whiteTag ? 0.35 : 0.22})`,
-          color: c.neon ? "#ff84db" : c.whiteTag ? "rgba(255,255,255,0.95)" : `rgba(${c.accentRgb},1)`,
-          textShadow: c.neon ? `0 0 4px rgba(${c.accentRgb},0.6), 0 0 9px rgba(${c.accentRgb},0.38)` : undefined,
+          color: c.neon ? "#ff97e4" : c.whiteTag ? "rgba(255,255,255,0.95)" : `rgba(${c.accentRgb},1)`,
         }}>
         {c.outcome}
       </span>
