@@ -85,7 +85,8 @@ function gatePage(redirect = "/", error?: string): string {
     .toggle .eye-off{opacity:0}
     .toggle.shown .eye-on{opacity:0}
     .toggle.shown .eye-off{opacity:1}
-    .err{color:#ff5050;font-size:12px;text-align:center;margin-top:8px}
+    .err{font-family:'JetBrains Mono',monospace;color:#ff7a7a;font-size:11px;
+      letter-spacing:.02em;text-align:center;margin-top:10px}
     .submit{width:100%;margin-top:16px;padding:14px;border-radius:7px;min-height:52px;
       font-family:'Syne',system-ui,sans-serif;font-size:17px;font-weight:600;
       color:#fff;cursor:pointer;transition:background .2s,border-color .2s;
