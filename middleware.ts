@@ -60,7 +60,7 @@ function gatePage(redirect = "/", error?: string): string {
       color:rgba(255,255,255,.5);letter-spacing:.15em;text-transform:uppercase}
     .cardWrap{position:relative;z-index:10}
     .cardShadow{position:absolute;inset:0;border-radius:12px;pointer-events:none;
-      box-shadow:0 20px 48px rgba(0,0,0,.45);opacity:1}
+      box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:1}
     .anim .cardShadow{opacity:0}
     .cardShadow.in{opacity:1;transition:opacity .8s ease .45s}
     .box{position:relative;background:rgba(28,28,32,.28);border:1px solid rgba(255,255,255,.1);
@@ -174,7 +174,7 @@ function gatePage(redirect = "/", error?: string): string {
       function typeFoot(speed){var pre='Request access via ';var em='shane.yun0703@gmail.com';var total=pre.length+em.length;foot.innerHTML='<span></span><span class="hid">'+pre+'</span><span class="em"></span><span class="em hid">'+em+'</span>';foot.style.visibility='visible';var i=0;var id=setInterval(function(){i++;var pl=Math.min(i,pre.length);var pv=pre.slice(0,pl),ph=pre.slice(pl);var en=i>pre.length?i-pre.length:0;var ev=em.slice(0,en),eh=em.slice(en);foot.innerHTML='<span>'+pv+'</span><span class="hid">'+ph+'</span><span class="em">'+ev+'</span><span class="em hid">'+eh+'</span>';if(i>=total)clearInterval(id);},speed);}
       setTimeout(function(){sw.classList.add('in');},200);
       setTimeout(function(){box.classList.add('in');sh.classList.add('in');},1500);
-      setTimeout(function(){typeP(pw,'Enter password',72,true,function(){setTimeout(function(){typeP(sub,'Enter',95,false,function(){setTimeout(function(){typeFoot(70);},400);});},300);});},2350);
+      setTimeout(function(){typeP(pw,'Enter password',72,true,function(){setTimeout(function(){typeP(sub,'Enter',95,false,function(){setTimeout(function(){typeFoot(48);},400);});},300);});},2350);
     }catch(e){try{document.documentElement.className=document.documentElement.className.replace('anim','');var b=document.getElementById('box');if(b)b.classList.add('in');var f=document.getElementById('foot');if(f)f.style.visibility='visible';}catch(_){}}
   })();
   </script>
