@@ -72,7 +72,7 @@ function gatePage(redirect = "/", error?: string): string {
     input{width:100%;padding:14px 48px 14px 16px;border-radius:7px;font-size:15px;outline:none;
       font-family:'JetBrains Mono',monospace;
       background:rgba(255,255,255,.06);color:rgba(255,255,255,.9);
-      box-shadow:0 2px 10px rgba(0,0,0,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
       border:1px solid ${error ? "rgba(255,80,80,0.5)" : "rgba(255,255,255,0.05)"}}
     input::placeholder{color:rgba(255,255,255,.25)}
     input:focus{border-color:rgba(255,255,255,.2)}
@@ -90,7 +90,7 @@ function gatePage(redirect = "/", error?: string): string {
       font-family:'Syne',system-ui,sans-serif;font-size:17px;font-weight:600;
       color:#fff;cursor:pointer;transition:background .2s,border-color .2s;
       background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);
-      box-shadow:0 2px 10px rgba(0,0,0,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+      backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
     .submit:hover{background:rgba(255,255,255,.17);border-color:rgba(255,255,255,.16)}
     .foot{text-align:center;margin-top:24px;font-family:'JetBrains Mono',monospace;
       font-size:11px;color:rgba(255,255,255,.55);height:16px;line-height:16px;white-space:nowrap}
