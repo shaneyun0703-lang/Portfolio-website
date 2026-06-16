@@ -73,7 +73,7 @@ function gatePage(redirect = "/", error?: string): string {
       font-family:'JetBrains Mono',monospace;
       background:rgba(255,255,255,.06);color:rgba(255,255,255,.9);
       box-shadow:0 2px 10px rgba(0,0,0,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-      border:1px solid ${error ? "rgba(255,80,80,0.5)" : "rgba(255,255,255,0.1)"}}
+      border:1px solid ${error ? "rgba(255,80,80,0.5)" : "rgba(255,255,255,0.05)"}}
     input::placeholder{color:rgba(255,255,255,.25)}
     input:focus{border-color:rgba(255,255,255,.2)}
     .toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);
@@ -89,11 +89,12 @@ function gatePage(redirect = "/", error?: string): string {
     .submit{width:100%;margin-top:16px;padding:14px;border-radius:7px;min-height:52px;
       font-family:'Syne',system-ui,sans-serif;font-size:17px;font-weight:600;
       color:#fff;cursor:pointer;transition:background .2s,border-color .2s;
-      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);
       box-shadow:0 2px 10px rgba(0,0,0,.18);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-    .submit:hover{background:rgba(255,255,255,.17);border-color:rgba(255,255,255,.28)}
+    .submit:hover{background:rgba(255,255,255,.17);border-color:rgba(255,255,255,.16)}
     .foot{text-align:center;margin-top:24px;font-family:'JetBrains Mono',monospace;
-      font-size:11px;color:rgba(255,255,255,.55);height:16px;line-height:16px}
+      font-size:11px;color:rgba(255,255,255,.55);height:16px;line-height:16px;white-space:nowrap}
+    .foot .hid{opacity:0}
     .anim .foot{visibility:hidden}
     .foot .em{color:rgba(255,255,255,.8);font-weight:500}
     .foot .caret{color:rgba(255,255,255,.4)}
@@ -170,7 +171,7 @@ function gatePage(redirect = "/", error?: string): string {
       setTimeout(forceReveal,5000); // never leave the box hidden
       pw.placeholder='';sub.textContent=String.fromCharCode(160);
       function typeP(el,text,speed,isPh,done){var i=0;var id=setInterval(function(){i++;if(isPh)el.placeholder=text.slice(0,i);else el.textContent=text.slice(0,i);if(i>=text.length){clearInterval(id);if(done)done();}},speed);}
-      function typeFoot(speed){var pre='Request access via ';var full=pre+'shane.yun0703@gmail.com';foot.style.visibility='visible';var i=0;var id=setInterval(function(){i++;var t=full.slice(0,i);var h=i<=pre.length?t:pre+'<span class="em">'+t.slice(pre.length)+'</span>';if(i<full.length)h+='<span class="caret">|</span>';foot.innerHTML=h;if(i>=full.length)clearInterval(id);},speed);}
+      function typeFoot(speed){var pre='Request access via ';var em='shane.yun0703@gmail.com';var total=pre.length+em.length;foot.style.visibility='visible';var i=0;var id=setInterval(function(){i++;var pl=Math.min(i,pre.length);var pv=pre.slice(0,pl),ph=pre.slice(pl);var en=i>pre.length?i-pre.length:0;var ev=em.slice(0,en),eh=em.slice(en);foot.innerHTML='<span>'+pv+'</span><span class="hid">'+ph+'</span><span class="em">'+ev+'</span><span class="em hid">'+eh+'</span>';if(i>=total)clearInterval(id);},speed);}
       setTimeout(function(){sw.classList.add('in');},200);
       setTimeout(function(){box.classList.add('in');sh.classList.add('in');},1500);
       setTimeout(function(){typeP(pw,'Enter password',72,true,function(){setTimeout(function(){typeP(sub,'Enter',95,false,function(){setTimeout(function(){typeFoot(70);},400);});},300);});},2350);
