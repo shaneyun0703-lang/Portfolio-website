@@ -82,15 +82,17 @@ function gatePage(redirect = "/", error?: string): string {
       box-shadow:0 2px 10px rgba(0,0,0,.18),inset 0 0 18px rgba(90,210,130,.05)}
     /* masked emoji glyphs: very subtle green tint + slightly larger/spaced. Instant (no transition) so reveal doesn't flash color */
     .disp.masked{filter:grayscale(1) sepia(1) hue-rotate(55deg) saturate(1.4) brightness(1.05);
-      text-shadow:0 0 4px rgba(90,210,130,.14);font-size:18px;letter-spacing:.14em}
+      text-shadow:0 0 4px rgba(90,210,130,.14);font-size:16px;letter-spacing:.12em}
     .disp.err-on{border-color:rgba(255,80,80,.5)}
     .toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);
       background:none;border:none;cursor:pointer;color:rgba(255,255,255,.3);
       display:flex;align-items:center;justify-content:center;padding:4px;
       transition:opacity .2s,color .2s;width:18px;height:18px;flex-shrink:0;
       opacity:0;pointer-events:none}
+    .toggle{color:rgba(255,255,255,.5)}
     .toggle.show{opacity:1;pointer-events:auto}
-    .toggle:hover{color:rgba(255,255,255,.6)}
+    .toggle.shown{color:rgba(120,225,150,.95)}
+    .toggle:hover{color:rgba(255,255,255,.9)}
     .toggle svg{position:absolute;top:0;left:0;transition:opacity .15s}
     .toggle .eye-off{opacity:0}
     .toggle.shown .eye-on{opacity:0}
@@ -98,7 +100,7 @@ function gatePage(redirect = "/", error?: string): string {
     .err{font-family:'JetBrains Mono',monospace;color:#ff7a7a;font-size:11px;
       letter-spacing:.04em;text-align:center;margin-top:10px;text-transform:lowercase}
     .submit{width:100%;margin-top:16px;padding:14px;border-radius:7px;min-height:52px;
-      font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;letter-spacing:.1em;text-transform:lowercase;
+      font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:lowercase;
       color:#fff;cursor:pointer;transition:background .2s,border-color .2s;
       background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);
       backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
