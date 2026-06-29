@@ -208,23 +208,20 @@ function gatePage(redirect = "/", error?: string): string {
       {stars:[[0.55,0.18],[0.72,0.34],[0.58,0.52],[0.42,0.34],[0.22,0.70]],edges:[[0,1],[1,2],[2,3],[3,0],[3,4]],cx:0.18,cy:0.80,s:0.28},
       {stars:[[0.20,0.08],[0.18,0.20],[0.24,0.34],[0.30,0.50],[0.42,0.66],[0.56,0.76],[0.70,0.80],[0.82,0.74],[0.86,0.60]],edges:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]],cx:0.82,cy:0.80,s:0.32}
     ];
-    var nodes=[],groups=[],realEdges=[],tAccum=0,HOLD=2400,EASE=2000;
+    var nodes=[],realEdges=[],tAccum=0,HOLD=3400,MORPH=2800;
     function vis(x,y){var nx=(x-w/2)/360,ny=(y-h/2)/300;var d=Math.sqrt(nx*nx+ny*ny);return Math.max(0,Math.min(1,(d-0.6)/0.4));}
     function init(){
-      tAccum=0;nodes=[];groups=[];realEdges=[];var sMin=Math.min(w,h);
+      tAccum=0;nodes=[];realEdges=[];var sMin=Math.min(w,h);
       for(var t=0;t<TEMPLATES.length;t++){
-        var tpl=TEMPLATES[t],base=nodes.length,px=tpl.cx*w,py=tpl.cy*h,scale=sMin*tpl.s,maxr=0,gi=groups.length;
+        var tpl=TEMPLATES[t],base=nodes.length,px=tpl.cx*w,py=tpl.cy*h,scale=sMin*tpl.s;
         for(var si=0;si<tpl.stars.length;si++){
           var lx=tpl.stars[si][0],ly=tpl.stars[si][1],hx=px+(lx-0.5)*scale,hy=py+(ly-0.5)*scale;
-          var rr=Math.sqrt((hx-px)*(hx-px)+(hy-py)*(hy-py));if(rr>maxr)maxr=rr;
-          nodes.push({hx:hx,hy:hy,x:hx,y:hy,vx:0,vy:0,tw:Math.random()*6.2832,tws:0.015+Math.random()*0.03,member:true,g:gi});
+          nodes.push({x:hx,y:hy,hx:hx,hy:hy,vx:(Math.random()-0.5)*0.22,vy:(Math.random()-0.5)*0.22,tw:Math.random()*6.2832,tws:0.015+Math.random()*0.03,member:true});
         }
         for(var e=0;e<tpl.edges.length;e++){realEdges.push([base+tpl.edges[e][0],base+tpl.edges[e][1]]);}
-        var dir=Math.random()*6.2832,sp=0.09+Math.random()*0.07;
-        groups.push({cx:px,cy:py,ox:0,oy:0,vx:Math.cos(dir)*sp,vy:Math.sin(dir)*sp,ang:0,va:(Math.random()-0.5)*0.0008,rad:maxr});
       }
-      var filler=Math.min(12,Math.round((w*h)/110000));
-      for(var k=0;k<filler;k++){var fx=Math.random()*w,fy=Math.random()*h;nodes.push({hx:fx,hy:fy,x:fx,y:fy,vx:(Math.random()-0.5)*0.10,vy:(Math.random()-0.5)*0.10,tw:Math.random()*6.2832,tws:0.015+Math.random()*0.03,member:false,g:-1});}
+      var target=Math.min(62,Math.round((w*h)/26000)),filler=Math.max(0,target-nodes.length);
+      for(var k=0;k<filler;k++){var rx=Math.random()*w,ry=Math.random()*h;nodes.push({x:rx,y:ry,hx:rx,hy:ry,vx:(Math.random()-0.5)*0.22,vy:(Math.random()-0.5)*0.22,tw:Math.random()*6.2832,tws:0.015+Math.random()*0.03,member:false});}
     }
     function resize(){w=window.innerWidth;h=window.innerHeight;canvas.width=w*dpr;canvas.height=h*dpr;canvas.style.width=w+'px';canvas.style.height=h+'px';ctx.setTransform(dpr,0,0,dpr,0,0);init();}
     window.addEventListener('resize',resize);
@@ -233,16 +230,16 @@ function gatePage(redirect = "/", error?: string): string {
     var last=performance.now();
     function frame(now){
       var dt=Math.min(50,now-last);last=now;var f=dt/16.67;tAccum+=dt;
-      var move=Math.max(0,Math.min(1,(tAccum-HOLD)/EASE)); // hold the shapes, then ease into a gentle float
+      var morph=Math.max(0,Math.min(1,(tAccum-HOLD)/MORPH));
       ctx.clearRect(0,0,w,h);
-      var i,g;
-      // each constellation drifts + slowly rotates as one rigid body, bouncing off the edges
-      for(i=0;i<groups.length;i++){g=groups[i];g.ox+=g.vx*f*move;g.oy+=g.vy*f*move;g.ang+=g.va*f*move;var ccx=g.cx+g.ox,ccy=g.cy+g.oy,mg=g.rad+24;if(ccx<mg&&g.vx<0)g.vx*=-1;if(ccx>w-mg&&g.vx>0)g.vx*=-1;if(ccy<mg&&g.vy<0)g.vy*=-1;if(ccy>h-mg&&g.vy>0)g.vy*=-1;}
-      var X=new Array(nodes.length),Y=new Array(nodes.length);
-      for(i=0;i<nodes.length;i++){var n=nodes[i];if(n.g>=0){g=groups[n.g];var lx=n.hx-g.cx,ly=n.hy-g.cy,c=Math.cos(g.ang),s=Math.sin(g.ang);X[i]=g.cx+g.ox+lx*c-ly*s;Y[i]=g.cy+g.oy+lx*s+ly*c;}else{n.x+=n.vx*f*move;n.y+=n.vy*f*move;if(n.x<0||n.x>w)n.vx*=-1;if(n.y<0||n.y>h)n.vy*=-1;n.x=Math.max(0,Math.min(w,n.x));n.y=Math.max(0,Math.min(h,n.y));X[i]=n.x;Y[i]=n.y;}}
+      var i,j;
+      for(i=0;i<nodes.length;i++){var n=nodes[i];n.x+=n.vx*f*morph;n.y+=n.vy*f*morph;if(n.x<0||n.x>w)n.vx*=-1;if(n.y<0||n.y>h)n.vy*=-1;n.x=Math.max(0,Math.min(w,n.x));n.y=Math.max(0,Math.min(h,n.y));}
       ctx.lineWidth=1;
-      for(i=0;i<realEdges.length;i++){var a=realEdges[i][0],b=realEdges[i][1];var m=Math.min(vis(X[a],Y[a]),vis(X[b],Y[b]));if(m<=0)continue;ctx.strokeStyle='rgba(255,255,255,'+(0.34*m)+')';ctx.beginPath();ctx.moveTo(X[a],Y[a]);ctx.lineTo(X[b],Y[b]);ctx.stroke();}
-      for(i=0;i<nodes.length;i++){var nk=nodes[i];nk.tw+=nk.tws*f;var mk=vis(X[i],Y[i]);if(mk<=0)continue;var sb=Math.sin(nk.tw)*0.5+0.5,sp=Math.pow(sb,1.7),mem=nk.member;var gr=mem?3.2:2.2;var rg=ctx.createRadialGradient(X[i],Y[i],0,X[i],Y[i],gr);rg.addColorStop(0,'rgba(255,255,255,'+((mem?0.4:0.22)*sp*mk)+')');rg.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=rg;ctx.beginPath();ctx.arc(X[i],Y[i],gr,0,6.2832);ctx.fill();ctx.fillStyle='rgba(255,255,255,'+(((mem?0.5:0.3)+0.5*sp)*mk)+')';ctx.beginPath();ctx.arc(X[i],Y[i],mem?1.1:0.85,0,6.2832);ctx.fill();}
+      if(morph<1){var ra=1-morph;for(var re=0;re<realEdges.length;re++){var ni=nodes[realEdges[re][0]],nj=nodes[realEdges[re][1]];var m0=Math.min(vis(ni.x,ni.y),vis(nj.x,nj.y));if(m0<=0)continue;ctx.strokeStyle='rgba(255,255,255,'+(0.55*ra*m0)+')';ctx.beginPath();ctx.moveTo(ni.x,ni.y);ctx.lineTo(nj.x,nj.y);ctx.stroke();}}
+      var maxD=178,maxD2=maxD*maxD;var deg=new Array(nodes.length);for(i=0;i<deg.length;i++)deg[i]=0;
+      for(i=0;i<nodes.length;i++){for(j=i+1;j<nodes.length;j++){var dx=nodes[i].x-nodes[j].x,dy=nodes[i].y-nodes[j].y,d2=dx*dx+dy*dy;if(d2<maxD2){var m=Math.min(vis(nodes[i].x,nodes[i].y),vis(nodes[j].x,nodes[j].y));if(m<=0)continue;var a=(1-Math.sqrt(d2)/maxD)*0.36*m*morph;if(a>0.002){ctx.strokeStyle='rgba(255,255,255,'+a+')';ctx.beginPath();ctx.moveTo(nodes[i].x,nodes[i].y);ctx.lineTo(nodes[j].x,nodes[j].y);ctx.stroke();}deg[i]++;deg[j]++;}}}
+      if(pointer.active){var cD=200,cD2=cD*cD;for(i=0;i<nodes.length;i++){var nn=nodes[i];var px2=nn.x-pointer.x,py2=nn.y-pointer.y,pd2=px2*px2+py2*py2;if(pd2<cD2){var pa=(1-Math.sqrt(pd2)/cD)*0.3*vis(nn.x,nn.y)*morph;if(pa>0){ctx.strokeStyle='rgba(255,255,255,'+pa+')';ctx.beginPath();ctx.moveTo(nn.x,nn.y);ctx.lineTo(pointer.x,pointer.y);ctx.stroke();}nn.vx+=(pointer.x-nn.x)*0.000018*f;nn.vy+=(pointer.y-nn.y)*0.000018*f;}}}
+      for(i=0;i<nodes.length;i++){var nk=nodes[i];nk.tw+=nk.tws*f;var mk=vis(nk.x,nk.y);if(mk<=0)continue;if(!nk.member&&deg[i]===0)continue;var sb=Math.sin(nk.tw)*0.5+0.5;var sp=Math.pow(sb,1.7);var hold=nk.member?(1-morph):0;var gr=3.2+hold*1.0;var g=ctx.createRadialGradient(nk.x,nk.y,0,nk.x,nk.y,gr);g.addColorStop(0,'rgba(255,255,255,'+((0.4+0.25*hold)*sp*mk)+')');g.addColorStop(1,'rgba(255,255,255,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(nk.x,nk.y,gr,0,6.2832);ctx.fill();ctx.fillStyle='rgba(255,255,255,'+((0.42+0.6*sp+0.3*hold)*mk)+')';ctx.beginPath();ctx.arc(nk.x,nk.y,1.0+hold*0.5,0,6.2832);ctx.fill();}
       raf=requestAnimationFrame(frame);
     }
     var raf;resize();
