@@ -83,10 +83,13 @@ function gatePage(redirect = "/", error?: string): string {
     /* masked emoji glyphs: very subtle green tint + slightly larger/spaced. Instant (no transition) so reveal doesn't flash color */
     .disp.masked{filter:grayscale(1) sepia(1) hue-rotate(55deg) saturate(1.4) brightness(1.05);
       text-shadow:0 0 4px rgba(90,210,130,.14);font-size:18px;letter-spacing:.14em}
+    .disp.err-on{border-color:rgba(255,80,80,.5)}
     .toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);
       background:none;border:none;cursor:pointer;color:rgba(255,255,255,.3);
       display:flex;align-items:center;justify-content:center;padding:4px;
-      transition:color .2s;width:18px;height:18px;flex-shrink:0}
+      transition:opacity .2s,color .2s;width:18px;height:18px;flex-shrink:0;
+      opacity:0;pointer-events:none}
+    .toggle.show{opacity:1;pointer-events:auto}
     .toggle:hover{color:rgba(255,255,255,.6)}
     .toggle svg{position:absolute;top:0;left:0;transition:opacity .15s}
     .toggle .eye-off{opacity:0}
@@ -134,7 +137,7 @@ function gatePage(redirect = "/", error?: string): string {
               <svg class="eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
             </button>
           </div>
-          ${error ? `<p class="err">${error}</p>` : ""}
+          <p class="err" id="errMsg"${error ? "" : ' style="display:none"'}>${error ?? "Incorrect password — try again."}</p>
           <button type="submit" class="submit" id="submitBtn">enter</button>
         </form>
       </div>
@@ -149,28 +152,45 @@ function gatePage(redirect = "/", error?: string): string {
     var POOL=["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐸","🐵","🐔","🐧","🐦","🦆","🦉","🦄","🐝","🐢","🐠","🐬","🐳","🦋","🐞","🐙","🦀","🐌","🍎","🍊","🍋","🍉","🍓","🍒","🍍","🥝","🥥","🍅","🥕","🌽","🍄","🍞","🧀","🍕","🍔","🌮","🍩","🍪","🎂","🍰","🍦","🍫","🍿","🥐","🌵","🌲","🌳","🌴","🌱","🌿","🍀","🍁","🌷","🌸","🌹","🌻","🌼","🌙","⭐","🌟","⚡","🔥","🌈","☀️","⛄","🌊","⚽","🏀","🏈","⚾","🎾","🎱","🎸","🎹","🎺","🎻","🥁","🎨","🚀","✈️","🚗","🚲","⛵","🎈","🎁","🔔","💡","📷","🔭","🧭","⏰","🔑","🧩","🎲","🪁"];
     function rnd(){return POOL[Math.floor(Math.random()*POOL.length)];}
     var real='',emo=[],shown=false;
+    function showError(){var em=document.getElementById('errMsg');if(em)em.style.display='';disp.classList.add('err-on');}
+    function clearError(){var em=document.getElementById('errMsg');if(em)em.style.display='none';disp.classList.remove('err-on');}
     function render(){
+      if(real.length===0)shown=false;
       var hasText=real.length>0;
       if(shown){disp.value=real;disp.classList.remove('masked');}
       else{disp.value=emo.join('');if(hasText)disp.classList.add('masked');else disp.classList.remove('masked');}
       pw.value=real;
       if(hasText)disp.classList.add('has');else disp.classList.remove('has');
+      // eye toggle only appears once there is text
+      if(toggle){if(hasText)toggle.classList.add('show');else toggle.classList.remove('show');if(shown)toggle.classList.add('shown');else toggle.classList.remove('shown');}
       try{if(document.activeElement===disp){var len=disp.value.length;disp.setSelectionRange(len,len);}}catch(e){}
     }
     disp.addEventListener('keydown',function(e){
       if(e.key==='Enter'||e.metaKey||e.ctrlKey||e.altKey)return; // submit / shortcuts pass through
+      clearError();
       if(e.key==='Backspace'){e.preventDefault();real=real.slice(0,-1);emo.pop();render();return;}
       if(e.key&&e.key.length===1){e.preventDefault();real+=e.key;emo.push(rnd());render();}
     });
     disp.addEventListener('paste',function(e){
-      e.preventDefault();
+      e.preventDefault();clearError();
       var t=((e.clipboardData||window.clipboardData)||{getData:function(){return '';}}).getData('text');
       if(!t)return;var arr=Array.from(t);
       for(var i=0;i<arr.length;i++){real+=arr[i];emo.push(rnd());}
       render();
     });
-    if(toggle){toggle.addEventListener('click',function(){shown=!shown;toggle.classList.toggle('shown');render();disp.focus();});}
-    document.getElementById('gateForm').addEventListener('submit',function(){pw.value=real;});
+    if(toggle){toggle.addEventListener('click',function(){if(real.length===0)return;shown=!shown;render();disp.focus();});}
+    var gForm=document.getElementById('gateForm');
+    gForm.addEventListener('submit',function(e){
+      pw.value=real;
+      if(!window.fetch)return; // no fetch: fall back to a normal POST (full reload)
+      e.preventDefault();
+      var rEl=gForm.querySelector('input[name=redirect]');var redir=rEl?rEl.value:'/';
+      var body='password='+encodeURIComponent(real)+'&redirect='+encodeURIComponent(redir);
+      fetch('/auth',{method:'POST',credentials:'same-origin',headers:{'X-Gate-Fetch':'1','Content-Type':'application/x-www-form-urlencoded'},body:body})
+        .then(function(r){return r.json().then(function(j){return j;},function(){return null;});})
+        .then(function(j){if(j&&j.ok){window.location.href=j.redirect||'/';}else{showError();disp.focus();}})
+        .catch(function(){showError();});
+    });
   })();
   /* constellation: real shapes hold, then disfigure into a drifting web */
   (function(){
@@ -265,16 +285,31 @@ export default async function middleware(
       // ignore parse errors
     }
 
+    const isFetch = req.headers.get("x-gate-fetch") === "1";
+    const setCookie = `${COOKIE}=${expected}; Path=/; HttpOnly; SameSite=Strict; Max-Age=604800`;
+
     if (submitted === password) {
+      // Fetch flow (JS): JSON so the client can redirect without a page reload.
+      if (isFetch) {
+        return new Response(JSON.stringify({ ok: true, redirect }), {
+          status: 200,
+          headers: { "Content-Type": "application/json", "Set-Cookie": setCookie },
+        });
+      }
+      // No-JS fallback: classic redirect.
       return new Response(null, {
         status: 302,
-        headers: {
-          Location: redirect,
-          "Set-Cookie": `${COOKIE}=${expected}; Path=/; HttpOnly; SameSite=Strict; Max-Age=604800`,
-        },
+        headers: { Location: redirect, "Set-Cookie": setCookie },
       });
     }
 
+    // Wrong password. Fetch flow returns JSON (page/background stay put); no-JS re-renders the gate.
+    if (isFetch) {
+      return new Response(JSON.stringify({ ok: false }), {
+        status: 401,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
     return new Response(gatePage(redirect, "Incorrect password — try again."), {
       status: 401,
       headers: { "Content-Type": "text/html; charset=utf-8" },
