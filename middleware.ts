@@ -71,7 +71,7 @@ function gatePage(redirect = "/", error?: string): string {
     .field{position:relative}
     .disp{width:100%;padding:14px 48px 14px 16px;border-radius:7px;font-size:15px;line-height:24px;outline:none;
       font-family:'JetBrains Mono',monospace;caret-color:#fff;
-      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      white-space:nowrap;overflow:hidden;
       background:rgba(255,255,255,.06);color:rgba(255,255,255,.9);
       backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
       border:1px solid ${error ? "rgba(255,80,80,0.5)" : "rgba(255,255,255,0.1)"}}
@@ -89,10 +89,8 @@ function gatePage(redirect = "/", error?: string): string {
       display:flex;align-items:center;justify-content:center;padding:4px;
       transition:opacity .2s,color .2s;width:18px;height:18px;flex-shrink:0;
       opacity:0;pointer-events:none}
-    .toggle{color:rgba(255,255,255,.5)}
+    .toggle{color:rgba(255,255,255,.55)}
     .toggle.show{opacity:1;pointer-events:auto}
-    .toggle.shown{color:rgba(120,225,150,.95)}
-    .toggle:hover{color:rgba(255,255,255,.9)}
     .toggle svg{position:absolute;top:0;left:0;transition:opacity .15s}
     .toggle .eye-off{opacity:0}
     .toggle.shown .eye-on{opacity:0}
@@ -100,7 +98,7 @@ function gatePage(redirect = "/", error?: string): string {
     .err{font-family:'JetBrains Mono',monospace;color:#ff7a7a;font-size:11px;
       letter-spacing:.04em;text-align:center;margin-top:10px;text-transform:lowercase}
     .submit{width:100%;margin-top:16px;padding:14px;border-radius:7px;min-height:52px;
-      font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:lowercase;
+      font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;letter-spacing:.1em;text-transform:lowercase;
       color:#fff;cursor:pointer;transition:background .2s,border-color .2s;
       background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);
       backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -165,7 +163,7 @@ function gatePage(redirect = "/", error?: string): string {
       if(hasText)disp.classList.add('has');else disp.classList.remove('has');
       // eye toggle only appears once there is text
       if(toggle){if(hasText)toggle.classList.add('show');else toggle.classList.remove('show');if(shown)toggle.classList.add('shown');else toggle.classList.remove('shown');}
-      try{if(document.activeElement===disp){var len=disp.value.length;disp.setSelectionRange(len,len);}}catch(e){}
+      try{if(document.activeElement===disp){var len=disp.value.length;disp.setSelectionRange(len,len);}disp.scrollLeft=disp.scrollWidth;}catch(e){}
     }
     disp.addEventListener('keydown',function(e){
       if(e.key==='Enter'||e.metaKey||e.ctrlKey||e.altKey)return; // submit / shortcuts pass through
