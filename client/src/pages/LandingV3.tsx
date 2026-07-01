@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence, useAnimation } from "framer-motion";
 import { Link } from "wouter";
+import ChromeHeart from "@/components/ChromeHeart";
 
 type CaseStudyCard = {
   href: string;
@@ -195,14 +196,14 @@ export default function LandingV3() {
       if (i === HERO_FULL.length) {
         clearInterval(id);
         setShowCursor(false);
-        setTimeout(() => setPhase("highlighting"), 250);
+        setTimeout(() => setPhase("highlighting"), 180);
         setTimeout(() => {
           if (introH1Ref.current) capturedTop.current = introH1Ref.current.getBoundingClientRect().top;
           setPhase("settling");
-        }, 250 + 1900);
-        setTimeout(() => setPhase("projects"), 250 + 1900 + 800);
+        }, 180 + 2750);
+        setTimeout(() => setPhase("projects"), 180 + 2750 + 800);
       }
-    }, 62);
+    }, 64);
     return () => clearInterval(id);
   }, []);
 
@@ -221,7 +222,7 @@ export default function LandingV3() {
           setTimeout(() => { sessionStorage.setItem("intro-seen-v3", "1"); setPhase("done"); }, 500);
         }, 400 + 1000);
       }
-    }, 44);
+    }, 48);
     return () => clearInterval(id);
   }, [phase]);
 
@@ -299,18 +300,21 @@ export default function LandingV3() {
                   ) : (
                     <>
                       Designing to translate business<br />
-                      <span className="relative inline-block px-5 py-2 rounded-lg overflow-hidden"
+                      <span className="relative inline-block pl-5 pr-[1.95em] py-2 rounded-lg overflow-hidden"
                         style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
-                        <motion.span aria-hidden className="absolute inset-0 pointer-events-none"
-                          style={{ background: "rgba(255,255,255,0.13)" }}
-                          initial={{ clipPath: "inset(0 100% 0 0)" }}
-                          animate={{ clipPath: "inset(0 0% 0 0)" }}
-                          transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.15 }} />
-                        <motion.span aria-hidden className="absolute inset-0 pointer-events-none"
-                          style={{ background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.38) 50%, transparent 100%)" }}
-                          initial={{ x: "-110%" }} animate={{ x: "210%" }}
-                          transition={{ duration: 0.85, ease: "easeInOut", delay: 0.95 }} />
+                        <span className="absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
+                          <motion.span aria-hidden className="absolute inset-0"
+                            style={{ background: "rgba(255,255,255,0.13)" }}
+                            initial={{ clipPath: "inset(0 100% 0 0)" }}
+                            animate={{ clipPath: "inset(0 0% 0 0)" }}
+                            transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94], delay: 1.1 }} />
+                          <motion.span aria-hidden className="absolute inset-0"
+                            style={{ background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.38) 50%, transparent 100%)" }}
+                            initial={{ x: "-110%" }} animate={{ x: "210%" }}
+                            transition={{ duration: 0.85, ease: "easeInOut", delay: 1.75 }} />
+                        </span>
                         ambition into growth
+                        <span className="absolute top-1/2 right-[0.45em] -translate-y-1/2"><ChromeHeart spin={false} /></span>
                       </span>
                     </>
                   )}
@@ -322,15 +326,20 @@ export default function LandingV3() {
           <div className={`flex flex-col flex-1 min-h-0 ${(phase === "typing" || phase === "highlighting") ? "invisible pointer-events-none" : ""}`}>
             <motion.h1 ref={settledH1Ref} animate={controls} className={`${H1_CLASS} shrink-0`}>
               Designing to translate business<br />
-              <span className="relative inline-block px-5 py-2 rounded-lg overflow-hidden"
+              <span className="relative inline-block pl-5 pr-[1.95em] py-2 rounded-lg overflow-hidden"
                 style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
                 {(phase === "done" || alreadySeen) && (
-                  <motion.span aria-hidden className="absolute top-0 bottom-0 pointer-events-none"
-                    style={{ width: "60%", left: 0, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)" }}
-                    initial={{ x: "-100%" }} animate={{ x: ["-100%", "240%"] }}
-                    transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut", repeatDelay: 3.2 }} />
+                  <span className="absolute inset-0 rounded-lg overflow-hidden pointer-events-none">
+                    <motion.span aria-hidden className="absolute top-0 bottom-0"
+                      style={{ width: "60%", left: 0, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent)" }}
+                      initial={{ x: "-100%" }} animate={{ x: ["-100%", "240%"] }}
+                      transition={{ repeat: Infinity, duration: 2.8, ease: "easeInOut", repeatDelay: 3.2 }} />
+                  </span>
                 )}
                 ambition into growth
+                {phase !== "typing" && phase !== "highlighting" && (
+                  <span className="absolute top-1/2 right-[0.45em] -translate-y-1/2"><ChromeHeart spin={phase === "projects" || phase === "done"} popIn={alreadySeen} /></span>
+                )}
               </span>
             </motion.h1>
 
