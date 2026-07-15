@@ -33,10 +33,10 @@ export default function Resume() {
           <div className="flex justify-between items-end mb-0.5">
             <div>
               <h1 className="text-[2.2rem] font-black tracking-[-0.02em] leading-none" style={{ fontFamily: "'Syne', sans-serif" }}>SHANE YUN</h1>
-              <p className="text-[0.72rem] font-medium tracking-[0.14em] uppercase text-[#666] mt-1">Senior Product Designer</p>
+              <p className="text-[0.72rem] font-medium tracking-[0.14em] uppercase text-[#666] mt-1">Senior Product Designer · Monetization AI</p>
             </div>
             <div className="text-right text-[0.72rem] text-[#666] leading-[1.6]">
-              <div><a href="https://shane-yun.vercel.app" target="_blank" rel="noopener noreferrer" className="font-bold text-[#1a1a1a] hover:text-[#444] transition-colors">shane-yun.vercel.app</a></div>
+              <div><a href="https://shane-yun.vercel.app" target="_blank" rel="noopener noreferrer" className="font-bold text-[#1a1a1a] hover:text-[#444] transition-colors">shane-yun.vercel.app</a> <span className="font-bold text-[#1a1a1a]">(PW: openSesame)</span></div>
               <div><a href="mailto:shane.yun0703@gmail.com" className="hover:text-[#1a1a1a] transition-colors">shane.yun0703@gmail.com</a></div>
               <div><a href="https://linkedin.com/in/shane-yun" target="_blank" rel="noopener noreferrer" className="hover:text-[#1a1a1a] transition-colors">linkedin.com/in/shane-yun</a></div>
             </div>
@@ -63,10 +63,10 @@ export default function Resume() {
               <span className="text-[0.72rem] text-[#555] font-semibold">2024 – Present</span>
             </div>
             <ul className="text-[0.72rem] leading-[1.65] mt-1 space-y-1">
-              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Led design for Meta's <strong>unified Sales campaign creation experience</strong> — bringing product catalog-driven and manual creative ad flows into a single end-to-end advertiser journey across 50%+ of Meta's total revenue</span></li>
-              <li className="flex gap-1.5 pl-3"><span className="shrink-0 text-[#aaa]">–</span><span>Redesigned the <strong>targeting and conversion setup</strong> to bring both ad flows to parity — launched to 100%, growing audience reach by 1.6% and enabling a <strong>$150M+ annual revenue commerce ads launch</strong></span></li>
-              <li className="flex gap-1.5 pl-3"><span className="shrink-0 text-[#aaa]">–</span><span>Designed the <strong>ad creative experience</strong> — enabling product catalog and manual creative advertisers to share the same creative suite for the first time, now in scaled alpha with <strong>100K brands worldwide</strong></span></li>
-              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Defined Meta's <strong>Search AI Ads</strong> experience end-to-end — through 10+ concept explorations and a 3-phase research program with 14+ companies, securing leadership alignment for an alpha launch</span></li>
+              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Defined Meta's <strong>Search AI Ads</strong> experience through a 3-phase research program with 14+ companies across 10+ concepts, securing leadership alignment for an alpha launch and <strong>currently leading strategy for the next phase of search ads within Meta AI</strong></span></li>
+              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Led design for Meta's <strong>unified commerce ad creation</strong> — merging AI product-catalog ads and manually built ads into a streamlined creation flow that drives 50%+ of Meta's total revenue</span></li>
+              <li className="flex gap-1.5 pl-3"><span className="shrink-0 text-[#aaa]">–</span><span>Redesigned the <strong>targeting and conversion setup</strong> to bring both ad flows to parity — launched to 100%, growing audience reach by 1.6% and enabling a <strong>$150M+ annual revenue multi-conversions channel launch</strong></span></li>
+              <li className="flex gap-1.5 pl-3"><span className="shrink-0 text-[#aaa]">–</span><span>Designed the <strong>ad creative experience</strong> — enabling AI catalog and manual creative advertisers to share the same creative suite for the first time, now in scaled alpha with <strong>150K brands worldwide</strong></span></li>
               <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Led the scaling of <strong>WhatsApp Ads</strong> from 2 to 5 of Meta's 6 marketing objectives — including WhatsApp's first website-destination ads — reaching a 100% global launch</span></li>
             </ul>
           </div>
@@ -93,7 +93,7 @@ export default function Resume() {
               <span className="text-[0.72rem] text-[#555] font-semibold">2021 – 2023</span>
             </div>
             <ul className="text-[0.72rem] leading-[1.65] mt-1 space-y-1">
-              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Led design for Meta's <strong>privacy-preserving app ads system</strong> — a net-new solution enabling app advertisers to continue running campaigns after Apple's iOS privacy changes, launched to 100% across 5 campaign types, reaching a record <strong>$6M daily revenue</strong> and a <strong>9.5% increase in conversions</strong> for app-focused advertisers</span></li>
+              <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Led design for Meta's <strong>privacy-preserving app ads system</strong> — a net-new solution enabling app advertisers to keep running campaigns after Apple's iOS privacy changes, launched to 100% across 5 campaign types, reaching a record <strong>$6M daily revenue</strong> and a <strong>9.5% increase in conversions</strong> for app-focused advertisers</span></li>
               <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Improved <strong>app campaign setup</strong> for Apple's privacy framework — resolved error states across 175K+ campaign creation attempts, reducing setup time by 3.74% ($2.5M in quarterly advertiser revenue)</span></li>
               <li className="flex gap-1.5"><span className="shrink-0">•</span><span>Owned <strong>A/B Testing for automated app campaigns</strong> end-to-end — led research, built 2 prototypes, launched to 100% with 130 brands, and designed the <strong>App Setup Tool</strong> MVP, unblocking 761 apps and driving <strong>+4.5% app ads revenue</strong></span></li>
             </ul>
@@ -110,8 +110,8 @@ export default function Resume() {
               <p className="text-[0.72rem] text-[#555]">B.A. Information Science (<strong>UX concentration</strong>) | <strong>3.8 GPA</strong></p>
             </div>
             <div>
-              <h2 className="text-[0.8rem] font-bold tracking-[0.22em] uppercase mb-2">AI & Design Tools</h2>
-              <p className="text-[0.72rem] text-[#555]">Claude, Figma Make & MCP, Manus, Cursor</p>
+              <h2 className="text-[0.8rem] font-bold tracking-[0.22em] uppercase mb-2">AI Fluency & Tools</h2>
+              <p className="text-[0.72rem] text-[#555]">Builds with Claude, Figma Make & MCP, Manus, Cursor</p>
             </div>
           </div>
         </div>
