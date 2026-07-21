@@ -111,7 +111,7 @@ export default function Resume() {
             </div>
             <div>
               <h2 className="text-[0.8rem] font-bold tracking-[0.22em] uppercase mb-2">AI Fluency & Tools</h2>
-              <p className="text-[0.72rem] text-[#555]">Builds with Claude, Figma Make & MCP, Manus, Cursor</p>
+              <p className="text-[0.72rem] text-[#555]">Claude, Figma Make & MCP, Manus, Cursor, GitHub</p>
             </div>
           </div>
         </div>
