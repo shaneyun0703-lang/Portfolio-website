@@ -33,7 +33,7 @@ export default function Resume() {
           <div className="flex justify-between items-end mb-0.5">
             <div>
               <h1 className="text-[2.2rem] font-black tracking-[-0.02em] leading-none" style={{ fontFamily: "'Syne', sans-serif" }}>SHANE YUN</h1>
-              <p className="text-[0.72rem] font-medium tracking-[0.14em] uppercase text-[#666] mt-1">Senior Product Designer · Monetization AI</p>
+              <p className="text-[0.72rem] font-medium tracking-[0.14em] uppercase text-[#666] mt-1">Senior Product Designer</p>
             </div>
             <div className="text-right text-[0.72rem] text-[#666] leading-[1.6]">
               <div><a href="https://shane-yun.vercel.app" target="_blank" rel="noopener noreferrer" className="font-bold text-[#1a1a1a] hover:text-[#444] transition-colors">shane-yun.vercel.app</a> <span className="font-bold text-[#1a1a1a]">(PW: openSesame)</span></div>
