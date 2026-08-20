@@ -1,5 +1,23 @@
 # How to roll the site back
 
+## Start here — no code required
+
+Vercel keeps every version it has ever built, and rolling back is a button.
+
+1. **vercel.com** → the Portfolio project
+2. **Deployments** tab
+3. Find the deployment dated **before 2026-08-19** (newest is at the top)
+4. **⋯** menu on that row → the rollback option (*Instant Rollback* or
+   *Promote to Production*, depending on the current Vercel UI)
+
+The live site reverts in seconds. This changes only which build visitors get —
+the code stays in the repo, so it is not destructive and you can flip back.
+
+Reach for the git steps below only if you need to rebuild from source, restore
+one specific file, or Vercel is unavailable.
+
+---
+
 The portfolio as it stood before the Manifest landing work is saved in two
 places, both pointing at the same commit:
 
