@@ -189,7 +189,7 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
         <div className="text-center mb-12">
           {/* The landing's wordmark, scaled down: Shane solid, Yun outlined. The
               name keeps its form across the unlock instead of changing shape. */}
-          <h1 className="font-display font-extrabold uppercase flex flex-col items-center text-[3.9rem] leading-[0.86] tracking-[-0.02em]">
+          <h1 className="font-display font-extrabold uppercase flex flex-col items-center text-[5rem] leading-[0.86] tracking-[-0.02em]">
             <span style={{ color: "#f4f4f5" }}>Shane</span>
             <span style={{ color: "transparent", WebkitTextStroke: "1.5px rgba(255,255,255,0.5)" }}>Yun</span>
           </h1>

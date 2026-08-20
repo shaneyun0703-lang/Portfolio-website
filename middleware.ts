@@ -54,8 +54,13 @@ function gatePage(redirect = "/", error?: string): string {
     .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 30%,#1c1c1e 75%)}
     .wrap{position:relative;z-index:10;width:100%;max-width:420px;padding:0 24px}
     .title{text-align:center;margin-bottom:48px}
-    .title h1{font-family:'Syne',system-ui,sans-serif;font-size:3.5rem;font-weight:800;
-      letter-spacing:-.04em;color:#fff;line-height:1;text-transform:uppercase}
+    /* Matches the landing's wordmark: stacked, first name solid, last name
+       drawn as an outline. The name keeps its form across the unlock instead of
+       changing shape once you are through. Kept in sync with PasswordGate.tsx. */
+    .title h1{font-family:'Syne',system-ui,sans-serif;font-size:5rem;font-weight:800;
+      letter-spacing:-.02em;color:#fff;line-height:.86;text-transform:uppercase;
+      display:flex;flex-direction:column;align-items:center}
+    .title h1 .out{color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.5)}
     .title p{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:15px;
       color:rgba(255,255,255,.5);letter-spacing:.15em;text-transform:uppercase}
     .cardWrap{position:relative;z-index:10}
@@ -121,7 +126,7 @@ function gatePage(redirect = "/", error?: string): string {
   </div>
   <div class="wrap">
     <div class="title">
-      <h1>Shane Yun</h1>
+      <h1><span>Shane</span><span class="out">Yun</span></h1>
       <p>Portfolio</p>
     </div>
     <div class="cardWrap">
