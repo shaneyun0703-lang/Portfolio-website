@@ -460,19 +460,21 @@ export const UNLOCK_FLAG = "hx-just-unlocked";
    the flow — read the flag, paint the field, know the way back — so they live
    here once rather than being restated on every page. */
 
-/** True only for `?skin=manifest`, so a case study opened any other way is the
- *  live page, untouched. */
+/** The skin is the default now that the Manifest landing is the front door —
+ *  a case study reached from it should not change language on arrival. It was
+ *  opt-in via `?skin=manifest` while the landing was a preview; that URL still
+ *  works, and `?skin=off` returns the page to its pre-Manifest appearance
+ *  without touching the code. */
 export function readManifestSkin(): "manifest" | undefined {
-  if (typeof window === "undefined") return undefined;
-  return new URLSearchParams(window.location.search).get("skin") === "manifest"
-    ? "manifest" : undefined;
+  if (typeof window === "undefined") return "manifest";
+  return new URLSearchParams(window.location.search).get("skin") === "off"
+    ? undefined : "manifest";
 }
 
-/** "← All projects" returns into the flow while skinned — without this the
- *  chain dead-ends on the live landing and the preview is over. `flow=1` is
- *  what keeps the skin on the links for the next project. */
-export function allProjectsHref(skin?: "manifest") {
-  return skin ? "/handoff/manifest?flow=1" : "/";
+/** "← All projects" goes home. The landing is `/` now, so this no longer has to
+ *  carry a flag to keep the skin alive across the chain. */
+export function allProjectsHref() {
+  return "/";
 }
 
 /** The Manifest field, behind the page's own content. */

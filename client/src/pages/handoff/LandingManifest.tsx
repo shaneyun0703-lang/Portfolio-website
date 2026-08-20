@@ -104,11 +104,11 @@ export default function LandingManifest() {
   const typed = kind === "type" && !ch.reduced;
   const subN = useTypewriter(SUB_LEN, TYPE_AT, SUB_STEP, typed);
 
-  /* Arriving through /flow, the case studies should keep the same language, so
-     the skin travels with the link. Straight to /handoff/manifest, they don't. */
-  const inFlow = typeof window !== "undefined"
-    && new URLSearchParams(window.location.search).get("flow") === "1";
-  const hrefFor = (w: Work) => (inFlow ? `${w.href}?skin=manifest` : w.href);
+  /* Plain URLs. The skin used to ride on `?skin=manifest` because the case
+     studies defaulted to their old appearance and this landing was a preview;
+     both are true no longer, so the query string would only be noise in a
+     visitor's address bar. */
+  const hrefFor = (w: Work) => w.href;
 
   /* 01 opens once the reveal settles and STAYS open — it is the page's resting
      state, not a hint that plays and leaves. Two reasons it no longer closes:

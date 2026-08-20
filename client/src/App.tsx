@@ -18,13 +18,18 @@ import HandoffFlow from "./pages/handoff/Flow";
 function Router() {
   return (
     <Switch>
-      <Route path={"/"}>{() => <LandingV3 />}</Route>
-      {/* The one surviving landing exploration. PREVIEW ONLY, never linked from /.
-          Everything else that lived here (the bright/terminal/editorial/bento/code
-          iterations, the Access direction, the unlock flow, the /v1 landing) is
-          parked in archive/2026-08-explorations/ rather than deleted. */}
+      {/* The Manifest landing is the front door as of 2026-08-19. It stopped
+          being a preview then — the skin it hands to the case studies is now
+          their default too, so the whole site reads in one language. */}
+      <Route path={"/"} component={HandoffManifest} />
+      {/* The previous home page, kept reachable for comparison. The pre-today
+          site in full is the `original-2026-08-17` tag — see RESTORE.md. */}
+      <Route path={"/v3"}>{() => <LandingV3 />}</Route>
+      {/* Where the landing lived while it was a preview. Kept so older links,
+          and anything written down during the build, still resolve. */}
       <Route path={"/handoff/manifest"} component={HandoffManifest} />
-      {/* The whole thing end to end on one URL: gate → landing → case study. */}
+      {/* Gate → landing → case study on one URL, for demoing the sequence
+          without clearing the auth cookie. */}
       <Route path={"/flow"} component={HandoffFlow} />
       <Route path={"/search-ads"} component={SearchAds} />
       <Route path={"/whatsapp"} component={WhatsApp} />

@@ -48,7 +48,7 @@ function gatePage(redirect = "/", error?: string): string {
       background-size:24px 24px,24px 24px,120px 120px,120px 120px;background-position:center center}
     #starsWrap{position:absolute;inset:0}
     .anim #starsWrap{opacity:0}
-    #starsWrap.in{animation:bloom 2.4s ease-out forwards}
+    #starsWrap.in{animation:bloom 1.6s ease-out forwards}
     @keyframes bloom{0%{opacity:0;filter:brightness(2.6) blur(3px)}45%{opacity:1;filter:brightness(1.7) blur(0)}100%{opacity:1;filter:brightness(1) blur(0)}}
     #stars{position:absolute;inset:0;width:100%;height:100%}
     .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 30%,#1c1c1e 75%)}
@@ -259,9 +259,9 @@ function gatePage(redirect = "/", error?: string): string {
       disp.placeholder='';foot.innerHTML=''; // button keeps its static "enter" label (shown immediately, not typed)
       function typeP(el,text,speed,isPh,done){var i=0;var id=setInterval(function(){i++;if(isPh)el.placeholder=text.slice(0,i);else el.textContent=text.slice(0,i);if(i>=text.length){clearInterval(id);if(done)done();}},speed);}
       function typeFoot(speed){var pre='Request access via ';var em='shane.yun0703@gmail.com';var total=pre.length+em.length;foot.style.visibility='visible';var i=0;var id=setInterval(function(){i++;var pl=Math.min(i,pre.length);var pv=pre.slice(0,pl),ph=pre.slice(pl);var en=i>pre.length?i-pre.length:0;var ev=em.slice(0,en),eh=em.slice(en);foot.innerHTML='<span>'+pv+'</span><span class="hid">'+ph+'</span><span class="em">'+ev+'</span><span class="em hid">'+eh+'</span>';if(i>=total)clearInterval(id);},speed);}
-      setTimeout(function(){sw.classList.add('in');},200);
-      setTimeout(function(){box.classList.add('in');sh.classList.add('in');},1500);
-      setTimeout(function(){typeP(disp,'enter password',72,true,function(){setTimeout(function(){typeFoot(48);},400);});},2350);
+      setTimeout(function(){sw.classList.add('in');},120);
+      setTimeout(function(){box.classList.add('in');sh.classList.add('in');},820);
+      setTimeout(function(){typeP(disp,'enter password',72,true,function(){setTimeout(function(){typeFoot(48);},400);});},1170);
     }catch(e){try{document.documentElement.className=document.documentElement.className.replace('anim','');var b=document.getElementById('box');if(b)b.classList.add('in');var f=document.getElementById('foot');if(f)f.style.visibility='visible';}catch(_){}}
   })();
   </script>

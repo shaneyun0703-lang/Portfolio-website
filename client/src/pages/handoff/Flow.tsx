@@ -22,7 +22,7 @@ export default function Flow() {
     setLeaving(true);
     sessionStorage.setItem(UNLOCK_FLAG, "1"); // the landing shows its badge once
     // Clears fast and flat — the landing's own writing is the moment.
-    window.setTimeout(() => setLocation("/handoff/manifest?flow=1"), 300);
+    window.setTimeout(() => setLocation("/"), 300);
   };
 
   return (
