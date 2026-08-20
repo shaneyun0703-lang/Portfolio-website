@@ -134,7 +134,7 @@ function CardOverlap({ c }: { c: CaseStudyCard }) {
   );
 }
 
-function Background() {
+function Background({ showGrid = true }: { showGrid?: boolean }) {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       <div className="absolute -top-[30%] -right-[15%] w-[900px] h-[900px] rounded-full opacity-[0.06]"
@@ -142,8 +142,10 @@ function Background() {
       <div className="absolute -bottom-[25%] -left-[10%] w-[600px] h-[600px] rounded-full opacity-[0.04]"
         style={{ background: "radial-gradient(circle, #ec4899 0%, transparent 70%)" }} />
       {/* Graph pattern — fine 24px cells + bold 120px major lines */}
-      <div className="absolute inset-0 opacity-[0.06]"
-        style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.85) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.85) 1px, transparent 1px)", backgroundSize: "24px 24px, 24px 24px, 120px 120px, 120px 120px" }} />
+      {showGrid && (
+        <div className="absolute inset-0 opacity-[0.06]"
+          style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.3) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.85) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.85) 1px, transparent 1px)", backgroundSize: "24px 24px, 24px 24px, 120px 120px, 120px 120px" }} />
+      )}
       <div className="absolute inset-0"
         style={{ background: "radial-gradient(ellipse at 50% 50%, transparent 30%, var(--paper) 75%)" }} />
     </div>
@@ -173,7 +175,7 @@ const H1_CLASS = "font-display text-[clamp(2.2rem,3.8vw,3.8rem)] font-bold leadi
 
 type Phase = "typing" | "highlighting" | "settling" | "projects" | "done";
 
-export default function LandingV3() {
+export default function LandingV3({ showGrid = true }: { showGrid?: boolean }) {
   const alreadySeen = typeof window !== "undefined" && !!sessionStorage.getItem("intro-seen-v3");
   const [phase, setPhase] = useState<Phase>(alreadySeen ? "done" : "typing");
   const [typed, setTyped] = useState(alreadySeen ? HERO_FULL : "");
@@ -240,7 +242,7 @@ export default function LandingV3() {
 
   return (
     <div className="min-h-screen lg:h-screen lg:overflow-hidden relative" style={{ background: "var(--paper)" }}>
-      <Background />
+      <Background showGrid={showGrid} />
 
       <div className="lg:flex lg:h-screen lg:overflow-hidden">
 

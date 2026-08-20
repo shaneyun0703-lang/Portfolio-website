@@ -7,6 +7,8 @@ import { RoundEvolution } from "@/components/RoundEvolution";
 import { Section, Prose, PullQuote, Aside } from "@/components/Section";
 import { TableOfContents } from "@/components/TableOfContents";
 import { TldrWithSwitcher } from "@/components/TldrSection";
+import { readManifestSkin, allProjectsHref, ManifestField } from "@/pages/handoff/shared";
+import "@/styles/manifest-skin.css";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useScrolled } from "@/hooks/useScrolled";
 import {
@@ -272,8 +274,12 @@ const finalDesignSlides: CarouselSlide[] = [
 export default function SearchAds() {
   useScrollToTop();
   const scrolled = useScrolled(40);
+  /* PREVIEW ONLY — ?skin=manifest swaps the field, the TL;DR and the contents
+     for their Manifest-language equivalents. The live page is untouched. */
+  const skin = readManifestSkin();
   return (
-    <div className="theme-search min-h-screen bg-[var(--paper)]">
+    <div className={`theme-search min-h-screen ${skin ? "ms-on" : "bg-[var(--paper)]"}`}>
+      {skin && <ManifestField />}
       <TableOfContents />
 
       {/* Nav — darker glass panel, expands at top, compacts on scroll */}
@@ -281,7 +287,7 @@ export default function SearchAds() {
         <div className={`px-7 flex items-center justify-between transition-all duration-500 ease-in-out ${scrolled ? "py-3" : "py-6"}`}>
           <div className="flex items-center gap-4">
             <Link
-              href="/"
+              href={allProjectsHref(skin)}
               className="font-mono text-[13px] tracking-[0.04em] uppercase text-[#ccc] hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-[#444] hover:border-[#555] hover:bg-[rgba(255,255,255,0.04)]"
             >
               ← All projects

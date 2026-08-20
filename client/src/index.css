@@ -505,3 +505,286 @@ html, body {
     }
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   ITERATION 2 — BRIGHT / LIGHT GLASS SYSTEM  (scoped, opt-in)
+   Applied via a wrapper class (.bright-warm / .bright-cool) so it
+   NEVER touches the live dark theme. Light glass needs body + a
+   bright rim + soft cool shadow + saturate() blur (not transparency).
+═══════════════════════════════════════════════════════════════ */
+
+.bright {
+  /* defaults overridden by .bright-warm / .bright-cool below */
+  --b-bg: #f7f7f5;
+  --b-bg-2: #ffffff;
+  --b-ink: #18181b;
+  --b-muted: #6b7280;
+  --b-faint: #9ca3af;
+  --b-rim: rgba(255,255,255,0.85);
+  --b-hair: rgba(17,24,39,0.06);
+  --b-shadow: rgba(17,24,39,0.10);
+  --b-shadow-soft: rgba(17,24,39,0.05);
+  --b-accent: #4f46e5;
+  --b-accent-rgb: 79,70,229;
+  --b-aurora-1: rgba(99,102,241,0.14);
+  --b-aurora-2: rgba(244,114,182,0.10);
+  background: var(--b-bg);
+  color: var(--b-ink);
+}
+
+.bright-warm {
+  --b-bg: #f7f7f5;
+  --b-bg-2: #ffffff;
+  --b-ink: #1a1a17;
+  --b-muted: #726e66;
+  --b-faint: #a8a29a;
+  --b-rim: rgba(255,255,255,0.9);
+  --b-hair: rgba(40,32,20,0.07);
+  --b-shadow: rgba(60,48,30,0.12);
+  --b-shadow-soft: rgba(60,48,30,0.06);
+  --b-accent: #c8791f;              /* warm amber, echoes the gold accent */
+  --b-accent-rgb: 200,121,31;
+  --b-aurora-1: rgba(245,200,66,0.16);
+  --b-aurora-2: rgba(236,72,153,0.09);
+}
+
+.bright-cool {
+  --b-bg: #f6f7f9;
+  --b-bg-2: #ffffff;
+  --b-ink: #16181d;
+  --b-muted: #647084;
+  --b-faint: #98a2b3;
+  --b-rim: rgba(255,255,255,0.9);
+  --b-hair: rgba(17,24,39,0.06);
+  --b-shadow: rgba(17,24,39,0.11);
+  --b-shadow-soft: rgba(17,24,39,0.05);
+  --b-accent: #4f46e5;              /* indigo */
+  --b-accent-rgb: 79,70,229;
+  --b-aurora-1: rgba(99,102,241,0.15);
+  --b-aurora-2: rgba(56,189,248,0.10);
+}
+
+/* Faint colored aurora so light glass has something to refract. */
+.b-aurora { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.b-aurora::before,
+.b-aurora::after {
+  content: ""; position: absolute; border-radius: 50%; filter: blur(80px);
+}
+.b-aurora::before {
+  width: 60vw; height: 60vw; top: -18%; left: -8%;
+  background: radial-gradient(circle, var(--b-aurora-1), transparent 70%);
+}
+.b-aurora::after {
+  width: 46vw; height: 46vw; bottom: -20%; right: -6%;
+  background: radial-gradient(circle, var(--b-aurora-2), transparent 70%);
+}
+
+/* Light-glass card — bright rim + inner top light + soft cool shadow. */
+.glass-card {
+  background: color-mix(in srgb, var(--b-bg-2) 55%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--b-rim);
+  border-radius: 20px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.9),
+    0 8px 24px var(--b-shadow),
+    0 1px 2px var(--b-shadow-soft);
+  transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), box-shadow 0.4s ease, border-color 0.3s ease;
+}
+/* Subtler variant — Shane wants restrained cards */
+.glass-card--subtle {
+  background: color-mix(in srgb, var(--b-bg-2) 45%, transparent);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.8),
+    0 4px 16px var(--b-shadow-soft);
+}
+.glass-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255,255,255,1);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    0 16px 40px var(--b-shadow),
+    0 2px 4px var(--b-shadow-soft);
+}
+
+/* Glass dock / bar (jrands-style chrome) */
+.glass-bar {
+  background: color-mix(in srgb, var(--b-bg-2) 60%, transparent);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--b-rim);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.9), 0 8px 30px var(--b-shadow);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ITERATION 3 — OS-MINIMAL (jrands-grade), scoped to .os-min
+   Pure white void, mono-grotesk chrome, micro-typography.
+═══════════════════════════════════════════════════════════════ */
+.os-min {
+  --os-paper: #ffffff;
+  --os-ink: #111111;
+  --os-mut: #8a8a8f;
+  --os-faint: #b6b6bb;
+  --os-hair: rgba(0,0,0,0.09);
+  --os-hair-2: rgba(0,0,0,0.05);
+  background: var(--os-paper);
+  color: var(--os-ink);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+}
+.os-min ::selection { background: rgba(17,17,17,0.9); color: #fff; }
+
+/* green status dot with soft glow */
+.os-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #9fe870; }
+.os-dot::after {
+  content: ""; position: absolute; inset: -3px; border-radius: 50%;
+  background: #9fe870; filter: blur(4px); opacity: 0.55; z-index: -1;
+  animation: osPulse 2.4s ease-in-out infinite;
+}
+@keyframes osPulse { 0%,100% { opacity: 0.4; transform: scale(1); } 50% { opacity: 0.75; transform: scale(1.25); } }
+
+/* subtle staggered rise-in; fill-mode forwards leaves the final state painted */
+@keyframes osRise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.os-rise { opacity: 0; animation: osRise 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+/* work row hover mechanics */
+.os-row { transition: background 0.25s ease; }
+.os-row:hover { background: rgba(0,0,0,0.022); }
+.os-mono-box { transition: background 0.28s ease, color 0.28s ease, border-color 0.28s ease; }
+.os-arrow { transition: transform 0.3s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease; }
+.os-row:hover .os-arrow { transform: translateX(4px); opacity: 1; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ITERATION 4 — EDITORIAL (rauno/emil-inspired), scoped to .ed
+   Warm light-gray canvas · big Fraunces serif · reading column.
+═══════════════════════════════════════════════════════════════ */
+.ed {
+  --ed-paper: #ece9e3;
+  --ed-ink: #1a1917;
+  --ed-mut: #78736b;
+  --ed-faint: #a8a29a;
+  --ed-hair: rgba(26,25,23,0.13);
+  --ed-accent: #b3502a; /* warm terracotta, used sparingly */
+  background: var(--ed-paper);
+  color: var(--ed-ink);
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+.ed ::selection { background: rgba(26,25,23,0.9); color: var(--ed-paper); }
+.ed-serif { font-family: "Fraunces", Georgia, serif; font-optical-sizing: auto; }
+
+/* editorial work row: animated underline under the serif title + arrow reveal */
+.ed-title { position: relative; display: inline; background-image: linear-gradient(var(--ed-ink), var(--ed-ink)); background-size: 0% 1px; background-position: 0 100%; background-repeat: no-repeat; transition: background-size 0.4s cubic-bezier(0.16,1,0.3,1); padding-bottom: 2px; }
+.ed-row:hover .ed-title { background-size: 100% 1px; }
+.ed-go { opacity: 0; transform: translateX(-4px); transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1); }
+.ed-row:hover .ed-go { opacity: 1; transform: translateX(0); }
+
+@keyframes edRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.ed-rise { opacity: 0; animation: edRise 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ITERATION 5 — BENTO (structured tile grid), scoped to .bento
+   Warm neutral canvas · bold Syne display · tactile tiles · work imagery.
+═══════════════════════════════════════════════════════════════ */
+.bento {
+  --bn-paper: #eeeae3;
+  --bn-tile: #ffffff;
+  --bn-ink: #191714;
+  --bn-mut: #7a746b;
+  --bn-faint: #a9a299;
+  --bn-hair: rgba(25,23,20,0.08);
+  --bn-dark: #17161a;
+  background: var(--bn-paper);
+  color: var(--bn-ink);
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+.bento ::selection { background: var(--bn-ink); color: var(--bn-paper); }
+
+.bn-tile {
+  position: relative; overflow: hidden;
+  background: var(--bn-tile);
+  border: 1px solid var(--bn-hair);
+  border-radius: 22px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03), 0 10px 26px rgba(70,58,44,0.06);
+  transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), box-shadow 0.45s ease;
+}
+.bn-tile:hover { transform: translateY(-4px); box-shadow: 0 4px 10px rgba(0,0,0,0.05), 0 22px 50px rgba(70,58,44,0.14); }
+.bn-img { transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); will-change: transform; }
+.bn-proj:hover .bn-img { transform: scale(1.055); }
+.bn-view { opacity: 0; transform: translateY(6px); transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16,1,0.3,1); }
+.bn-proj:hover .bn-view { opacity: 1; transform: translateY(0); }
+
+@keyframes bnPop { from { opacity: 0; transform: translateY(14px) scale(0.985); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.bn-pop { opacity: 0; animation: bnPop 0.65s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+/* ═══════════════════════════════════════════════════════════════
+   ITERATION 6 — CODE/APPLE LIGHT (scoped .code-ui)
+   Original architecture · very light grey/white · grey+black text ·
+   JetBrains Mono · Apple-clean × space-grey coding vibe.
+═══════════════════════════════════════════════════════════════ */
+.code-ui {
+  --c-bg: #f4f4f6;
+  --c-card: #ffffff;
+  --c-ink: #1d1d1f;
+  --c-grey: #6e6e73;
+  --c-faint: #9a9aa0;
+  --c-line: #e4e4e8;
+  --c-accent: #0071e3;
+  background: var(--c-bg);
+  color: var(--c-grey);
+  font-family: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+}
+.code-ui ::selection { background: #d6e4ff; color: var(--c-ink); }
+
+.c-card {
+  background: var(--c-card);
+  border: 1px solid var(--c-line);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(20,20,25,0.04), 0 14px 34px rgba(20,20,25,0.06);
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s ease;
+}
+.c-card:hover {
+  transform: translateY(-6px) rotate(0deg) !important;
+  box-shadow: 0 4px 8px rgba(20,20,25,0.05), 0 26px 56px rgba(20,20,25,0.13);
+}
+.c-shot { transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+.c-card:hover .c-shot { transform: scale(1.03); }
+.c-go { opacity: 0; transform: translateX(-4px); transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16,1,0.3,1); }
+.c-card:hover .c-go { opacity: 1; transform: translateX(0); }
+
+.c-blink { animation: cBlink 1.1s steps(1) infinite; }
+@keyframes cBlink { 0%,50% { opacity: 1; } 50.01%,100% { opacity: 0; } }
+
+@keyframes cRise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.c-rise { opacity: 0; animation: cRise 0.6s cubic-bezier(0.16,1,0.3,1) forwards; }
+
+/* ITER 6.5 — clean, subtle LIGHT frosted-glass project cards */
+.c-glass {
+  position: relative; overflow: hidden; border-radius: 18px;
+  background: rgba(255,255,255,0.42);
+  backdrop-filter: blur(26px) saturate(175%);
+  -webkit-backdrop-filter: blur(26px) saturate(175%);
+  border: 1px solid rgba(255,255,255,0.85);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.95),
+    0 1px 2px rgba(28,30,42,0.04),
+    0 18px 44px rgba(28,30,42,0.10);
+  transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s ease, border-color 0.4s ease;
+}
+/* soft ambient light behind everything so the frosted glass has something to catch */
+.c-ambient { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.c-amb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.7; }
+.c-glass:hover {
+  transform: translateY(-6px) rotate(0deg) !important;
+  border-color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    0 2px 4px rgba(28,30,42,0.05),
+    0 26px 56px rgba(28,30,42,0.15);
+}
+/* faint clean sheen — top-left glass highlight, no color */
+.c-sheen { position: absolute; inset: 0; pointer-events: none; border-radius: 18px; background: linear-gradient(150deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.12) 14%, transparent 34%); }
+/* very soft neutral halo behind the card gives the frost something to catch */
+.c-halo { position: absolute; border-radius: 50%; filter: blur(30px); pointer-events: none; opacity: 0.5; background: radial-gradient(circle, rgba(180,190,214,0.5), transparent 70%); }
+.c-glass:hover .c-shot { transform: scale(1.035); }

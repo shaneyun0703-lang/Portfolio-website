@@ -33,12 +33,18 @@ export function TableOfContents() {
     return () => obs.disconnect();
   }, []);
 
+  /* One panel for both. There used to be a second set of values here, dropped
+     and edged up to survive the manifest skin's darker #141414 field; that field
+     is now --paper, the same background these were mixed against, so the
+     compensation was correcting for nothing. */
+  const panelStyle = { background: "rgba(28,28,32,0.62)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" };
+
   return (
     <nav
       className={`hidden xl:block fixed right-7 z-40 w-[310px] transition-all duration-500 ease-in-out ${scrolled ? "top-[calc(80px+1.75rem)]" : "top-[calc(72px+2.25rem)]"}`}
       aria-label="Section navigation"
     >
-      <div className="rounded-[10px] p-4 max-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden" style={{ background: "rgba(28,28,32,0.62)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" }}>
+      <div className="rounded-[10px] p-4 max-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden" style={panelStyle}>
         <div className="font-mono text-[13px] text-[var(--mid)] tracking-[0.1em] uppercase mb-3 font-medium">
           Sections
         </div>
@@ -53,7 +59,9 @@ export function TableOfContents() {
                     ? "text-[var(--ink)]"
                     : "hover:bg-[rgba(255,255,255,0.04)]"
                 }`}
-                style={active === s.id ? { background: "var(--case-accent-soft)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" } : { border: "1px solid transparent" }}
+                style={active === s.id
+                  ? { background: "var(--case-accent-soft)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }
+                  : { border: "1px solid transparent" }}
               >
                 <span className="toc-num">{String(i + 1).padStart(2, "0")}</span>
                 <span className="font-display font-medium">{s.label}</span>

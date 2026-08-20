@@ -10,6 +10,10 @@ type TldrProps = {
 };
 
 export function TldrWithSwitcher({ summary, role, timeline, outcome, team, audience, accentColor, accentRgb }: TldrProps) {
+  /* One set of values. A second, brighter set used to sit alongside these for
+     the manifest skin, which ran on #141414 and washed the glass out; that field
+     is now --paper — the background these were mixed against in the first place
+     — so the two sets had converged on the same job. */
   const boxStyle = {
     background: `rgba(${accentRgb},0.05)`,
     border: `1px solid rgba(${accentRgb},0.08)`,
@@ -18,8 +22,8 @@ export function TldrWithSwitcher({ summary, role, timeline, outcome, team, audie
 
   return (
     <div className="relative">
-      <div className="absolute -inset-4 opacity-[0.06] rounded-3xl" style={{ background: `radial-gradient(ellipse at 30% 50%, rgba(${accentRgb},1) 0%, transparent 60%)`, filter: "blur(30px)" }} />
-      <div className="relative rounded-2xl overflow-hidden backdrop-blur-md" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", boxShadow: `0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)` }}>
+      <div className="absolute -inset-4 rounded-3xl opacity-[0.06]" style={{ background: `radial-gradient(ellipse at 30% 50%, rgba(${accentRgb},1) 0%, transparent 60%)`, filter: "blur(30px)" }} />
+      <div className="relative rounded-2xl overflow-hidden backdrop-blur-md" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", boxShadow: "0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.05)" }}>
 
         {/* Header: TL;DR label + Role chip + Summary */}
         <div className="px-6 pt-5 pb-4">

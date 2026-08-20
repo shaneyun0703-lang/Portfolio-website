@@ -113,3 +113,7 @@ client/public/__manus__/version.json
 
 # Manus debug logs
 .manus-logs/
+
+# Exploration scratch — kept locally, not part of the site
+archive/
+*.textClipping

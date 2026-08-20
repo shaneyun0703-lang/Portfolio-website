@@ -210,7 +210,10 @@ function gatePage(redirect = "/", error?: string): string {
     function genOffset(form,cr){
       if(form==='arc'){var a=-2.1+4.2*Math.random(),dd=cr*(0.5+0.5*Math.random());return{hox:Math.cos(a)*dd,hoy:Math.sin(a)*dd};}
       if(form==='bolt'){var t=Math.random(),c=Math.sin(t*Math.PI*3)*cr*0.45;return{hox:(t*2-1)*cr*1.15,hoy:(t*2-1)*cr*0.3+c+(Math.random()-0.5)*cr*0.45};}
-      var tt=Math.random()*2-1,prof=Math.max(0.14,Math.cos(tt*1.4));return{hox:tt*cr*1.5,hoy:(Math.random()*2-1)*cr*0.6*prof};
+      /* 0.95 — kept in sync with GateBackground.tsx. At 1.5 the leaf reached
+         0.675w while the arc starts at 0.57w, so the two shapes always overlapped
+         and the leaf ran off the left edge, at every screen size. */
+      var tt=Math.random()*2-1,prof=Math.max(0.14,Math.cos(tt*1.4));return{hox:tt*cr*0.95,hoy:(Math.random()*2-1)*cr*0.6*prof};
     }
     function init(){
       mt=0;cls=[];ps=[];

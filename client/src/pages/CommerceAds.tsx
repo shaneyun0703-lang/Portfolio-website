@@ -32,6 +32,8 @@ import { Section, Prose, Aside } from "@/components/Section";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useScrolled } from "@/hooks/useScrolled";
 import { TldrWithSwitcher } from "@/components/TldrSection";
+import { readManifestSkin, allProjectsHref, ManifestField } from "@/pages/handoff/shared";
+import "@/styles/manifest-skin.css";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Local components
@@ -454,7 +456,7 @@ function FeatureDecisionMatrix() {
   );
 }
 
-function ThreeToOneVisual() {
+function ThreeToOneVisual({ expand }: { expand: (src: string) => void }) {
   const flows = [
     { n: "01", label: "Single image format", description: "One image or video. The simplest ad creative — one piece of media, one message.", count: "4 features", src: "/primer/format-single.png" },
     { n: "02", label: "Carousel format", description: "A swipeable row of product cards, each with its own image and link.", count: "6 features", src: "/primer/format-carousel.png" },
@@ -761,15 +763,20 @@ export default function CommerceAds() {
     setMounted(true);
   }, []);
 
+  /* PREVIEW ONLY — ?skin=manifest brings the Manifest field onto the page so a
+     project opened from that landing arrives in the same language. */
+  const skin = readManifestSkin();
+
   return (
-    <div className="theme-commerce min-h-screen bg-[var(--paper)] text-[var(--ink)]">
+    <div className={`theme-commerce min-h-screen text-[var(--ink)] ${skin ? "ms-on" : "bg-[var(--paper)]"}`}>
+      {skin && <ManifestField />}
       <CommerceToc />
 
       {/* Nav — expands at top, compacts on scroll */}
       <nav className={`fixed z-50 transition-all duration-500 ease-in-out ${scrolled ? "top-4 left-4 right-7 rounded-[10px]" : "top-0 left-0 right-0 border-b border-[#2f2f33]"}`} style={scrolled ? { background: "rgba(28,28,32,0.62)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" } : { background: "#1e1e22" }}>
         <div className={`px-7 flex items-center justify-between transition-all duration-500 ease-in-out ${scrolled ? "py-3" : "py-6"}`}>
           <div className="flex items-center gap-4">
-            <Link href="/" className="font-mono text-[13px] tracking-[0.04em] uppercase text-[#ccc] hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-[#444] hover:border-[#555] hover:bg-[rgba(255,255,255,0.04)]">
+            <Link href={allProjectsHref(skin)} className="font-mono text-[13px] tracking-[0.04em] uppercase text-[#ccc] hover:text-white transition-colors px-3 py-1.5 rounded-lg border border-[#444] hover:border-[#555] hover:bg-[rgba(255,255,255,0.04)]">
               ← All projects
             </Link>
             <div className={`w-px bg-[#444] transition-all duration-500 ${scrolled ? "h-5" : "h-6"}`} />
@@ -1003,7 +1010,7 @@ export default function CommerceAds() {
           </p>
         </Prose>
 
-        <ThreeToOneVisual />
+        <ThreeToOneVisual expand={expand} />
       </Section>
 
       <div className="container">

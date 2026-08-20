@@ -1,0 +1,40 @@
+/* ============================================================================
+   MANIFEST SKIN for the case studies — PREVIEW ONLY, behind ?skin=manifest.
+   Brings the Manifest landing's field onto a case study page. The TL;DR and the
+   table of contents keep their original layouts and are only recoloured for the
+   darker background (see TldrSection.tsx / TableOfContents.tsx). Everything
+   else on the page, including the nav, is untouched.
+
+   All classes are `ms-` prefixed and only apply inside `.ms-on`, so the live
+   case study cannot pick any of this up.
+   ============================================================================ */
+
+.ms-on { background: var(--paper, #1c1c1e); }
+
+/* ---- the field ----------------------------------------------------------- */
+.ms-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+.ms-bg .hx-live { opacity: 0.16; }
+.ms-vig {
+  position: absolute; inset: 0;
+  background: radial-gradient(115% 85% at 50% 42%, transparent 38%, rgba(0, 0, 0, 0.62));
+}
+/* The page's own content sits above the field. `nav` is excluded on purpose:
+   both the header and the contents are position:fixed, and forcing them to
+   relative here drops them into the flow mid-page. They carry their own
+   z-index already. */
+.ms-on > *:not(.ms-bg):not(nav) { position: relative; z-index: 1; }
+
+/* ---- the nav seam -------------------------------------------------------- */
+/* Unscrolled, the nav is an opaque #1e1e22 band that cuts the field off in a
+   hard line across the top — the single clearest tell that the landing and the
+   case study are two different designs stitched together. Glass instead, so the
+   mesh runs behind it continuously.
+
+   `!important` because the colour is an inline style on the <nav> in all three
+   case studies, and inline beats a stylesheet. Overriding here keeps the change
+   in the skin rather than editing three live pages for a preview. */
+.ms-on nav {
+  background: rgba(28, 28, 32, 0.55) !important;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom-color: rgba(255, 255, 255, 0.08) !important;
+}

@@ -1,0 +1,833 @@
+/* ============================================================================
+   HANDOFF PREVIEWS — post-unlock landing iterations.
+   PREVIEW ONLY. Nothing here is imported by the live landing (/) or the
+   production gate (middleware.ts). All classes are `hx-` prefixed so they
+   cannot collide with anything in index.css.
+   ============================================================================ */
+
+.hx {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  /* Not its own scroll container: a `min-height: 100vh` element that also scrolls
+     always overflows itself by (100vh - clientHeight) and shows a standing
+     scrollbar. Let the document handle any scrolling instead. */
+  overflow-x: hidden;
+  background: var(--paper, #1c1c1e);
+  color: #f4f4f5;
+  font-family: var(--font-serif);
+}
+.hx a { text-decoration: none; color: inherit; }
+/* No `font: inherit` here — `.hx button` outranks `.hx-pill` and would drag the
+   Email button back to the page font while the <a> pills kept their mono. */
+.hx button { cursor: pointer; }
+
+/* ----------------------------------------------------------------------------
+   REVEAL SYSTEM
+   Each beat is a `.hx-rev` carrying --d/--dur/--y/--sc/--bl/--rot from the
+   active choreography; the root flips to [data-play="1"] one tick after mount.
+   CSS-driven on purpose: a rAF-based library leaves the page stuck invisible if
+   the tab is backgrounded across the unlock.
+   ---------------------------------------------------------------------------- */
+.hx-rev {
+  opacity: 0;
+  transform: translateY(var(--y, 0px)) scale(var(--sc, 1)) rotate(var(--rot, 0deg));
+  filter: blur(var(--bl, 0px));
+  transition:
+    opacity var(--dur, 0.5s) var(--ease, cubic-bezier(0.2, 0.8, 0.2, 1)) var(--d, 0s),
+    transform var(--dur, 0.5s) var(--ease, cubic-bezier(0.2, 0.8, 0.2, 1)) var(--d, 0s),
+    filter var(--dur, 0.5s) var(--ease, cubic-bezier(0.2, 0.8, 0.2, 1)) var(--d, 0s),
+    clip-path var(--dur, 0.5s) var(--ease, cubic-bezier(0.2, 0.8, 0.2, 1)) var(--d, 0s);
+  will-change: opacity, transform, filter;
+}
+.hx[data-play="1"] .hx-rev {
+  opacity: 1;
+  transform: none;
+  filter: none;
+  will-change: auto;
+}
+
+/* Per-transition easing */
+.hx-rev[data-ease="focus"]    { --ease: cubic-bezier(0.16, 1, 0.3, 1); }
+.hx-rev[data-ease="aperture"] { --ease: cubic-bezier(0.22, 1, 0.36, 1); }
+.hx-rev[data-ease="sweep"]    { --ease: cubic-bezier(0.33, 1, 0.68, 1); }
+.hx-rev[data-ease="deal"]     { --ease: cubic-bezier(0.34, 1.32, 0.5, 1); }
+.hx-rev[data-ease="counter"]  { --ease: cubic-bezier(0.22, 1, 0.36, 1); }
+.hx-rev[data-ease="unfold"]   { --ease: cubic-bezier(0.16, 1, 0.3, 1); }
+.hx-rev[data-ease="settle"]   { --ease: cubic-bezier(0.2, 0.9, 0.25, 1); }
+.hx-rev[data-ease="type"]     { --ease: cubic-bezier(0.22, 1, 0.36, 1); } /* aperture's, for the index below */
+
+/* Aperture: the panel opens from its centre line outward.
+   The rounding has to match the title row's own corners exactly — square left,
+   8px right. Any uniform value cuts inside the drawn border at the corners that
+   disagree with it and erases them: 12px took out all four, a flat 8px took out
+   the square pair on the left. */
+.hx-rev[data-clip="1"] { clip-path: inset(0 46% 0 46% round 0 8px 8px 0); }
+.hx[data-play="1"] .hx-rev[data-clip="1"] { clip-path: inset(0 0 0 0 round 0 8px 8px 0); }
+
+/* Raking light: one pass across the screen, in step with the reveal delays. */
+.hx-sweepbar {
+  position: fixed; inset: 0 auto 0 0; z-index: 4;
+  width: 46vw; pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.015) 42%,
+    rgba(255, 255, 255, 0.09) 62%,
+    rgba(255, 255, 255, 0.02) 78%,
+    transparent 100%
+  );
+  animation: hx-rake 1.25s cubic-bezier(0.4, 0, 0.5, 1) 0.1s both;
+}
+@keyframes hx-rake {
+  from { transform: translateX(-100%); opacity: 0; }
+  18%  { opacity: 1; }
+  85%  { opacity: 1; }
+  to   { transform: translateX(230%); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hx-rev {
+    transform: none; filter: none; clip-path: none;
+    transition: opacity 0.25s linear var(--d, 0s);
+  }
+  .hx-sweepbar { display: none; }
+}
+
+/* Each freshly struck character eases in rather than snapping on. Runs shorter
+   than a keystroke so letters never queue up behind each other. */
+.hx-ink {
+  display: inline-block;
+  animation: hx-ink 0.26s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes hx-ink {
+  from { opacity: 0; filter: blur(5px); transform: translateY(0.06em); }
+  to   { opacity: 1; filter: blur(0); transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .hx-ink { animation: none; } }
+
+/* ---- typing caret -------------------------------------------------------- */
+/* Sits at the write head while a line is being typed and leaves with it. */
+.hx-caret {
+  display: inline-block;
+  width: 0.5em; height: 1em;
+  margin-left: 0.06em;
+  background: currentColor;
+  vertical-align: -0.16em;
+  animation: hx-blink 0.9s steps(1) infinite;
+}
+@keyframes hx-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .hx-caret { display: none; } }
+
+/* ---- background layers --------------------------------------------------- */
+.hx-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+/* The password gate's grid, carried over so the unlock lands in the same room:
+   a fine 24px weave with a major line every 120px, centred. Held well under the
+   gate's own 0.06 — here it sits behind type rather than behind a lock card. */
+.hx-grid {
+  position: absolute; inset: 0; pointer-events: none;
+  opacity: 0.042;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.85) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.85) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+  background-position: center center;
+}
+.hx-vig {
+  position: absolute; inset: 0; pointer-events: none;
+  /* Between the two extremes: 0.62 swallowed the mesh and left the field flat,
+     0.5 let the nodes crowd the type. */
+  background: radial-gradient(115% 85% at 50% 42%, transparent 38%, rgba(0, 0, 0, 0.56));
+}
+/* The password gate's own animated node-web, dimmed. Same world, quieter.
+   The case studies keep it at the old 0.16 via `.ms-bg .hx-live` — behind a
+   page of body copy it has to stay near-invisible. This value is the landing's,
+   where the field is most of what you see. 0.16 was invisible and 0.3 put the
+   nodes in competition with the type; this reads as a field without asking to
+   be looked at. */
+.hx-live {
+  position: absolute; inset: 0; pointer-events: none;
+  opacity: 0.2;
+}
+.hx-live canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ---- shared type --------------------------------------------------------- */
+.hx-wm {
+  font-family: var(--font-display);
+  font-weight: 800; text-transform: uppercase;
+  line-height: 0.88; letter-spacing: -0.015em;
+}
+.hx-mono { font-family: var(--font-mono); }
+
+/* ---- status pill (temporal — see useAccessBadge) ------------------------- */
+.hx-status {
+  position: absolute; top: 28px; left: 50%; z-index: 7;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+  color: #d4d4d8;
+  background: rgba(20, 20, 20, 0.75);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  padding: 7px 16px;
+  display: flex; align-items: center; gap: 9px;
+  white-space: nowrap; pointer-events: none;
+}
+.hx-status i {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #e6e6e6; box-shadow: 0 0 10px #fff;
+  animation: hx-pulse 1.6s ease-in-out infinite;
+}
+@keyframes hx-pulse { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .hx-status i { animation: none; } }
+
+/* ---- contact rail -------------------------------------------------------- */
+/* Original interaction: the icon expands in on hover and the gap opens with it. */
+.hx-pill {
+  display: inline-flex; align-items: center; gap: 0;
+  padding: 13px 22px;
+  font-family: var(--font-mono);
+  font-size: 12.5px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+  line-height: 1; color: #f4f4f5;
+  border: 1px solid rgba(255, 255, 255, 0.19);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: border-color 0.25s, background 0.25s, gap 0.25s, color 0.25s;
+  white-space: nowrap;
+}
+.hx-pill-ico {
+  width: 0; overflow: hidden; display: inline-flex; align-items: center;
+  opacity: 0; color: #fff;
+  transition: width 0.25s, opacity 0.25s;
+}
+.hx-pill-ico svg { width: 16px; height: 16px; display: block; }
+.hx-pill:hover { border-color: rgba(255, 255, 255, 0.7); background: rgba(255, 255, 255, 0.11); gap: 9px; }
+.hx-pill:hover .hx-pill-ico { width: 16px; opacity: 1; }
+.hx-pill.is-copied { border-color: rgba(120, 225, 150, 0.6); background: rgba(90, 210, 130, 0.14); color: #b6f0cb; }
+
+/* ---- CTA ----------------------------------------------------------------- */
+.hx-cta {
+  display: inline-flex; align-items: center; gap: 9px;
+  height: 38px; padding: 0 18px;
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase;
+  color: #fff;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--acc, #fff) 55%, transparent);
+  background: color-mix(in srgb, var(--acc, #fff) 16%, transparent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.hx-cta-ar { transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.hx-cta:hover {
+  background: color-mix(in srgb, var(--acc, #fff) 30%, transparent);
+  border-color: var(--acc, #fff);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--acc, #fff) 30%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+.hx-cta:hover .hx-cta-ar { transform: translateX(4px); }
+
+/* ---- screenshots --------------------------------------------------------- */
+/* Three frames in a row, all equal and all fully legible — a stack hid two of
+   every three concepts behind the first. Frames are height-bound and images are
+   `contain`, so each screen reads whole. */
+.hx-stack { flex: 1; min-width: 0; display: flex; justify-content: flex-end; align-items: center; }
+.hx-stack-in {
+  display: flex; gap: 14px; justify-content: flex-end; align-items: center;
+  width: 100%; height: calc(var(--detail) - 38px);
+}
+/* Height-driven and shaped to the screenshots themselves. Every shot is 1.8:1;
+   allowing for the 18px chrome bar that puts the frame near 1.55:1. Stretching
+   the frames to fill the row instead made them ~2.9:1, which cropped half the
+   height off each screen. Narrower and whole beats wider and cut. */
+.hx-shot {
+  position: static; margin: 0;
+  flex: none; height: 100%; aspect-ratio: 1.55;
+  display: flex; flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9px;
+  background: #17171a;
+  overflow: hidden;
+  box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.95);
+}
+.hx-shot-bar {
+  height: 18px; flex: none;
+  display: flex; align-items: center; gap: 4px; padding: 0 9px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.035);
+}
+.hx-shot-dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(255, 255, 255, 0.25); flex: none; }
+.hx-shot-tl { height: 4px; flex: 1; max-width: 110px; margin-left: 7px; border-radius: 3px; background: rgba(255, 255, 255, 0.08); }
+/* Back to `contain`: the frame is now cut to the screenshot's own shape, so
+   nothing is cropped and there is nothing left to letterbox. */
+.hx-shot img { flex: 1; min-height: 0; width: 100%; object-fit: contain; object-position: center; display: block; }
+
+/* ============================================================================
+   1 · ACCESS — centred identity over a fixed-height glass panel
+   ============================================================================ */
+.hx-acc {
+  display: flex; flex-direction: column; align-items: center;
+  justify-content: center;
+  justify-content: safe center;
+  padding: 124px 38px 26px;
+}
+.hx-acc-contact { position: absolute; top: 24px; right: 30px; z-index: 6; display: flex; gap: 8px; }
+.hx-acc-id { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+.hx-acc-wm { font-size: clamp(44px, 4.4vw, 62px); text-align: center; margin-bottom: 13px; }
+.hx-acc-role {
+  font-family: var(--font-display); font-weight: 600; font-size: 20px;
+  color: #e4e4e7; margin-bottom: 8px; text-align: center;
+}
+.hx-acc-loc {
+  font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.42em;
+  color: #7b7b83; font-size: 11.5px; text-align: center;
+}
+
+/* The reserve is sized for the panel with a row open, so expansion consumes
+   space that already exists. Page height stays constant: no scroll, and the
+   background never shifts under the content. */
+.hx-acc-reserve {
+  position: relative; z-index: 2;
+  width: 100%; max-width: 920px;
+  margin-top: 30px;
+  min-height: 490px;
+  display: flex; align-items: flex-start;
+}
+.hx-acc-panel {
+  position: relative; z-index: 2;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(28px) saturate(140%); -webkit-backdrop-filter: blur(28px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 44px 96px -44px rgba(0, 0, 0, 0.92), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+/* Header reads as a table head, deliberately distinct from the rows below. */
+.hx-acc-phead {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  padding: 13px 26px;
+  background: rgba(0, 0, 0, 0.28);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--font-mono);
+  font-size: 10px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+}
+.hx-acc-phead-l { color: #fff; }
+.hx-acc-phead-r { color: #fff; }
+
+.hx-acc-index { padding: 6px 0 8px; }
+
+/* Inline expansion, as originally designed: the row itself opens beneath its
+   title. Exactly one row is open at a time (01 by default) so the panel keeps a
+   constant height — the page never grows and the background never scrolls. */
+.hx-acc-item {
+  position: relative; display: block; overflow: hidden;
+  transition: background 0.25s;
+}
+.hx-acc-item::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; z-index: 3;
+  background: var(--acc, #fff);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.hx-acc-item.is-open { background: rgba(255, 255, 255, 0.045); }
+.hx-acc-item.is-open::before { transform: scaleY(1); }
+
+.hx-acc-row {
+  position: relative; overflow: hidden;
+  display: grid; grid-template-columns: 54px 1fr auto;
+  gap: 20px; align-items: baseline;
+  padding: 15px 26px;
+}
+/* Light sweeps across the row as it opens. */
+.hx-acc-row::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  transform: translateX(-110%);
+}
+.hx-acc-item.is-open .hx-acc-row::after { animation: hx-sweep 0.7s ease; }
+@keyframes hx-sweep { to { transform: translateX(110%); } }
+
+.hx-acc-n {
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 500;
+  color: var(--acc, #6b6b72); opacity: 0.6; transition: opacity 0.22s;
+}
+.hx-acc-n::before {
+  content: "\25b8 "; color: var(--acc, #fff); opacity: 0; margin-left: -14px;
+  transition: opacity 0.25s, margin 0.25s;
+}
+.hx-acc-item.is-open .hx-acc-n { opacity: 1; }
+.hx-acc-item.is-open .hx-acc-n::before { opacity: 1; margin-left: 0; }
+.hx-acc-t {
+  display: inline-block;
+  font-family: var(--font-display); font-weight: 500; font-size: 17.5px;
+  letter-spacing: -0.01em; color: #d8d8dc; transition: color 0.25s;
+}
+.hx-acc-item.is-open .hx-acc-t { color: #fff; }
+.hx-acc-c {
+  display: block; margin-top: 5px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.13em;
+  text-transform: uppercase; color: #6b6b72;
+}
+.hx-acc-s {
+  font-family: var(--font-mono); font-size: 11.5px; white-space: nowrap;
+  color: var(--acc, #d4d4d8); opacity: 0.65; transition: opacity 0.22s;
+}
+.hx-acc-item.is-open .hx-acc-s { opacity: 1; }
+
+.hx-acc-exp {
+  max-height: 0; opacity: 0; overflow: hidden; padding: 0 26px;
+  transition: max-height 0.42s cubic-bezier(0.2, 0.8, 0.2, 1),
+              opacity 0.3s ease, padding 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.hx-acc-item.is-open .hx-acc-exp { max-height: 220px; opacity: 1; padding: 2px 26px 20px; }
+.hx-acc-exp-in { display: flex; gap: 34px; align-items: center; }
+.hx-acc-exp-l { flex: none; width: 372px; display: flex; flex-direction: column; }
+
+.hx-pane-eyebrow {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--acc, #a1a1aa); margin-bottom: 11px;
+}
+.hx-pane-blurb { margin: 0; font-size: 14.5px; line-height: 1.55; color: #c8c8ce; max-width: 34ch; }
+/* Role and timeline as a labelled pair, so it scans instead of running together. */
+/* Meta and the CTA share a row so the open state stays short. */
+.hx-acc-exp-foot {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+.hx-pane-meta { display: flex; gap: 26px; margin: 0; }
+.hx-pane-meta div { display: flex; flex-direction: column; gap: 5px; }
+.hx-pane-meta dt {
+  font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: #66666d;
+}
+.hx-pane-meta dd { margin: 0; font-size: 13px; color: #e4e4e7; white-space: nowrap; }
+.hx-acc-exp-l .hx-cta { height: 34px; padding: 0 15px; flex: none; }
+
+.hx-acc-foot {
+  position: relative; z-index: 2; margin-top: 24px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: #55555c;
+}
+
+/* ---- fitting smaller screens ------------------------------------------- */
+/* Same idea as the manifest block: step the composition down by viewport height
+   so a 14" laptop never has to scroll. */
+@media (max-height: 900px) {
+  .hx-acc { padding: 76px 38px 24px; }
+  .hx-acc-wm { font-size: clamp(40px, 3.9vw, 54px); margin-bottom: 11px; }
+  .hx-acc-role { font-size: 19px; }
+  .hx-acc-reserve { min-height: 458px; margin-top: 26px; }
+}
+@media (max-height: 800px) {
+  .hx-acc { padding: 46px 38px 20px; }
+  .hx-acc-wm { font-size: clamp(36px, 3.4vw, 48px); margin-bottom: 9px; }
+  .hx-acc-role { font-size: 18px; }
+  .hx-acc-loc { font-size: 10.5px; letter-spacing: 0.34em; }
+  .hx-acc-reserve { min-height: 418px; margin-top: 22px; }
+  .hx-acc-row { padding: 12px 26px; }
+  .hx-acc-item.is-open .hx-acc-exp { max-height: 196px; padding-bottom: 16px; }
+  .hx-acc .hx-stack-in { width: 332px; height: 140px; }
+  .hx-acc .hx-shot { width: 216px; height: 126px; }
+}
+@media (max-height: 700px) {
+  .hx-acc { padding: 28px 38px 18px; }
+  .hx-acc-wm { font-size: 40px; }
+  .hx-acc-role { font-size: 16.5px; }
+  .hx-acc-reserve { min-height: 380px; margin-top: 18px; }
+  .hx-acc-row { padding: 10px 26px; }
+  .hx-acc-t { font-size: 16px; }
+  .hx-acc-item.is-open .hx-acc-exp { max-height: 176px; }
+  .hx-acc .hx-stack-in { width: 316px; height: 128px; }
+  .hx-acc .hx-shot { width: 200px; height: 116px; }
+  .hx-acc-exp-l { width: 330px; }
+}
+
+/* ============================================================================
+   4 · MANIFEST — editorial masthead over a mono index
+
+   Layout contract: the row list has FIXED positions and the detail lives in its
+   own constant-height region below it. Moving between projects swaps the
+   detail's contents only, so nothing on the page ever shifts.
+
+   Sizing is expressed against --wm / --row / --detail so the whole composition
+   can be scaled down by viewport height for 14" screens (see the media queries
+   at the end of this block).
+   ============================================================================ */
+.hx-man {
+  --wm: 96px;        /* wordmark size            */
+  --row: 60px;       /* index row height         */
+  /* Fluid, so the composition exactly fills the height the frame leaves and the
+     gap above and below the content equals the gap at the sides. Everything
+     other than the panel is fixed within a band, so the panel is what takes up
+     the difference: 100vh − 2×--edge − (that band's fixed content). The floor
+     stops it collapsing on viewports too short for the layout at all. */
+  --detail: max(200px, calc(100vh - 2 * var(--edge) - 520px));
+  --gap: 85px;       /* identity → work gap      */
+  --edge: 60px;      /* page frame — equal on all four sides */
+  --pad: 24px;       /* inner padding shared by every block */
+  /* Headroom in the list floor. With the credit line moved into the panel a row
+     is a single line of type and measures exactly --row, so this no longer has
+     to absorb an overshoot — only guard the floor against rounding. A floor even
+     2px short lets the open state push the page. */
+  --slack: 20px;
+  display: flex; flex-direction: column; justify-content: center;
+  /* One value on all four sides. The page is vertically centred and height
+     constrained, so the frame can only stay square by giving --edge first claim
+     on the viewport and stepping the content down under it — that is what the
+     height queries below tune, rather than thinning the padding. */
+  padding: var(--edge);
+}
+.hx-man > .hx-rev:not(.hx-bg),
+.hx-man > .hx-man-work { position: relative; z-index: 2; }
+
+.hx-man-sub {
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.26em;
+  text-transform: uppercase; color: #fff; margin-top: 0;
+}
+.hx-man-sub b,
+.hx-man-role { color: #fff; font-weight: 700; letter-spacing: 0.24em; }
+.hx-man-div { color: rgba(255, 255, 255, 0.45); margin: 0 3px; }
+
+.hx-man-wm {
+  font-family: var(--font-display); font-weight: 800; text-transform: uppercase;
+  font-size: min(var(--wm), 10.5vw); line-height: 0.9; letter-spacing: -0.02em;
+  margin: 6px 0 0;
+  display: flex; gap: 0.22em; align-items: baseline;
+}
+/* Shane reads solid, Yun is its outline. Fixed — the name is identity, not a
+   control, so it does not react to the cursor.
+   Direct children only: the typed variant nests word and character spans inside
+   these two, and an unscoped `span` would turn every letter into its own block
+   and hand the first one of each word the wrong colour. */
+.hx-man-wm > span { display: block; cursor: default; }
+.hx-man-wm > span:first-child { color: #f4f4f5; }
+.hx-man-wm > span:last-child { color: transparent; -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.5); }
+
+/* Back under the name, on the same left edge as everything below it. */
+.hx-man-contact { display: flex; gap: 9px; margin-top: 22px; }
+
+/* The top section sits flush on the gutter, which is also where the work block
+   starts — so the visible left edge is identical down the whole page. --pad is
+   the work block's own internal inset. */
+/* The work block spans exactly the page gutters, same as the text above it.
+   No outer frame: only the header band is drawn, and the active project is
+   grouped by its colour wash rather than by rules. */
+.hx-man-work { margin-top: var(--gap); }
+
+/* The title row: column labels inside a drawn box. No fill — the border is the
+   whole treatment, and its bottom edge is the line that used to sit under the
+   labels. Type stays a little larger than the row metadata beneath it and at a
+   lighter weight, so it sits in the same quiet layer rather than heading it. */
+.hx-man-ih {
+  position: relative;
+  display: grid; grid-template-columns: 62px 1fr 210px; gap: 20px;
+  align-items: center;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 500;
+  letter-spacing: 0.22em; text-transform: uppercase; color: #e4e4ea;
+  padding: 13px var(--pad);
+  background: #c9c9d0; color: #16161a; /* a light band, inverted out of the field */
+  border: 0;
+  /* Square on the left, rounded on the right to the same 8px a row takes when
+     it opens. The box runs off the left edge and closes on the right. */
+  border-radius: 0 8px 8px 0;
+}
+/* The same thick left edge an open row carries. On a white band it reads dark
+   rather than light, but it holds the same edge the rows align to. */
+.hx-man-ih::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: rgba(0, 0, 0, 0.42);
+}
+
+/* One continuous glass surface: header, rows and detail share the same border
+   box, so the three states read as a single object instead of three. */
+/* The block is floored at its tallest state — three rows plus one open detail,
+   plus slack for rows running taller than --row once their type is measured.
+   A STATIC floor on purpose: an animated counterweight had to finish in step
+   with the detail, and any hover that interrupted it mid-flight (leaving the
+   list and re-entering a row) left the two racing at different rates, which is
+   what made the page bounce. Nothing here moves, so nothing can fall out of
+   step — the detail just expands into space the block already owns. */
+.hx-man-list {
+  padding-top: 10px;
+  min-height: calc(var(--row) * 3 + var(--detail) + var(--slack));
+}
+/* Deaf to the cursor until the intro hint has finished its one open/close. */
+.hx-man-list.is-locked { pointer-events: none; }
+.hx-man-r {
+  position: relative; display: grid; grid-template-columns: 62px 1fr 210px; gap: 20px;
+  align-items: center;
+  padding: 9px var(--pad); min-height: var(--row);
+  border-radius: 8px 8px 0 0;
+  transition: background 0.28s ease;
+}
+
+.hx-man-r::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; z-index: 3;
+  background: var(--acc, #fff); transform: scaleX(0); transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+/* Subtle wash in the project's own colour, continuing into the detail. */
+.hx-man-r.is-open {
+  background: color-mix(in srgb, var(--acc, #fff) 5.5%, transparent);
+}
+.hx-man-r.is-open::before { transform: scaleX(1); }
+
+.hx-man-rn {
+  font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+  color: var(--acc, #a1a1aa); opacity: 0.6; transition: opacity 0.25s;
+}
+.hx-man-r.is-open .hx-man-rn { opacity: 1; }
+.hx-man-rt {
+  display: block;
+  font-family: var(--font-display); font-weight: 700; font-size: 20px; letter-spacing: -0.012em;
+  color: #d8d8dc; transition: color 0.25s;
+}
+.hx-man-r.is-open .hx-man-rt { color: #fff; }
+/* Expand marker: a dot in a rounded square that turns 45° when the row opens.
+   The mark itself never changes — only its angle — so the square reads as a
+   diamond and the dot stays put. Sits on the title's baseline so it reads as
+   part of the line rather than a separate control. */
+.hx-man-rx {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; margin-left: 11px; vertical-align: 1px;
+  border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 5px;
+  color: rgba(255, 255, 255, 0.5);
+  transition:
+    transform 0.34s cubic-bezier(0.34, 1.24, 0.5, 1),
+    color 0.25s, border-color 0.25s, background 0.25s;
+}
+.hx-man-rx::after {
+  content: "";
+  width: 4px; height: 4px; border-radius: 50%;
+  background: currentColor;
+}
+.hx-man-r.is-open .hx-man-rx {
+  transform: rotate(45deg);
+  color: var(--acc, #fff);
+  border-color: color-mix(in srgb, var(--acc, #fff) 45%, transparent);
+  background: color-mix(in srgb, var(--acc, #fff) 12%, transparent);
+}
+/* The credit, now inside the open panel rather than under the title: labels in
+   the same mono the title row uses, values a step brighter beside them. */
+.hx-man-dmeta {
+  display: grid; grid-template-columns: auto auto; gap: 3px 14px;
+  justify-content: start; align-items: baseline;
+  margin: 0 0 14px;
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+/* Labels carry the project's own colour, the way the case studies letter their
+   TLDR columns — the credit reads as belonging to this project rather than as
+   neutral chrome. Values stay bright so the colour marks, not competes. */
+.hx-man-dmeta dt { color: var(--acc, #77777f); opacity: 0.85; }
+.hx-man-dmeta dd { margin: 0; color: #e8e8ee; }
+/* Row and panel together, so the status has something to centre against. */
+.hx-man-item { position: relative; }
+/* Lifted out of the row's grid and hung on the item instead: `top: 50%` then
+   resolves against the row alone when closed and against the row plus the open
+   panel when it expands, which is the vertical centring the grid could not give
+   it. Width and right inset reproduce the status column it used to sit in, so
+   it stays under the header's own label. Transparent to the cursor — the link
+   underneath keeps the click, and the item carries the hover. */
+.hx-man-rs {
+  position: absolute; right: var(--pad); top: 50%; transform: translateY(-50%);
+  width: 210px; pointer-events: none; z-index: 4;
+  font-family: var(--font-mono); font-size: 13px; white-space: nowrap;
+  color: var(--acc, #d4d4d8); opacity: 0.85; transition: opacity 0.25s;
+}
+.hx-man-item.is-open .hx-man-rs { opacity: 1; }
+
+/* Detail: constant height, contents cross-fade. Carries the open row's tint and
+   accent bar so it reads as that row continuing downward. */
+.hx-man-detail {
+  position: relative;
+  /* border-box so an open detail measures exactly --detail including its
+     padding. The list's min-height reserves that same figure, so the block is
+     identical whether a row is open or every row is closed — nothing on a
+     vertically centred page moves when one expands. */
+  box-sizing: border-box;
+  max-height: 0; opacity: 0; overflow: hidden;
+  padding: 0 var(--pad);
+  border-radius: 0 0 8px 8px;
+  background: color-mix(in srgb, var(--acc, #fff) 4%, transparent);
+  transition:
+    max-height 0.42s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease,
+    padding 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hx-man-detail.is-open {
+  max-height: var(--detail); opacity: 1;
+  padding: 4px var(--pad) 18px;
+}
+.hx-man-detail::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+  background: var(--acc, #fff); opacity: 0.7;
+}
+.hx-man-din {
+  display: flex; align-items: center; gap: 34px;
+  /* Hold the status column out of the flex run. The status is positioned on the
+     item, not laid out here, so without this the shots would centre under it
+     rather than in the space beside it — the reserve is its 210px plus the same
+     34px gap the text keeps. */
+  padding-right: 244px;
+  min-height: calc(var(--detail) - 22px);
+}
+/* The frame's size is fixed by the panel's height, so the text column takes
+   whatever is left rather than sitting at a fixed width with a gap beside it.
+   Capped so the blurb never runs to an unreadable measure. */
+.hx-man-dl {
+  flex: 1 1 auto; min-width: 300px; max-width: 620px;
+  display: flex; flex-direction: column;
+}
+
+/* Frames are HEIGHT-bound and keep the screenshot's shape, so nothing crops.
+   Driving them off width instead (width:100% + aspect-ratio) makes them taller
+   than the panel and they overflow it — the panel's height is the constraint,
+   never the width. Two of them is what actually fills the row: one leaves a
+   third of the panel empty, three are too small to read. */
+.hx-stack--solo { flex: 1; min-width: 0; justify-content: center; align-items: center; }
+.hx-stack--solo .hx-stack-in { justify-content: center; align-items: center; width: 100%; gap: 16px; }
+/* The pair shares the width the text leaves, and `max-height` keeps them inside
+   the panel. Sizing them from height alone let two frames run past the panel's
+   right edge — the width has to bound them as well. */
+/* Height-bound, so the frame hugs the screenshot instead of stretching to a
+   flex width and letterboxing it. Sizing these from flex left a browser window
+   far wider than the image inside it. */
+.hx-stack--solo .hx-shot {
+  flex: none;
+  height: 100%; width: auto; aspect-ratio: 1.66; max-width: 100%;
+}
+.hx-stack--solo .hx-shot img,
+.hx-stack--solo .hx-shot video { object-fit: cover; object-position: left top; }
+
+/* Already cropped to its own content, so no browser window is drawn around it.
+   Instead it sits in a container tinted with the project's own accent — the
+   frame belongs to the project rather than pretending to be a laptop. */
+/* No aspect-ratio: the container shrink-wraps the crop, the same way the phone
+   does. Holding it to the default 1.66 while the crop is 1.24 meant `cover` had
+   to cut the bottom of the builder off to fill the box. */
+.hx-stack--solo .hx-shot.is-bare {
+  height: 100%; width: auto; aspect-ratio: auto;
+  padding: 7px;
+  border: 1px solid color-mix(in srgb, var(--acc, #fff) 24%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--acc, #fff) 5%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow:
+    0 20px 42px -24px rgba(0, 0, 0, 0.85),
+    inset 0 1px 0 color-mix(in srgb, var(--acc, #fff) 12%, transparent);
+}
+.hx-shot.is-bare img {
+  flex: none; height: 100%; width: auto; max-width: none;
+  object-fit: contain; border-radius: 5px;
+}
+
+/* A phone in a translucent case, matching the glass the rest of the site uses.
+   No aspect-ratio: the frame shrink-wraps whatever the screen measures, which
+   is what guarantees the interface is never cropped or letterboxed — fixing an
+   aspect here and cropping to fill it was cutting the UI off. */
+.hx-stack--solo .hx-shot.is-phone {
+  flex: none;
+  height: 100%; width: auto; aspect-ratio: auto;
+  /* Thin: the case is a hint of a device, not a bezel. Anything heavier reads
+     as chrome cropping the screenshot rather than holding it. */
+  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 22px 46px -22px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+.hx-shot.is-phone::after {
+  content: ""; position: absolute; top: 8px; left: 50%; z-index: 2;
+  width: 26%; height: 3px; margin-left: -13%;
+  border-radius: 3px; background: rgba(255, 255, 255, 0.28);
+}
+.hx-shot video { flex: 1; min-height: 0; width: 100%; display: block; }
+/* Height-driven with width following, so the whole screen shows. */
+.hx-shot.is-phone img,
+.hx-shot.is-phone video {
+  flex: none; height: 100%; width: auto; max-width: none;
+  object-fit: contain; border-radius: 12px;
+}
+
+.hx-man-dblurb { margin: 0 0 18px; font-size: 15px; line-height: 1.55; color: #d4d4da; }
+.hx-man-dl .hx-cta { align-self: flex-start; height: 36px; padding: 0 16px; }
+
+/* ---- fitting smaller screens ------------------------------------------- */
+/* 14" laptops land around 800–880px of viewport height. */
+@media (max-height: 900px) {
+  .hx-man { --wm: 84px; --row: 54px; --detail: max(190px, calc(100vh - 2 * var(--edge) - 468px)); --gap: 62px; }
+  .hx-man-rt { font-size: 18.5px; }
+  .hx-man-dblurb { font-size: 13.5px; }
+}
+@media (max-height: 800px) {
+  .hx-man { --wm: 72px; --row: 50px; --detail: max(180px, calc(100vh - 2 * var(--edge) - 402px)); --gap: 40px; --slack: 12px; }
+  /* The frame is fixed now, so the room for it comes out of the spacing around
+     the panel rather than out of the panel itself. */
+  .hx-man-contact { margin-top: 14px; }
+  .hx-man-sub { font-size: 12px; }
+  .hx-man-ih { font-size: 13px; padding-block: 12px; }
+  .hx-man-rt { font-size: 17px; }
+  .hx-man-rc { font-size: 10px; }
+  .hx-man-dl { min-width: 260px; max-width: 430px; }
+}
+@media (max-height: 720px) {
+  .hx-man { --wm: 62px; --row: 44px; --detail: max(170px, calc(100vh - 2 * var(--edge) - 370px)); --gap: 35px; }
+  .hx-man-contact { margin-top: 14px; }
+  .hx-man-rt { font-size: 16px; }
+  .hx-man-rc { margin-top: 3px; }
+  .hx-man-r { padding-block: 7px; }
+  .hx-man-dblurb { font-size: 13px; }
+}
+@media (max-height: 670px) {
+  .hx-man { --wm: 54px; --row: 40px; --detail: max(120px, calc(100vh - 2 * var(--edge) - 339px)); --gap: 34px; }
+  .hx-man-ih { font-size: 12.5px; padding-block: 10px; }
+  .hx-man-rt { font-size: 15px; }
+  .hx-man-rc { font-size: 9.5px; }
+  .hx-man-r { padding-block: 6px; }
+  .hx-man-dl { min-width: 240px; max-width: 390px; }
+  .hx-pill { padding: 10px 18px; font-size: 11.5px; }
+}
+/* Narrow windows: tighten the gutters and the status column. Role and timeline
+   now live in the row's own secondary line, so nothing needs to drop out. */
+@media (max-width: 1280px) {
+  .hx-man { --edge: 48px; }
+  .hx-man-ih, .hx-man-r { grid-template-columns: 54px 1fr 190px; }
+}
+
+/* ============================================================================
+   PREVIEW-ONLY dev toolbar. Never renders on a real page.
+   ============================================================================ */
+.hx-dev {
+  position: fixed; left: 18px; bottom: 18px; z-index: 90;
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 9px;
+  background: rgba(18, 18, 20, 0.88);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 999px;
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.9);
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.hx-dev-lbl { color: #6b6b72; padding: 0 4px 0 6px; }
+.hx-dev-sep { width: 1px; height: 15px; background: rgba(255, 255, 255, 0.13); }
+.hx-dev button, .hx-dev a {
+  border: 1px solid transparent; border-radius: 999px;
+  padding: 6px 10px; color: #a1a1aa; background: transparent;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+  font-family: inherit; font-size: inherit; letter-spacing: inherit; text-transform: inherit;
+}
+.hx-dev button:hover, .hx-dev a:hover { color: #fff; background: rgba(255, 255, 255, 0.08); }
+.hx-dev button[data-on="1"] { color: #0a0a0c; background: #e8e8ea; border-color: #e8e8ea; }
+
