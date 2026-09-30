@@ -477,11 +477,11 @@ export function allProjectsHref() {
   return "/";
 }
 
-/** The Manifest field, behind the page's own content. */
+/** The Manifest field, behind the page's own content. The moving mesh stays
+ *  on the gate only — the case studies, like the landing, sit on a still field. */
 export function ManifestField() {
   return (
     <div className="ms-bg" aria-hidden="true">
-      <GateMesh />
       <div className="ms-vig" />
     </div>
   );

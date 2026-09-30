@@ -40,12 +40,6 @@ function gatePage(redirect = "/", error?: string): string {
     body{min-height:100vh;display:flex;align-items:center;justify-content:center;
       background:#1c1c1e;font-family:'Inter',system-ui,sans-serif;overflow:hidden;position:relative}
     .bg{position:absolute;inset:0;pointer-events:none}
-    .grid{position:absolute;inset:0;opacity:.06;
-      background-image:linear-gradient(rgba(255,255,255,.3) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.3) 1px,transparent 1px),
-        linear-gradient(rgba(255,255,255,.85) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.85) 1px,transparent 1px);
-      background-size:24px 24px,24px 24px,120px 120px,120px 120px;background-position:center center}
     #starsWrap{position:absolute;inset:0}
     .anim #starsWrap{opacity:0}
     #starsWrap.in{animation:bloom 1.6s ease-out forwards}
@@ -86,10 +80,10 @@ function gatePage(redirect = "/", error?: string): string {
     .disp{width:100%;padding:14px 48px 14px 16px;border-radius:7px;font-size:15px;line-height:24px;outline:none;
       font-family:'JetBrains Mono',monospace;caret-color:#fff;color:rgba(255,255,255,.9);
       white-space:nowrap;overflow:hidden;background:transparent;border:none}
-    .disp::placeholder{color:rgba(255,255,255,.25)}
-    /* masked emoji glyphs: subtle green tint only on the glyphs (box stays put). Instant (no transition). */
-    .disp.masked{filter:grayscale(1) sepia(1) hue-rotate(55deg) saturate(1.4) brightness(1.05);
-      text-shadow:0 0 4px rgba(90,210,130,.14);font-size:16px;letter-spacing:.12em}
+    .disp::placeholder{color:rgba(138,255,184,.7);text-shadow:0 0 6px rgba(57,255,136,.35)}
+    /* masked emoji glyphs: green tint (detail kept), shifted toward the placeholder's mint + its soft glow. Instant (no transition). */
+    .disp.masked{filter:grayscale(1) sepia(1) hue-rotate(95deg) saturate(2) brightness(1.2);
+      text-shadow:0 0 6px rgba(57,255,136,.35);font-size:16px;letter-spacing:.12em}
     .toggle{position:absolute;right:12px;top:50%;transform:translateY(-50%);
       background:none;border:none;cursor:pointer;color:rgba(255,255,255,.3);
       display:flex;align-items:center;justify-content:center;padding:4px;
@@ -120,7 +114,6 @@ function gatePage(redirect = "/", error?: string): string {
 </head>
 <body>
   <div class="bg">
-    <div class="grid"></div>
     <div class="vignette"></div>
     <div id="starsWrap"><canvas id="stars"></canvas></div>
   </div>

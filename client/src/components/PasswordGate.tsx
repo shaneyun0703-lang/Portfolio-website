@@ -147,8 +147,8 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
   // grid fades at the outer edges — the stars/web stay full-brightness to the corners.
   // Prod ships bright edges (vignette below the canvas), so default to bright; ?edges=off to disable.
   const brightEdges = typeof window === "undefined" || new URLSearchParams(window.location.search).get("edges") !== "off";
-  // Grid stays. ?grid=off drops it.
-  const showGrid = typeof window === "undefined" || new URLSearchParams(window.location.search).get("grid") !== "off";
+  // No grid by default (matches the live gate). ?grid=on brings it back for comparison.
+  const showGrid = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("grid") === "on";
   // Iteration picker: ?float=network|flow|depth|lattice swaps the constellation for a floating
   // connecting-dots background. Anything else keeps the current constellation experience.
   const floatParam = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("float") : null;
@@ -224,13 +224,14 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
               spellCheck={false}
               autoComplete="off"
               autoCapitalize="off"
-              className="w-full px-4 py-3.5 pr-12 rounded-[7px] font-mono text-[15px] text-white/90 placeholder:text-white/25 placeholder:lowercase placeholder:tracking-[0.04em] outline-none whitespace-nowrap overflow-hidden"
+              className="w-full px-4 py-3.5 pr-12 rounded-[7px] font-mono text-[15px] text-white/90 placeholder:text-[rgba(138,255,184,0.7)] placeholder:[text-shadow:0_0_6px_rgba(57,255,136,0.35)] placeholder:lowercase placeholder:tracking-[0.04em] outline-none whitespace-nowrap overflow-hidden"
               style={{
                 background: "transparent",
                 border: "none",
-                // Masked emojis: subtle green tint only on the glyphs (box stays put). Instant switch (no transition).
-                filter: masked ? "grayscale(1) sepia(1) hue-rotate(55deg) saturate(1.4) brightness(1.05)" : "none",
-                textShadow: masked ? "0 0 4px rgba(90,210,130,0.14)" : "none",
+                // Masked emojis: green tint on the glyphs (detail kept), shifted toward the
+                // placeholder's mint, with its soft glow. Instant switch (no transition).
+                filter: masked ? "grayscale(1) sepia(1) hue-rotate(95deg) saturate(2) brightness(1.2)" : "none",
+                textShadow: masked ? "0 0 6px rgba(57,255,136,0.35)" : "none",
                 // Slightly larger glyphs + a touch more spacing; still fits openSesame (10) on one line. Placeholder unaffected.
                 fontSize: masked ? "16px" : undefined,
                 letterSpacing: masked ? "0.12em" : "normal",
