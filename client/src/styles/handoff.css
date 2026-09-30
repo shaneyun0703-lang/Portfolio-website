@@ -153,6 +153,7 @@
 }
 .hx-live canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 
+
 /* ---- shared type --------------------------------------------------------- */
 .hx-wm {
   font-family: var(--font-display);
@@ -528,9 +529,9 @@
   position: relative;
   display: grid; grid-template-columns: 62px 1fr 210px; gap: 20px;
   align-items: center;
-  font-family: var(--font-mono); font-size: 14px; font-weight: 500;
+  font-family: var(--font-mono); font-size: 12.5px; font-weight: 700;
   letter-spacing: 0.22em; text-transform: uppercase; color: #e4e4ea;
-  padding: 13px var(--pad);
+  padding: 7px var(--pad);
   background: #c9c9d0; color: #16161a; /* a light band, inverted out of the field */
   border: 0;
   /* Square on the left, rounded on the right to the same 8px a row takes when
@@ -626,7 +627,7 @@
 /* Labels carry the project's own colour, the way the case studies letter their
    TLDR columns — the credit reads as belonging to this project rather than as
    neutral chrome. Values stay bright so the colour marks, not competes. */
-.hx-man-dmeta dt { color: var(--acc, #77777f); opacity: 0.85; }
+.hx-man-dmeta dt { color: var(--acc, #77777f); opacity: 0.85; font-size: 12px; }
 .hx-man-dmeta dd { margin: 0; color: #e8e8ee; }
 /* Row and panel together, so the status has something to centre against. */
 .hx-man-item { position: relative; }
@@ -671,7 +672,9 @@
   background: var(--acc, #fff); opacity: 0.7;
 }
 .hx-man-din {
-  display: flex; align-items: center; gap: 34px;
+  /* Top-aligned: the text starts level with the top of the frames rather than
+     floating at the panel's middle. */
+  display: flex; align-items: flex-start; gap: 34px; padding-top: 10px; box-sizing: border-box;
   /* Hold the status column out of the flex run. The status is positioned on the
      item, not laid out here, so without this the shots would centre under it
      rather than in the space beside it — the reserve is its 210px plus the same
@@ -683,7 +686,7 @@
    whatever is left rather than sitting at a fixed width with a gap beside it.
    Capped so the blurb never runs to an unreadable measure. */
 .hx-man-dl {
-  flex: 1 1 auto; min-width: 300px; max-width: 620px;
+  flex: 1 1 0; min-width: 300px; max-width: 620px;
   display: flex; flex-direction: column;
 }
 
@@ -692,8 +695,17 @@
    than the panel and they overflow it — the panel's height is the constraint,
    never the width. Two of them is what actually fills the row: one leaves a
    third of the panel empty, three are too small to read. */
-.hx-stack--solo { flex: 1; min-width: 0; justify-content: center; align-items: center; }
-.hx-stack--solo .hx-stack-in { justify-content: center; align-items: center; width: 100%; gap: 16px; }
+/* Sized by its frames, not by flex: the frames are height-bound and cannot
+   shrink, so a flex share narrower than them let the phone spill into the
+   status column. The text column gives way instead. */
+.hx-stack--solo { flex: 0 0 auto; justify-content: center; align-items: center; }
+.hx-stack--solo .hx-stack-in {
+  justify-content: center; align-items: center; width: 100%; gap: 16px;
+  /* Also capped by viewport width. The widest pair runs ~2.3x its height, and
+     the text column + status reserve take ~740px, so on a narrower laptop the
+     frames shrink before they can reach the status. */
+  height: min(calc(var(--detail) - 38px), calc((100vw - 740px) / 2.35));
+}
 /* The pair shares the width the text leaves, and `max-height` keeps them inside
    the panel. Sizing them from height alone let two frames run past the panel's
    right edge — the width has to bound them as well. */
@@ -776,7 +788,7 @@
      the panel rather than out of the panel itself. */
   .hx-man-contact { margin-top: 14px; }
   .hx-man-sub { font-size: 12px; }
-  .hx-man-ih { font-size: 13px; padding-block: 12px; }
+  .hx-man-ih { font-size: 12px; padding-block: 6px; }
   .hx-man-rt { font-size: 17px; }
   .hx-man-rc { font-size: 10px; }
   .hx-man-dl { min-width: 260px; max-width: 430px; }
@@ -791,7 +803,7 @@
 }
 @media (max-height: 670px) {
   .hx-man { --wm: 54px; --row: 40px; --detail: max(120px, calc(100vh - 2 * var(--edge) - 339px)); --gap: 34px; }
-  .hx-man-ih { font-size: 12.5px; padding-block: 10px; }
+  .hx-man-ih { font-size: 11.5px; padding-block: 5px; }
   .hx-man-rt { font-size: 15px; }
   .hx-man-rc { font-size: 9.5px; }
   .hx-man-r { padding-block: 6px; }

@@ -95,7 +95,16 @@ function Detail({ w, open, href }: { w: Work; open: boolean; href: string }) {
   );
 }
 
+/* Background iteration picker, same pattern as the gate's ?float=. */
+const BGS = ["plain", "grid", "mesh"] as const;
+type Bg = (typeof BGS)[number];
+function readBg(): Bg {
+  const b = new URLSearchParams(window.location.search).get("bg");
+  return (BGS as readonly string[]).includes(b ?? "") ? (b as Bg) : "plain";
+}
+
 export default function LandingManifest() {
+  const [bg] = useState<Bg>(readBg);
   const [kind, setKind] = useRevealParam();
   const ch = useChoreography(kind);
   const play = usePlay();
@@ -148,10 +157,11 @@ export default function LandingManifest() {
 
   return (
     <div className="hx hx-man" data-play={play ? "1" : "0"}>
-      {/* No grid on this one — the mesh and the vignette carry the background
-          alone. The gate still runs it. */}
+      {/* The moving mesh stays on the gate only — once you are in, the room
+          goes still. Iterations: ?bg=plain (default) | grid | mesh. */}
       <Rev name="bg" ch={ch} className="hx-bg">
-        <GateMesh />
+        {bg === "mesh" && <GateMesh />}
+        {bg === "grid" && <div className="hx-grid" />}
         <div className="hx-vig" />
       </Rev>
       <SweepBar ch={ch} />

@@ -677,7 +677,10 @@ export function ShotStack({ w, variant = "row" }: { w: Work; variant?: "row" | "
           )}
           {shot.video
             ? <video src={shot.src} autoPlay loop muted playsInline preload="auto" aria-label={shot.alt} />
-            : <img src={shot.src} alt={shot.alt} loading="lazy" />}
+            /* Solo frames size themselves from the loaded image, so a lazy one
+               is zero-wide until it loads — and a zero-wide image never counts
+               as visible, so it never loads. Six images; fetch them upfront. */
+            : <img src={shot.src} alt={shot.alt} loading={variant === "solo" ? "eager" : "lazy"} />}
           {variant === "captions" && <figcaption className="hx-shot-cap">{shot.cap}</figcaption>}
         </figure>
       ))}
