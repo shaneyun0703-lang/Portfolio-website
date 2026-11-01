@@ -46,6 +46,9 @@
   filter: none;
   will-change: auto;
 }
+/* Returning visitor: the intro already played this session, so every beat is
+   simply there — no fade, no rise, no blur. */
+.hx[data-instant="1"] .hx-rev { transition: none; }
 
 /* Per-transition easing */
 .hx-rev[data-ease="focus"]    { --ease: cubic-bezier(0.16, 1, 0.3, 1); }

@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import {
   ME, WORK, type Work, type Choreography, type Part,
-  AccessBadge, ContactPills, GateMesh, Rev, Scramble, ShotStack, Slice, SweepBar,
+  AccessBadge, ContactPills, GateMesh, Rev, Scramble, ShotStack, Slice, SweepBar, UNLOCK_FLAG,
   useAccessBadge, useChoreography, usePlay, useRevealParam, useTypewriter,
 } from "./shared";
 
@@ -66,7 +66,7 @@ function Row({
 
 /* Category, role and timeline all live in the row itself, so the detail carries
    only what the row cannot: the description, the work, and the way in. */
-function Detail({ w, open, href }: { w: Work; open: boolean; href: string }) {
+function Detail({ w, open, href, scramble = open }: { w: Work; open: boolean; href: string; scramble?: boolean }) {
   return (
     <div
       className={`hx-man-detail${open ? " is-open" : ""}`}
@@ -80,9 +80,9 @@ function Detail({ w, open, href }: { w: Work; open: boolean; href: string }) {
               the panel opens. */}
           <dl className="hx-man-dmeta">
             <dt>Role</dt>
-            <dd><Scramble text={w.role} hover={open} /></dd>
+            <dd><Scramble text={w.role} hover={scramble} /></dd>
             <dt>Timeline</dt>
-            <dd><Scramble text={w.timeline} hover={open} /></dd>
+            <dd><Scramble text={w.timeline} hover={scramble} /></dd>
           </dl>
           <p className="hx-man-dblurb">{w.blurb}</p>
           <Link href={href} className="hx-cta" tabIndex={open ? 0 : -1}>
@@ -103,14 +103,35 @@ function readBg(): Bg {
   return (BGS as readonly string[]).includes(b ?? "") ? (b as Bg) : "plain";
 }
 
+/* The intro plays once per browser session. Coming back from a case study (or
+   reloading) the visitor has already watched it, so the page arrives settled:
+   every line written, 01 open, nothing animating in. A fresh unlock always
+   plays it, and `?t=` (the transition picker) always replays. */
+const INTRO_SEEN = "hx-intro-seen";
+function readSkipIntro(): boolean {
+  try {
+    const url = new URLSearchParams(window.location.search);
+    if (url.has("t") || url.get("unlocked") === "1") return false;
+    if (sessionStorage.getItem(UNLOCK_FLAG) === "1") return false;
+    return sessionStorage.getItem(INTRO_SEEN) === "1";
+  } catch { return false; }
+}
+
 export default function LandingManifest() {
   const [bg] = useState<Bg>(readBg);
+  const [skip] = useState(readSkipIntro);
+  useEffect(() => { try { sessionStorage.setItem(INTRO_SEEN, "1"); } catch { /* private mode */ } }, []);
   const [kind, setKind] = useRevealParam();
   const ch = useChoreography(kind);
-  const play = usePlay();
+  const played = usePlay();
+  const play = skip || played;
   const badge = useAccessBadge(ch.delayOf("badge"));
-  const [open, setOpen] = useState(-1); // everything collapsed on arrival
-  const typed = kind === "type" && !ch.reduced;
+  // Collapsed on a first arrival (the intro opens 01); already open on a return.
+  const [open, setOpen] = useState(skip ? 0 : -1);
+  /* On a return, 01 is simply open — its role/timeline should read as plain
+     text, not decrypt at you. Decrypting resumes with the first real hover. */
+  const [touched, setTouched] = useState(!skip);
+  const typed = kind === "type" && !ch.reduced && !skip;
   const subN = useTypewriter(SUB_LEN, TYPE_AT, SUB_STEP, typed);
 
   /* Plain URLs. The skin used to ride on `?skin=manifest` because the case
@@ -135,7 +156,7 @@ export default function LandingManifest() {
   const [armed, setArmed] = useState(false);
   useEffect(() => {
     if (!play) return;
-    if (ch.reduced) { setArmed(true); setOpen(0); return; }
+    if (ch.reduced || skip) { setArmed(true); setOpen(0); return; }
     setArmed(false);
     const at = (ch.delayOf("pane") + 0.5) * 1000;
     let arm: (() => void) | null = null;
@@ -153,10 +174,10 @@ export default function LandingManifest() {
       clearTimeout(hand);
       if (arm) window.removeEventListener("pointermove", arm);
     };
-  }, [play, ch]);
+  }, [play, ch, skip]);
 
   return (
-    <div className="hx hx-man" data-play={play ? "1" : "0"}>
+    <div className="hx hx-man" data-play={play ? "1" : "0"} data-instant={skip ? "1" : undefined}>
       {/* The moving mesh stays on the gate only — once you are in, the room
           goes still. Iterations: ?bg=plain (default) | grid | mesh. */}
       <Rev name="bg" ch={ch} className="hx-bg">
@@ -204,11 +225,11 @@ export default function LandingManifest() {
               className={`hx-man-item${i === open ? " is-open" : ""}`}
               key={w.n}
               style={{ ["--acc" as string]: w.accent }}
-              onMouseEnter={() => setOpen(i)}
+              onMouseEnter={() => { setTouched(true); setOpen(i); }}
             >
               <Row w={w} i={i} ch={ch} open={i === open} onOpen={() => setOpen(i)} href={hrefFor(w)} />
-              <Rev name="pane" ch={ch}><Detail w={w} open={i === open} href={hrefFor(w)} /></Rev>
-              <Scramble className="hx-man-rs" text={w.status} hover={i === open} />
+              <Rev name="pane" ch={ch}><Detail w={w} open={i === open} scramble={touched && i === open} href={hrefFor(w)} /></Rev>
+              <Scramble className="hx-man-rs" text={w.status} hover={touched && i === open} />
             </div>
           ))}
         </div>

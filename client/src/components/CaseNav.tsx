@@ -67,7 +67,7 @@ export function CaseNav({ category, title }: { category: string; title: string }
       href={allProjectsHref()}
       aria-label="Projects"
       title="Projects"
-      className="case-nav-link group inline-flex items-center gap-1.5 font-mono text-[12px] tracking-[0.08em] uppercase text-[#a8a8ae] hover:text-white hover:[text-shadow:0_0_10px_rgba(255,255,255,0.55)] transition-[color,text-shadow] duration-200 whitespace-nowrap relative -top-px"
+      className="case-nav-link group inline-flex items-center gap-1.5 font-mono text-[12px] tracking-[0.08em] uppercase text-[#a8a8ae] hover:text-white transition-colors duration-200 whitespace-nowrap relative -top-px"
     >
       {/* Optical centring: mono caps sit ~1px below the line box's centre, and
           the arrow a further ~1px, so both are lifted to centre on the bar. */}
