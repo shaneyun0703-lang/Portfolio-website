@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useScrolled } from "@/hooks/useScrolled";
 
 const sections = [
   { id: "context", label: "The opportunity" },
@@ -13,7 +12,6 @@ const sections = [
 
 export function TableOfContents() {
   const [active, setActive] = useState<string>("context");
-  const scrolled = useScrolled(40);
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -37,14 +35,14 @@ export function TableOfContents() {
      and edged up to survive the manifest skin's darker #141414 field; that field
      is now --paper, the same background these were mixed against, so the
      compensation was correcting for nothing. */
-  const panelStyle = { background: "rgba(28,28,32,0.62)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 8px 30px rgba(0,0,0,0.5)" };
+  const panelStyle = { background: "rgba(28,28,32,0.62)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 4px 16px rgba(0,0,0,0.25)" };
 
   return (
     <nav
-      className={`hidden xl:block fixed right-7 z-40 w-[310px] transition-all duration-500 ease-in-out ${scrolled ? "top-[calc(80px+1.75rem)]" : "top-[calc(72px+2.25rem)]"}`}
+      className={`hidden xl:block fixed right-4 top-[90px] z-40 w-[310px]`}
       aria-label="Section navigation"
     >
-      <div className="rounded-[10px] p-4 max-h-[calc(100vh-180px)] overflow-y-auto overflow-x-hidden" style={panelStyle}>
+      <div className="rounded-[10px] p-4 max-h-[calc(100vh-106px)] overflow-y-auto overflow-x-hidden" style={panelStyle}>
         <div className="font-mono text-[13px] text-[var(--mid)] tracking-[0.1em] uppercase mb-3 font-medium">
           Sections
         </div>
