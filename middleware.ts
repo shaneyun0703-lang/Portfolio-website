@@ -46,7 +46,7 @@ function gatePage(redirect = "/", error?: string): string {
     @keyframes bloom{0%{opacity:0;filter:brightness(2.6) blur(3px)}45%{opacity:1;filter:brightness(1.7) blur(0)}100%{opacity:1;filter:brightness(1) blur(0)}}
     #stars{position:absolute;inset:0;width:100%;height:100%}
     .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 30%,#1c1c1e 75%)}
-    .wrap{position:relative;z-index:10;width:100%;max-width:420px;padding:0 24px}
+    .wrap{position:relative;z-index:10;width:100%;max-width:396px;padding:0 24px}
     .title{text-align:center;margin-bottom:48px}
     /* Matches the landing's wordmark: stacked, first name solid, last name
        drawn as an outline. The name keeps its form across the unlock instead of
@@ -58,25 +58,31 @@ function gatePage(redirect = "/", error?: string): string {
     .title p{margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:15px;
       color:rgba(255,255,255,.5);letter-spacing:.15em;text-transform:uppercase}
     .cardWrap{position:relative;z-index:10}
-    .cardShadow{position:absolute;inset:0;border-radius:12px;pointer-events:none;
-      box-shadow:0 8px 24px rgba(0,0,0,.3);opacity:1}
+    .cardShadow{position:absolute;inset:0;border-radius:8px;pointer-events:none;
+      box-shadow:0 6px 16px rgba(0,0,0,.18);opacity:1;display:none}
     .anim .cardShadow{opacity:0}
     .cardShadow.in{opacity:1;transition:opacity .8s ease .45s}
-    .box{position:relative;background:rgba(28,28,32,.28);border:1px solid rgba(255,255,255,.1);
-      border-radius:12px;padding:28px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    /* no card: the input row sits directly on the page; .box only carries the wipe-in */
+    .box{position:relative;
       transition:clip-path .7s cubic-bezier(.22,1,.36,1)}
     .anim .box{clip-path:inset(0 100% 0 0)}
     .box.in{clip-path:inset(0 0 0 0)}
+    .row{display:flex;gap:8px}
     .field{position:relative}
     /* The box (bg/border/blur) lives on the wrapper so the input's emoji filter never tints it. */
-    .field{position:relative;border-radius:7px;background:rgba(255,255,255,.06);
+    .field{position:relative;flex:1;min-width:0;border-radius:7px;background:rgba(255,255,255,.06);
       border:1px solid ${error ? "rgba(255,80,80,0.5)" : "rgba(255,255,255,0.1)"};
-      box-shadow:0 2px 10px rgba(0,0,0,.18);
       backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
     .field:focus-within{border-color:rgba(255,255,255,.2)}
     .field.has{background:rgba(90,210,130,.05);border-color:rgba(120,225,150,.16);
-      box-shadow:0 2px 10px rgba(0,0,0,.18),inset 0 0 18px rgba(90,210,130,.05)}
-    .field.err-on{border-color:rgba(255,80,80,.5)}
+      box-shadow:inset 0 0 18px rgba(90,210,130,.05)}
+    .field.err-on{border-color:rgba(255,80,80,.5);background:rgba(255,90,90,.06);
+      box-shadow:inset 0 0 18px rgba(255,90,90,.07)}
+    /* error state: swap the green content tint for red */
+    .field.err-on .disp{color:#ffb3b3}
+    .field.err-on .disp::placeholder{color:rgba(255,150,150,.75);text-shadow:0 0 6px rgba(255,80,80,.35)}
+    .field.err-on .disp.masked{filter:grayscale(1) sepia(1) hue-rotate(-40deg) saturate(3) brightness(1.1);
+      text-shadow:0 0 6px rgba(255,80,80,.4)}
     .disp{width:100%;padding:14px 48px 14px 16px;border-radius:7px;font-size:15px;line-height:24px;outline:none;
       font-family:'JetBrains Mono',monospace;caret-color:#fff;color:rgba(255,255,255,.9);
       white-space:nowrap;overflow:hidden;background:transparent;border:none}
@@ -95,10 +101,11 @@ function gatePage(redirect = "/", error?: string): string {
     .toggle .eye-off{opacity:0}
     .toggle.shown .eye-on{opacity:0}
     .toggle.shown .eye-off{opacity:1}
-    .err{font-family:'JetBrains Mono',monospace;color:#ff7a7a;font-size:11px;
-      letter-spacing:.04em;text-align:center;margin-top:10px;text-transform:lowercase}
-    .submit{width:100%;margin-top:16px;padding:14px;border-radius:7px;min-height:52px;
-      font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;letter-spacing:.1em;text-transform:lowercase;
+    .err{font-family:'JetBrains Mono',monospace;color:#ff7a7a;font-size:10px;
+      letter-spacing:.04em;text-align:left;padding-left:2px;margin-top:5px;height:14px;line-height:14px;text-transform:lowercase}
+    .err.off{visibility:hidden}
+    .submit{flex-shrink:0;width:54px;height:54px;padding:0;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
       color:#fff;cursor:pointer;transition:background .2s,border-color .2s;
       background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);
       backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
@@ -110,6 +117,7 @@ function gatePage(redirect = "/", error?: string): string {
     .anim .foot{visibility:hidden}
     .foot .em{color:#fff;font-weight:500}
     .foot .caret{color:rgba(255,255,255,.4)}
+    .foot{display:none} /* request-access line dropped */
   </style>
 </head>
 <body>
@@ -128,7 +136,8 @@ function gatePage(redirect = "/", error?: string): string {
         <form method="POST" action="/auth" id="gateForm">
           <input type="hidden" name="redirect" value="${redirect}"/>
           <input type="hidden" name="password" id="pw"/>
-          <div class="field">
+          <div class="row">
+          <div class="field${error ? " err-on" : ""}">
             <input type="text" id="disp" class="disp" placeholder="enter password"
               autofocus autocomplete="off" autocapitalize="off" spellcheck="false"/>
             <button type="button" class="toggle" id="toggle" aria-label="Show password">
@@ -136,8 +145,9 @@ function gatePage(redirect = "/", error?: string): string {
               <svg class="eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
             </button>
           </div>
-          <p class="err" id="errMsg"${error ? "" : ' style="display:none"'}>${error ?? "Incorrect password — try again."}</p>
-          <button type="submit" class="submit" id="submitBtn">enter</button>
+          <button type="submit" class="submit" id="submitBtn" aria-label="Enter"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></button>
+          </div>
+          <p class="err${error ? "" : " off"}" id="errMsg" aria-live="polite">${error ?? "Incorrect password — try again."}</p>
         </form>
       </div>
     </div>
@@ -152,8 +162,8 @@ function gatePage(redirect = "/", error?: string): string {
     var POOL=["🐶","🐱","🐭","🐹","🐰","🦊","🐻","🐼","🐨","🐯","🦁","🐮","🐷","🐸","🐵","🐔","🐧","🐦","🦆","🦉","🦄","🐝","🐢","🐠","🐬","🐳","🦋","🐞","🐙","🦀","🐌","🍎","🍊","🍋","🍉","🍓","🍒","🍍","🥝","🥥","🍅","🥕","🌽","🍄","🍞","🧀","🍕","🍔","🌮","🍩","🍪","🎂","🍰","🍦","🍫","🍿","🥐","🌵","🌲","🌳","🌴","🌱","🌿","🍀","🍁","🌷","🌸","🌹","🌻","🌼","🌙","⭐","🌟","⚡","🔥","🌈","☀️","⛄","🌊","⚽","🏀","🏈","⚾","🎾","🎱","🎸","🎹","🎺","🎻","🥁","🎨","🚀","✈️","🚗","🚲","⛵","🎈","🎁","🔔","💡","📷","🔭","🧭","⏰","🔑","🧩","🎲","🪁"];
     function rnd(){return POOL[Math.floor(Math.random()*POOL.length)];}
     var real='',emo=[],shown=false;
-    function showError(){var em=document.getElementById('errMsg');if(em)em.style.display='';field.classList.add('err-on');}
-    function clearError(){var em=document.getElementById('errMsg');if(em)em.style.display='none';field.classList.remove('err-on');}
+    function showError(){var em=document.getElementById('errMsg');if(em)em.classList.remove('off');field.classList.add('err-on');}
+    function clearError(){var em=document.getElementById('errMsg');if(em)em.classList.add('off');field.classList.remove('err-on');}
     function render(){
       if(real.length===0)shown=false;
       var hasText=real.length>0;
@@ -252,7 +262,7 @@ function gatePage(redirect = "/", error?: string): string {
       var html=document.documentElement;
       if(html.className.indexOf('anim')===-1)return;
       var sw=document.getElementById('starsWrap'),box=document.getElementById('box'),sh=document.getElementById('cardShadow'),disp=document.getElementById('disp'),sub=document.getElementById('submitBtn'),foot=document.getElementById('foot');
-      function forceReveal(){try{sw.classList.add('in');box.classList.add('in');sh.classList.add('in');if(!disp.placeholder)disp.placeholder='enter password';var c=sub.textContent;if(!c||c.charCodeAt(0)===160)sub.textContent='enter';foot.style.visibility='visible';if(foot.textContent.indexOf('@')===-1)foot.innerHTML='Request access via <span class="em">shane.yun0703@gmail.com</span>';}catch(e){}}
+      function forceReveal(){try{sw.classList.add('in');box.classList.add('in');sh.classList.add('in');if(!disp.placeholder)disp.placeholder='enter password';foot.style.visibility='visible';if(foot.textContent.indexOf('@')===-1)foot.innerHTML='Request access via <span class="em">shane.yun0703@gmail.com</span>';}catch(e){}}
       setTimeout(forceReveal,5000); // never leave the box hidden
       disp.placeholder='';foot.innerHTML=''; // button keeps its static "enter" label (shown immediately, not typed)
       function typeP(el,text,speed,isPh,done){var i=0;var id=setInterval(function(){i++;if(isPh)el.placeholder=text.slice(0,i);else el.textContent=text.slice(0,i);if(i>=text.length){clearInterval(id);if(done)done();}},speed);}

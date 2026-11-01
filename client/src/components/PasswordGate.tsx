@@ -9,9 +9,6 @@ import { GateTunnel } from "./GateTunnel";
 const SITE_PASSWORD = "openSesame";
 const STORAGE_KEY = "portfolio_auth";
 
-const DISCLAIMER_PREFIX = "Request access via ";
-const DISCLAIMER_EMAIL = "shane.yun0703@gmail.com";
-const DISCLAIMER_FULL = DISCLAIMER_PREFIX + DISCLAIMER_EMAIL;
 
 // Wholesome single-glyph emoji pool — no faces/hands/racy/flags. Rendered grayscale (black & white).
 const EMOJI_POOL = [
@@ -37,14 +34,12 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
   const [introStarted, setIntroStarted] = useState(false);
   const [showCard, setShowCard] = useState(false);
   const [placeholder, setPlaceholder] = useState("");
-  const [enterLabel] = useState("enter"); // lowercase, shows immediately (not typed out)
-  const [typed, setTyped] = useState("");
 
   useEffect(() => {
     const reduce = !!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (reduce) {
       setIntroStarted(true); setShowCard(true);
-      setPlaceholder("Enter password"); setTyped(DISCLAIMER_FULL);
+      setPlaceholder("Enter password");
       return;
     }
     let cancelled = false;
@@ -70,8 +65,6 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
       await wait(700); if (cancelled) return; setShowCard(true);        // card wipes in
       await wait(350); if (cancelled) return;
       await type("Enter password", setPlaceholder, 72); if (cancelled) return;
-      await wait(450);
-      await type(DISCLAIMER_FULL, setTyped, 70);
     })();
     return () => { cancelled = true; ids.forEach((id) => { window.clearTimeout(id); window.clearInterval(id); }); };
   }, []);
@@ -155,6 +148,10 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
   const FLOATS = ["network", "flow", "depth", "lattice", "web", "ink", "aura", "mesh", "spectrum", "plexus", "silk", "contour", "beam", "gradient", "circuit", "cases", "wind"];
   const pattern: GatePattern = floatParam && FLOATS.includes(floatParam) ? (floatParam as GatePattern) : "mesh"; // prod default
   // WebGL "wow" backgrounds render a shader canvas instead of the 2D pattern.
+  // ?bg=off drops the background art entirely (plain page) for comparison.
+  const noBg = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("bg") === "off";
+  // No main card by default (matches the live gate). ?card=on brings the glass card back for comparison.
+  const noCard = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("card") !== "on";
   const webgl = floatParam === "liquid" || floatParam === "glass" ? floatParam : null;
 
   return (
@@ -168,7 +165,7 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
         {brightEdges && (
           <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, transparent 30%, #1c1c1e 75%)" }} />
         )}
-        <motion.div className="absolute inset-0"
+        {!noBg && <motion.div className="absolute inset-0"
           initial={{ opacity: 0, filter: "brightness(2.6) blur(3px)" }}
           animate={introStarted ? { opacity: [0, 1, 1], filter: ["brightness(2.6) blur(3px)", "brightness(1.7) blur(0px)", "brightness(1) blur(0px)"] } : {}}
           transition={{ duration: 1.6, ease: "easeOut", times: [0, 0.45, 1] }}
@@ -178,14 +175,14 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
             : floatParam === "tunnel" ? <GateTunnel />
             : webgl ? <GateWebGL variant={webgl} />
             : <GateBackground pattern={pattern} backdrop="plain" />}
-        </motion.div>
+        </motion.div>}
         {/* Default: vignette over everything — grid + constellations both fade at the edges. */}
         {!brightEdges && (
           <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 50% 50%, transparent 30%, #1c1c1e 75%)" }} />
         )}
       </div>
 
-      <div className="w-full max-w-[420px] px-6 relative z-10">
+      <div className={`w-full ${noCard ? "max-w-[396px]" : "max-w-[500px]"} px-6 relative z-10`}>
         <div className="text-center mb-12">
           {/* The landing's wordmark, scaled down: Shane solid, Yun outlined. The
               name keeps its form across the unlock instead of changing shape. */}
@@ -196,17 +193,18 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
           <p className="font-mono text-[15px] text-white/50 tracking-[0.15em] uppercase mt-3">portfolio</p>
         </div>
         <div className="relative z-10">
-        <div className="absolute inset-0 rounded-[12px] pointer-events-none" style={{ boxShadow: "0 20px 48px rgba(0,0,0,0.45)", opacity: showCard ? 1 : 0, transition: "opacity 0.8s ease 0.45s" }} />
-        <div className="rounded-[12px] px-7 py-7 relative" style={{ background: "rgba(28,28,32,0.28)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)", clipPath: showCard ? "inset(0 0 0 0)" : "inset(0 100% 0 0)", transition: "clip-path 0.7s cubic-bezier(0.22, 1, 0.36, 1)" }}>
-        <form onSubmit={handleSubmit}>
+        {!noCard && <div className="absolute inset-0 rounded-[8px] pointer-events-none" style={{ boxShadow: "0 6px 16px rgba(0,0,0,0.18)", opacity: showCard ? 1 : 0, transition: "opacity 0.8s ease 0.45s" }} />}
+        <div className={`relative ${noCard ? "" : "rounded-[8px] p-7"}`} style={{ ...(noCard ? {} : { background: "rgba(255,255,255,0.045)", border: "1px solid rgba(255,255,255,0.1)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }), clipPath: showCard ? "inset(0 0 0 0)" : "inset(0 100% 0 0)", transition: "clip-path 0.7s cubic-bezier(0.22, 1, 0.36, 1)" }}>
+        <form onSubmit={handleSubmit} className="relative">
+          <div className="flex gap-2">
           <div
-            className="relative rounded-[7px]"
+            className="relative flex-1 min-w-0 rounded-[7px]"
             style={{
               // The box (bg/border/blur) lives on this wrapper so the input's emoji filter never tints it —
               // the background stays identical when toggling emoji ↔ text.
-              background: hasText ? "rgba(90,210,130,0.05)" : "rgba(255,255,255,0.06)",
+              background: error ? "rgba(255,90,90,0.06)" : hasText ? "rgba(90,210,130,0.05)" : "rgba(255,255,255,0.06)",
               border: error ? "1px solid rgba(255,80,80,0.5)" : hasText ? "1px solid rgba(120,225,150,0.16)" : "1px solid rgba(255,255,255,0.1)",
-              boxShadow: hasText ? "0 2px 10px rgba(0,0,0,0.18), inset 0 0 18px rgba(90,210,130,0.05)" : "0 2px 10px rgba(0,0,0,0.18)",
+              boxShadow: error ? "inset 0 0 18px rgba(255,90,90,0.07)" : hasText ? "inset 0 0 18px rgba(90,210,130,0.05)" : "none",
               backdropFilter: "blur(8px)",
               WebkitBackdropFilter: "blur(8px)",
               transition: "border-color 0.2s ease",
@@ -224,14 +222,15 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
               spellCheck={false}
               autoComplete="off"
               autoCapitalize="off"
-              className="w-full px-4 py-3.5 pr-12 rounded-[7px] font-mono text-[15px] text-white/90 placeholder:text-[rgba(138,255,184,0.7)] placeholder:[text-shadow:0_0_6px_rgba(57,255,136,0.35)] placeholder:lowercase placeholder:tracking-[0.04em] outline-none whitespace-nowrap overflow-hidden"
+              className={`w-full px-4 py-3.5 pr-12 rounded-[7px] font-mono text-[15px] text-white/90 ${error ? "placeholder:text-[rgba(255,150,150,0.75)] placeholder:[text-shadow:0_0_6px_rgba(255,80,80,0.35)]" : "placeholder:text-[rgba(138,255,184,0.7)] placeholder:[text-shadow:0_0_6px_rgba(57,255,136,0.35)]"} placeholder:lowercase placeholder:tracking-[0.04em] outline-none whitespace-nowrap overflow-hidden`}
               style={{
                 background: "transparent",
                 border: "none",
                 // Masked emojis: green tint on the glyphs (detail kept), shifted toward the
                 // placeholder's mint, with its soft glow. Instant switch (no transition).
-                filter: masked ? "grayscale(1) sepia(1) hue-rotate(95deg) saturate(2) brightness(1.2)" : "none",
-                textShadow: masked ? "0 0 6px rgba(57,255,136,0.35)" : "none",
+                filter: masked ? (error ? "grayscale(1) sepia(1) hue-rotate(-40deg) saturate(3) brightness(1.1)" : "grayscale(1) sepia(1) hue-rotate(95deg) saturate(2) brightness(1.2)") : "none",
+                textShadow: masked ? (error ? "0 0 6px rgba(255,80,80,0.4)" : "0 0 6px rgba(57,255,136,0.35)") : "none",
+                color: error ? "#ffb3b3" : undefined,
                 // Slightly larger glyphs + a touch more spacing; still fits openSesame (10) on one line. Placeholder unaffected.
                 fontSize: masked ? "16px" : undefined,
                 letterSpacing: masked ? "0.12em" : "normal",
@@ -253,13 +252,11 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
             </button>
             )}
           </div>
-          {error && (
-            <p className="text-[12px] text-[#ff5050] mt-2 text-center lowercase tracking-[0.04em]">Incorrect password</p>
-          )}
           <button
             type="submit"
-            className="w-full mt-4 px-4 py-3.5 rounded-[7px] font-mono text-[15px] font-semibold tracking-[0.1em] lowercase text-white transition-all duration-200 cursor-pointer active:scale-[0.97]"
-            style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.16)", boxShadow: "0 2px 10px rgba(0,0,0,0.18)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
+            aria-label="Enter"
+            className="shrink-0 w-[54px] h-[54px] rounded-full flex items-center justify-center text-white transition-all duration-200 cursor-pointer active:scale-[0.97]"
+            style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.16)", boxShadow: "none", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.17)";
               (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.28)";
@@ -269,17 +266,13 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
               (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.16)";
             }}
           >
-            {enterLabel || " "}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
           </button>
+          </div>
+          <p aria-live="polite" className={`${noCard ? "" : "absolute left-0 top-full"} font-mono text-[10px] text-[#ff7a7a] mt-[5px] h-[14px] leading-[14px] text-left pl-[2px] lowercase tracking-[0.04em] ${error ? "" : "invisible"}`}>Incorrect password</p>
         </form>
         </div>
         </div>
-        <p className="text-center font-mono text-[11px] text-white/80 mt-6 lowercase tracking-[0.04em]" style={{ height: "16px", lineHeight: "16px" }}>
-          {typed.length <= DISCLAIMER_PREFIX.length
-            ? typed
-            : <>{DISCLAIMER_PREFIX}<span className="text-white font-medium">{typed.slice(DISCLAIMER_PREFIX.length)}</span></>}
-          {typed.length > 0 && typed.length < DISCLAIMER_FULL.length && <span className="text-white/40">|</span>}
-        </p>
       </div>
     </div>
   );
