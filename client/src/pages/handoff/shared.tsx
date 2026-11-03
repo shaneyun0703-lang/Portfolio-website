@@ -471,6 +471,27 @@ export function readManifestSkin(): "manifest" | undefined {
     ? undefined : "manifest";
 }
 
+/** "Reference · " before diagram titles, dropped where the wireframe panels are on. */
+export function refPrefix(): string {
+  return readWireframeMode() ? "" : "Reference · ";
+}
+
+/** Case studies where the grey wireframe panels are LIVE by default (shipped
+ *  2026-11-03). Others only get them through the `?wf=` preview. */
+const WF_LIVE_PATHS = ["/commerce-ads"];
+
+/** Wireframe panels. `?wf=grey` puts every wireframe in a larger grey panel on
+ *  the dark page; `?wf=white` does the same on a white page; `?wf=off` shows a
+ *  page without them. With no param: grey on the pages in WF_LIVE_PATHS, off
+ *  everywhere else (returns "" and the page renders as before). */
+export function readWireframeMode(): string {
+  if (typeof window === "undefined") return "";
+  const m = new URLSearchParams(window.location.search).get("wf");
+  if (m === "grey" || m === "white") return `wf-on wf-${m}`;
+  if (m === null && WF_LIVE_PATHS.includes(window.location.pathname)) return "wf-on wf-grey";
+  return "";
+}
+
 /** "← All projects" goes home. The landing is `/` now, so this no longer has to
  *  carry a flag to keep the skin alive across the chain. */
 export function allProjectsHref() {

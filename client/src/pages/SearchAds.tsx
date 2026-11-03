@@ -7,8 +7,9 @@ import { RoundEvolution } from "@/components/RoundEvolution";
 import { Section, Prose, PullQuote, Aside } from "@/components/Section";
 import { TableOfContents } from "@/components/TableOfContents";
 import { TldrWithSwitcher } from "@/components/TldrSection";
-import { readManifestSkin, allProjectsHref, ManifestField } from "@/pages/handoff/shared";
+import { readManifestSkin, readWireframeMode, refPrefix, allProjectsHref, ManifestField } from "@/pages/handoff/shared";
 import "@/styles/manifest-skin.css";
+import "@/styles/wireframe-preview.css";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useScrolled } from "@/hooks/useScrolled";
 import { CaseNav } from "@/components/CaseNav";
@@ -27,7 +28,7 @@ function StatusQuoSection({ slides }: { slides: CarouselSlide[] }) {
   const [idx, setIdx] = useState(0);
   const slide = slides[idx];
   return (
-    <div className="my-6 xl:max-w-[calc(100%-17rem)]">
+    <div data-wf className="my-6 xl:max-w-[calc(100%-17rem)]">
       <span className="caption-label mb-4 block">The status quo · Search ads in Meta Ads Manager today</span>
       <div className="grid grid-cols-1 md:grid-cols-[180px_1fr] gap-4" style={{ alignItems: "start" }}>
         <div className="space-y-3">
@@ -279,7 +280,7 @@ export default function SearchAds() {
      for their Manifest-language equivalents. The live page is untouched. */
   const skin = readManifestSkin();
   return (
-    <div className={`theme-search min-h-screen ${skin ? "ms-on" : "bg-[var(--paper)]"}`}>
+    <div className={`theme-search min-h-screen ${skin ? "ms-on" : "bg-[var(--paper)]"} ${readWireframeMode()}`}>
       {skin && <ManifestField />}
       <TableOfContents />
 
@@ -334,8 +335,8 @@ export default function SearchAds() {
           </p>
         </Prose>
 
-        <div className="my-10 md:my-12 max-w-lg">
-          <span className="caption-label mb-3 block">Reference · Search ads today</span>
+        <div data-wf className="my-10 md:my-12 max-w-lg">
+          <span className="caption-label mb-3 block">{refPrefix()}Search ads today</span>
           <div className="grid grid-cols-2 gap-4 items-start">
             <figure>
               <div className="rounded-xl overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
@@ -676,6 +677,7 @@ export default function SearchAds() {
           label="Round 1 · Four entry points"
           caption=""
           size="wide"
+          wf
         />
 
         <div className="my-10 max-w-3xl border border-[var(--rule)] rounded-lg overflow-hidden">
@@ -737,7 +739,7 @@ export default function SearchAds() {
           </p>
         </Prose>
 
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div data-wf className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
             <div className="mb-1">
               <span className="font-display text-[1.1rem] font-bold text-[var(--ink)]">Ad set level</span>
@@ -839,6 +841,7 @@ export default function SearchAds() {
           label="Final design walkthrough"
           caption=""
           size="wide"
+          wf
         />
 
         {/* Entry points + specs */}

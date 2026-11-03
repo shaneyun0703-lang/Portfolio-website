@@ -33,8 +33,9 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useScrolled } from "@/hooks/useScrolled";
 import { CaseNav } from "@/components/CaseNav";
 import { TldrWithSwitcher } from "@/components/TldrSection";
-import { readManifestSkin, allProjectsHref, ManifestField } from "@/pages/handoff/shared";
+import { readManifestSkin, readWireframeMode, refPrefix, allProjectsHref, ManifestField } from "@/pages/handoff/shared";
 import "@/styles/manifest-skin.css";
+import "@/styles/wireframe-preview.css";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Local components
@@ -50,8 +51,8 @@ function AdsManagerCarousel() {
   ];
   return (
     <>
-    <figure className="my-8 xl:max-w-[calc(100%-17rem)]">
-      <span className="caption-label">Reference · What a sales campaign looks like inside Ads Manager</span>
+    <figure data-wf className="my-8 xl:max-w-[calc(100%-17rem)]">
+      <span className="caption-label">{refPrefix()}What a sales campaign looks like inside Ads Manager</span>
       <div className="mt-3 relative overflow-hidden rounded-lg border border-[var(--rule)]">
         <div
           className="flex transition-transform duration-300 ease-in-out"
@@ -128,6 +129,83 @@ function AdsManagerCarousel() {
 }
 
 /**
+ * TwoFlowsForkPreview — PREVIEW ONLY (rendered when ?wf= is set).
+ * Redesign of "Two setup flows, two different ads": the campaign goal is a
+ * distinct accent chip, a drawn fork splits it into the two flows, each flow
+ * card holds its own example ad, and the extra mono labels + figcaption are
+ * gone. The ad PNGs carry a light margin around the card; it is cropped here
+ * (offsets measured from the images) so only the ad shows.
+ */
+function CroppedAd({ src, alt, l, t, w, h, natW }: { src: string; alt: string; l: number; t: number; w: number; h: number; natW: number }) {
+  return (
+    <div className="mx-auto w-full max-w-[240px] overflow-hidden rounded-[10px]" style={{ aspectRatio: `${w} / ${h}` }}>
+      <img
+        src={src}
+        alt={alt}
+        loading="lazy"
+        className="block h-auto max-w-none"
+        style={{ width: `${(natW / w) * 100}%`, marginLeft: `${(-l / w) * 100}%`, marginTop: `${(-t / w) * 100}%` }}
+      />
+    </div>
+  );
+}
+
+function TwoFlowsForkPreview() {
+  const accent = "var(--case-accent)";
+  const flows = [
+    {
+      label: "Static ad flow",
+      lead: "Customisation",
+      body: "The advertiser hand-picks the exact media — a photo, video, or carousel they've designed themselves.",
+      ad: { src: "/primer/static-ad.png", alt: "A static ad — hand-picked creative by the advertiser", l: 16, t: 9, w: 464, h: 816, natW: 496 },
+    },
+    {
+      label: "Catalog-driven ad flow",
+      lead: "Scale and automation",
+      body: "The advertiser connects a product feed. Meta picks which products to show each shopper automatically.",
+      ad: { src: "/primer/dynamic-ad.png", alt: "A catalog-driven ad — products assembled automatically by Meta", l: 8, t: 10, w: 460, h: 812, natW: 482 },
+    },
+  ];
+  return (
+    <figure data-wf className="tf-fork my-10 xl:max-w-[calc(100%-17rem)]">
+      <span className="caption-label">Two setup flows, two different ads</span>
+
+      {/* Campaign goal: the single shared start */}
+      <div className="mt-6 flex justify-center">
+        <div
+          className="flex flex-col items-center rounded-[12px] px-6 py-3 font-mono text-center"
+          style={{ background: "var(--case-accent-soft)", border: `1px solid ${accent}` }}
+        >
+          <div className="text-[0.85rem]" style={{ color: accent }}>Campaign goal: Sales</div>
+          <div className="mt-1 text-[0.7rem] text-white">50+% of Meta's revenue</div>
+        </div>
+      </div>
+
+      {/* The fork: one stem splitting into two branches, one per flow */}
+      {/* One unbroken line: stem down from the goal, splitting into two
+          branches that end on the top edge of each card (no loose arrowheads). */}
+      <div className="flex justify-center"><div className="h-5 w-px" style={{ background: accent }} /></div>
+      <div className="hidden md:block h-6 rounded-t-[12px] border-x border-t" style={{ margin: "0 calc(25% - 6px)", borderColor: accent }} />
+      <div className="md:hidden flex justify-center"><div className="h-5 w-px" style={{ background: accent }} /></div>
+
+      {/* Two flows, each holding its own example ad */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {flows.map((f) => (
+          <div key={f.label} className="tf-card flex flex-col rounded-[8px] p-5 pb-8" style={{ background: "var(--paper)", border: `1px solid ${accent}` }}>
+            <div className="caption-label" style={{ color: accent }}>{f.label}</div>
+            <h4 className="mt-2.5 font-display font-semibold text-[1.15rem] leading-tight text-[var(--ink)]">{f.lead}</h4>
+            <p className="mt-1.5 font-display text-[0.85rem] text-[var(--mid)] leading-snug">{f.body}</p>
+            <div className="mt-5 flex flex-1 items-end">
+              <CroppedAd {...f.ad} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </figure>
+  );
+}
+
+/**
  * SalesCampaignPrimer — tightened to two sentences and given a one-line
  * plain definition of "Sales."
  */
@@ -156,7 +234,7 @@ function StaticVsCatalogSchematic() {
   return (
     <figure className="my-10 max-w-4xl">
       <span className="caption-label">
-        Reference · What the 2 flows produce as ads
+        {refPrefix()}What the 2 flows produce as ads
       </span>
 
       <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-px bg-[var(--rule)] border border-[var(--rule)]">
@@ -233,7 +311,7 @@ function TwoSetupPathsFigure() {
   return (
     <figure className="my-12 md:my-16 max-w-4xl">
       <span className="caption-label">
-        Reference · The fork inside Meta's sales campaign — and what each flow produces
+        {refPrefix()}The fork inside Meta's sales campaign — and what each flow produces
       </span>
 
       <div className="mt-5 border border-[var(--rule)] bg-[var(--paper)] p-6 md:p-8">
@@ -404,7 +482,7 @@ function FeatureDecisionMatrix() {
   return (
     <figure className="my-12 md:my-16 max-w-5xl">
       <span className="caption-label">
-        Reference · Seven catalog features, each with its own decision
+        {refPrefix()}Seven catalog features, each with its own decision
       </span>
 
       {/* Header */}
@@ -464,8 +542,8 @@ function ThreeToOneVisual({ expand }: { expand: (src: string) => void }) {
     { n: "03", label: "Collection format", description: "A hero image above a product grid. Tapping opens a full-screen browsing experience.", count: "4 features", src: "/primer/format-collection.png" },
   ];
   return (
-    <figure className="my-10 xl:max-w-[calc(100%-17rem)]">
-      <span className="caption-label">Reference · What this case study covers</span>
+    <figure data-wf className="my-10 xl:max-w-[calc(100%-17rem)]">
+      <span className="caption-label">{refPrefix()}What this case study covers</span>
 
       <div className="mt-5 border border-[var(--rule)] bg-[var(--paper)] p-6 md:p-8">
         <div className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-[var(--mid)] mb-4">
@@ -527,6 +605,101 @@ function ThreeToOneVisual({ expand }: { expand: (src: string) => void }) {
       </div>
 
     </figure>
+  );
+}
+
+/**
+ * ThreeToOnePreview — PREVIEW ONLY (rendered when ?wf= is set).
+ * Redesign of "What this case study covers". Before/After become real stage
+ * headings (a tag + a plain-language line) so they no longer read like the
+ * Reference label; the three format screenshots are cropped to one height
+ * (no dead space under the shorter ones) with a single line each; three lines
+ * converge into one, echoing the fork diagram above.
+ */
+function StageHead({ tag, title, solid }: { tag: string; title: string; solid?: boolean }) {
+  const accent = "var(--case-accent)";
+  return (
+    <div className="flex items-center gap-3">
+      <span
+        className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.14em] rounded-[5px] px-2 py-1"
+        style={solid ? { background: accent, color: "#0b0b0c" } : { border: "1px solid var(--mid)", color: "var(--ink)" }}
+      >
+        {tag}
+      </span>
+      <span className="font-display font-semibold text-[1.05rem] text-[var(--ink)] leading-tight">{title}</span>
+    </div>
+  );
+}
+
+function ThreeToOnePreview({ expand }: { expand: (src: string) => void }) {
+  const accent = "var(--case-accent)";
+  const formats = [
+    { label: "Single image", count: "4 features", src: "/primer/format-single.png" },
+    { label: "Carousel", count: "6 features", src: "/primer/format-carousel.png" },
+    { label: "Collection", count: "4 features", src: "/primer/format-collection.png" },
+  ];
+  return (
+    <figure data-wf className="tt-one my-10 xl:max-w-[calc(100%-17rem)]">
+      <span className="caption-label">What this case study covers</span>
+
+      <div className="mt-6">
+        <StageHead tag="Before" title="Three separate cards, one per ad format" />
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-3 gap-3">
+          {formats.map((f) => (
+            <div key={f.label}>
+              <div className="mb-2.5 text-left font-mono text-[0.75rem]">
+                <span className="text-[var(--ink)]">{f.label}</span>
+                <span className="text-[var(--mid)]"> · {f.count}</span>
+              </div>
+              <div className="tt-shot relative h-[360px] overflow-hidden rounded-[6px] bg-white cursor-zoom-in">
+                <img src={f.src} alt={`${f.label} format ad creative card`} className="block w-full h-auto" loading="lazy" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16" style={{ background: "linear-gradient(to bottom, rgba(255,255,255,0), #fff)" }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Three lines converging into one */}
+      <div className="hidden md:block relative h-8 mt-4 rounded-b-[12px] border-x border-b" style={{ margin: "16px calc(16.667% - 4px) 0", borderColor: accent }}>
+        <div className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2" style={{ background: accent }} />
+      </div>
+      <div className="flex justify-center"><div className="h-6 w-px" style={{ background: accent }} /></div>
+
+      <div className="mt-4">
+        <StageHead tag="After" title="1 unified card, the format is chosen automatically for the best performance" solid />
+      </div>
+      <div className="mt-4 rounded-[8px] overflow-hidden" style={{ border: `1px solid ${accent}` }}>
+        <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => expand("/primer/unified-after.png")}>
+          <img src="/primer/unified-after.png" alt="The unified ad creative card with all media types in one surface" className="w-full h-auto block" loading="lazy" />
+          <span className="expand-hint">CLICK TO ENLARGE</span>
+        </div>
+        <ul className="px-5 py-4 space-y-1.5" style={{ background: "#2a2a2e" }}>
+          {[
+            "Static and catalog-driven media selected in the same card",
+            <>Seven catalog features in a collapsible <em>product media accordion</em></>,
+          ].map((t, i) => (
+            <li key={i} className="flex items-start gap-2 font-display text-[0.85rem] text-[var(--ink)] leading-snug">
+              <span style={{ color: accent }}>•</span><span>{t}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </figure>
+  );
+}
+
+function AccShot({ label, note, src, alt }: { label: string; note: string; src: string; alt: string }) {
+  return (
+    <div>
+      <div className="mb-3 font-mono">
+        <div className="text-[0.85rem] text-[var(--ink)]">{label}</div>
+        <div className="mt-0.5 text-[0.65rem] text-[var(--mid)]">{note}</div>
+      </div>
+      <div className="overflow-hidden rounded-[6px] bg-white">
+        <img src={src} alt={alt} className="w-full h-auto block" loading="lazy" />
+      </div>
+    </div>
   );
 }
 
@@ -769,7 +942,7 @@ export default function CommerceAds() {
   const skin = readManifestSkin();
 
   return (
-    <div className={`theme-commerce min-h-screen text-[var(--ink)] ${skin ? "ms-on" : "bg-[var(--paper)]"}`}>
+    <div className={`theme-commerce min-h-screen text-[var(--ink)] ${skin ? "ms-on" : "bg-[var(--paper)]"} ${readWireframeMode()}`}>
       {skin && <ManifestField />}
       <CommerceToc />
 
@@ -834,8 +1007,9 @@ export default function CommerceAds() {
           </ol>
         </Prose>
 
-        <figure className="my-10 xl:max-w-[calc(100%-17rem)]">
-          <span className="caption-label">Reference · Two setup flows, two different ads</span>
+        {readWireframeMode() ? <TwoFlowsForkPreview /> : (
+        <figure data-wf className="my-10 xl:max-w-[calc(100%-17rem)]">
+          <span className="caption-label">{refPrefix()}Two setup flows, two different ads</span>
 
           <div className="mt-5 border border-[var(--rule)] bg-[var(--paper)] p-6 md:p-8">
             {/* Shared start */}
@@ -894,6 +1068,7 @@ export default function CommerceAds() {
             Same campaign goal, two diverging paths — and two different ad styles. The ads shown are examples; many creative variations are possible within each flow.
           </figcaption>
         </figure>
+        )}
 
         <Prose>
           <p>
@@ -975,8 +1150,8 @@ export default function CommerceAds() {
           </p>
         </Prose>
 
-        <figure className="my-8 xl:max-w-[calc(100%-17rem)]">
-          <span className="caption-label">Reference · The Ad level in Ads Manager</span>
+        <figure data-wf className="my-8 xl:max-w-[calc(100%-17rem)]">
+          <span className="caption-label">{refPrefix()}The Ad level in Ads Manager</span>
           <div className="mt-3 border border-[var(--rule)] rounded-lg overflow-hidden">
             <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => expand("/primer/ad-setup-card.png")}>
               <img src="/primer/ad-setup-card.png" alt="The Ad level in Ads Manager showing the Ad setup card with format picker and ad preview" className="w-full h-auto block" loading="lazy" />
@@ -999,7 +1174,7 @@ export default function CommerceAds() {
           </p>
         </Prose>
 
-        <ThreeToOneVisual expand={expand} />
+        {readWireframeMode() ? <ThreeToOnePreview expand={expand} /> : <ThreeToOneVisual expand={expand} />}
       </Section>
 
       <div className="container">
@@ -1036,7 +1211,7 @@ export default function CommerceAds() {
         </div>
 
         {/* ── Decision 01: Position & sequencing ── */}
-        <div className="my-10">
+        <div className="pm-decision my-10">
           <span className="caption-label"><span style={{ color: "var(--case-accent)" }}>01</span> · Where product media lives in the new ad creative card</span>
           <Prose>
             <p>
@@ -1048,7 +1223,26 @@ export default function CommerceAds() {
               predictable order.</strong>
             </p>
           </Prose>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[var(--rule)] border border-[var(--rule)] max-w-3xl my-6 rounded-lg overflow-hidden">
+          {readWireframeMode() ? (
+          /* PREVIEW ONLY: titled panel, labels above, smaller wireframes */
+          <figure data-wf className="pm-seq pm-acc my-6 xl:max-w-[calc(100%-17rem)]">
+            <span className="caption-label">Product media positioning</span>
+            <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-x-12 justify-items-center">
+              {[
+                { src: "/primer/pmedia-first.png", label: "If product media is added first", alt: "Product media added first in the sequence" },
+                { src: "/primer/pmedia-second.png", label: "If product media is added second", alt: "Product media added second in the sequence" },
+              ].map((w) => (
+                <div key={w.src} className="w-full max-w-[360px]">
+                  <div className="mb-2.5 font-mono text-[0.75rem] text-[var(--ink)]">{w.label}</div>
+                  <div className="overflow-hidden rounded-[6px] bg-white">
+                    <img src={w.src} alt={w.alt} className="w-full h-auto block" loading="lazy" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </figure>
+          ) : (
+          <div data-wf className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[var(--rule)] border border-[var(--rule)] max-w-3xl my-6 rounded-lg overflow-hidden">
             <div className="bg-[var(--paper)]">
               <img src="/primer/pmedia-first.png" alt="Product media added first in the sequence" className="w-full h-auto block" loading="lazy" />
               <div className="p-4">
@@ -1062,10 +1256,11 @@ export default function CommerceAds() {
               </div>
             </div>
           </div>
+          )}
         </div>
 
         {/* ── Default state ── */}
-        <div className="my-10">
+        <div className="pm-decision my-10">
           <span className="caption-label"><span style={{ color: "var(--case-accent)" }}>02</span> · Default collapsed</span>
           <Prose>
             <p>
@@ -1077,7 +1272,20 @@ export default function CommerceAds() {
               to look for it when they need it.
             </p>
           </Prose>
-          <div className="my-6 xl:max-w-[calc(100%-17rem)]">
+          {readWireframeMode() ? (
+          /* PREVIEW ONLY: titled, labels above, two 320px columns */
+          <figure data-wf className="pm-seq pm-acc my-6 xl:max-w-[calc(100%-17rem)]">
+            <span className="caption-label">Product media accordion states</span>
+            <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-x-12">
+              <div className="space-y-6">
+                <AccShot label="Collapsed state" note="The default" src="/primer/accordion-collapsed.png" alt="Accordion collapsed" />
+                <AccShot label="Expanded state" note="Top features shown, the rest nested" src="/primer/accordion-expanded-nested.png" alt="Accordion expanded with nesting" />
+              </div>
+              <AccShot label="Fully expanded state" note="All seven features" src="/primer/accordion-fully-expanded.png" alt="Accordion fully expanded" />
+            </div>
+          </figure>
+          ) : (
+          <div data-wf className="my-6 xl:max-w-[calc(100%-17rem)]">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Left column — collapsed + expanded nested stacked */}
               <div className="space-y-4">
@@ -1106,10 +1314,11 @@ export default function CommerceAds() {
               </div>
             </div>
           </div>
+          )}
         </div>
 
         {/* ── Feature ordering ── */}
-        <div className="my-10">
+        <div className="pm-decision my-10">
           <span className="caption-label"><span style={{ color: "var(--case-accent)" }}>03</span> · Feature ordering inside the accordion</span>
           <Prose>
             <p>
@@ -1127,8 +1336,34 @@ export default function CommerceAds() {
               approach for the alpha, with plans to further simplify.
             </p>
           </Prose>
+          {readWireframeMode() ? (
+          /* PREVIEW ONLY: same anatomy as the other panels. Mono feature tags,
+             one teal bracket gathering them, a stem that lands on the accordion. */
+          <figure data-wf className="pm-seq pm-seven my-8 xl:max-w-[calc(100%-17rem)]">
+            <span className="caption-label">Seven catalog features within the accordion</span>
+            {/* Tree: each feature ticks into one spine, the spine runs into the accordion */}
+            <div className="mt-6 flex flex-col md:flex-row items-center justify-center gap-y-6">
+              <div className="relative flex flex-col gap-2 md:pr-0">
+                {["Dynamic media", "Creative options", "Frame overlay", "Text inputs", "Product in feed", "Profile card", "Map card"].map((f) => (
+                  <div key={f} className="flex items-center">
+                    <span className="w-[164px] rounded-[6px] px-2.5 py-1.5 font-mono text-[0.72rem] text-[var(--ink)]" style={{ background: "var(--paper)", border: "1px solid var(--case-accent)" }}>
+                      {f}
+                    </span>
+                    <span className="hidden md:block h-px w-5" style={{ background: "var(--case-accent)" }} />
+                  </div>
+                ))}
+                {/* spine: from the first tick to the last */}
+                <span className="pm-spine hidden md:block absolute right-0 w-px" style={{ background: "var(--case-accent)" }} />
+              </div>
+              <span className="hidden md:block h-px w-10" style={{ background: "var(--case-accent)" }} />
+              <div className="w-full max-w-[360px] overflow-hidden rounded-[6px] bg-white">
+                <img src="/primer/accordion-fully-expanded.png" alt="The finalized product media accordion with all seven features" className="w-full h-auto block" loading="lazy" />
+              </div>
+            </div>
+          </figure>
+          ) : (
           <figure className="my-8 xl:max-w-[calc(100%-17rem)]">
-            <span className="caption-label">Reference · Seven features, one destination</span>
+            <span className="caption-label">{refPrefix()}Seven features, one destination</span>
             <div className="mt-4 border border-[var(--rule)] rounded-lg bg-[var(--paper)] p-6 md:p-8">
               {/* Feature bubbles */}
               <div className="flex flex-wrap justify-center gap-2 mb-6">
@@ -1162,9 +1397,10 @@ export default function CommerceAds() {
               </div>
             </div>
           </figure>
+          )}
 
-          <figure className="my-8 xl:max-w-[calc(100%-17rem)]">
-            <span className="caption-label">All up wireframe · Seven features, one destination</span>
+          <figure data-wf className="my-8 xl:max-w-[calc(100%-17rem)]">
+            <span className="caption-label">{readWireframeMode() ? "All up wireframe" : "All up wireframe · Seven features, one destination"}</span>
             <div className="mt-4 border border-[var(--rule)] rounded-lg overflow-hidden">
               <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => expand("/primer/ProductMediaFinal.png")}>
                 <img src="/primer/ProductMediaFinal.png" alt="All up wireframe — seven catalog features unified in the product media accordion" className="w-full h-auto block" loading="lazy" />

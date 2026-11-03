@@ -1,3 +1,4 @@
+import { refPrefix } from "@/pages/handoff/shared";
 import { useState } from "react";
 
 /**
@@ -48,7 +49,7 @@ export function HierarchyDiagram() {
   ];
   return (
     <div className="my-10 md:my-12">
-      <span className="caption-label">Reference · The shape of an ad inside Ads Manager</span>
+      <span className="caption-label">{refPrefix()}The shape of an ad inside Ads Manager</span>
       <div className="mt-4 max-w-3xl">
         {levels.map((lv, i) => {
           const isOpen = expanded === lv.n;

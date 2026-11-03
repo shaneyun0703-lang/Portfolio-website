@@ -1,0 +1,281 @@
+/* ============================================================================
+   WIREFRAME PANELS — LIVE by default on Commerce Ads (see WF_LIVE_PATHS in
+   pages/handoff/shared.tsx); a preview elsewhere via ?wf=grey or ?wf=white.
+   Reference: aljaburi.io/connectors — wireframes sit in a large, soft grey
+   panel with generous air around them.
+
+   Every rule is scoped to `.wf-on` (set on the case study root only when the
+   param is present) and only reaches blocks tagged `data-wf`. Without the param
+   none of this applies and the live case studies render exactly as before.
+
+   ?wf=grey   larger wireframes in grey panels, current dark page
+   ?wf=white  same panels on a white page (light palette)
+   ============================================================================ */
+
+.wf-grey  { --wf-panel: #2a2a2d; --wf-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px -10px rgba(0,0,0,0.55); }
+.wf-white { --wf-panel: #f2f4f7; --wf-shadow: 0 1px 2px rgba(16,24,40,0.05), 0 12px 32px -12px rgba(16,24,40,0.14); }
+
+/* ---- 1 · larger + panel --------------------------------------------------- */
+/* The case study column is 944px wide at 1440, but wireframes were capped at
+   672px to leave room for the contents panel. That room is already reserved by
+   the container's right padding, so the cap is dropped and the panel also
+   bleeds into the left gutter. Net: ~670px → ~900px wireframes. */
+.wf-on [data-wf] {
+  max-width: none !important;
+  background: var(--wf-panel);
+  border-radius: 24px;
+  padding: 24px;
+  margin-top: 3rem !important;
+  margin-bottom: 3rem !important;
+}
+@media (min-width: 768px) {
+  .wf-on [data-wf] { padding: 40px; border-radius: 32px; margin-left: -24px; }
+}
+@media (min-width: 1280px) {
+  .wf-on [data-wf] { padding: 48px; margin-left: -48px; }
+}
+
+/* Inside the panel the wireframes float: no hairline frame, a soft radius and
+   shadow instead, like cards resting on the grey. */
+.wf-on [data-wf] .figure-frame,
+.wf-on [data-wf] .rounded-lg.overflow-hidden,
+.wf-on [data-wf] .rounded-xl.overflow-hidden,
+.wf-on [data-wf] .relative.overflow-hidden {
+  border: 0 !important;
+  border-radius: 14px !important;
+  box-shadow: var(--wf-shadow);
+  overflow: hidden;
+}
+.wf-on [data-wf] .figure-frame:hover { box-shadow: var(--wf-shadow); }
+/* Grid seams drawn with gap-px on a rule-coloured background read as frames;
+   open them up so each wireframe sits on the panel on its own. */
+.wf-on [data-wf] .gap-px { gap: 20px; background: transparent !important; border: 0 !important; overflow: visible !important; }
+.wf-on [data-wf].gap-px { gap: 20px; background: var(--wf-panel) !important; border: 0 !important; overflow: visible !important; }
+.wf-on [data-wf].gap-px > *,
+.wf-on [data-wf] .gap-px > * { border-radius: 14px; overflow: hidden; box-shadow: var(--wf-shadow); }
+
+/* The "Before / After" and "Two flows" diagrams were themselves bordered
+   boxes; the panel replaces that box. */
+.wf-on [data-wf] > .border.p-6 { border: 0 !important; background: transparent !important; padding: 0 !important; }
+
+/* Search Ads "today" pair: was a narrow 2-up, let it use the panel. */
+.wf-on [data-wf].max-w-lg > .grid { max-width: 40rem; margin-inline: auto; }
+
+/* ---- grey (dark page) refinements --------------------------------------- */
+/* Tighter panel: padding equals the left bleed, so the wireframe's left edge
+   still lines up with the text column. Wireframes sit nearly flat. */
+.wf-grey { --wf-shadow: 0 1px 2px rgba(0,0,0,0.18); --wf-panel: #37373a; }
+
+/* Carousel arrows: were a hairline on a near-black fill and disappeared into
+   the panel. Filled, brighter, a touch larger. Covers both arrow styles (the
+   round .carousel-btn on Search Ads, the mono ←/→ on Commerce + WhatsApp). */
+.wf-grey [data-wf] .carousel-btn,
+.wf-grey [data-wf] button.font-mono.border {
+  background: rgba(255,255,255,0.12) !important;
+  border: 1px solid rgba(255,255,255,0.28) !important;
+  color: #fff !important;
+}
+.wf-grey [data-wf] button.font-mono.border {
+  border-radius: 999px;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.95rem;
+}
+.wf-grey [data-wf] .carousel-btn { width: 2.6rem; height: 2.6rem; }
+.wf-grey [data-wf] .carousel-btn:hover:not(:disabled),
+.wf-grey [data-wf] button.font-mono.border:hover:not(:disabled) {
+  background: #fff !important;
+  border-color: #fff !important;
+  color: #111 !important;
+}
+.wf-grey [data-wf] .carousel-btn:disabled,
+.wf-grey [data-wf] button.font-mono.border:disabled { opacity: 0.3; }
+/* Inactive dots were drawn in the rule colour, invisible on the lighter grey. */
+.wf-grey [data-wf] button.w-2.h-2[style*="var(--rule)"] { background: rgba(255,255,255,0.28) !important; }
+.wf-grey [data-wf] { padding: 20px; border-radius: 20px; }
+@media (min-width: 768px) {
+  .wf-grey [data-wf] { padding: 26px; border-radius: 24px; margin-left: -26px; }
+}
+@media (min-width: 1280px) {
+  .wf-grey [data-wf] { padding: 32px; margin-left: -32px; }
+}
+
+/* Never run under the fixed contents panel. It takes the right 338px of the
+   viewport (310px wide + 28px inset), but the container only reserves 288px
+   (18rem) — so between ~1280 and ~1380px wide, the TL;DR, tables and figures
+   all ran into or under it. Reserve whatever it actually needs plus a 32px gap:
+   the container is 1280px max and centred, so subtract the centring offset.
+   At 1440+ this resolves to the original 18rem and nothing moves. */
+@media (min-width: 1280px) {
+  .wf-on .container {
+    padding-right: max(18rem, calc(370px - max(0px, (100vw - 1280px) / 2))) !important;
+  }
+}
+.wf-grey [data-wf] [class*="shadow-["] { box-shadow: var(--wf-shadow) !important; }
+
+/* Even padding on all four sides: a leading label sits in a tall inline line
+   box that added ~10px above it, so the top read heavier than the sides. */
+.wf-on [data-wf] > .caption-label:first-child,
+.wf-on [data-wf] > div:first-child > .caption-label,
+.wf-on [data-wf] > div:first-child > span:not(.caption-label) {
+  display: block;
+  line-height: 1;
+}
+.wf-on [data-wf] > div:first-child:has(> .caption-label) { align-items: center; }
+
+/* Search Ads carousels wrapped each wireframe in a second dark frame with its
+   own 16px inset — a box inside the box. Drop it so the wireframe sits on the
+   grey like every other panel, and pull the toolbars flush to the edge. */
+.wf-on [data-wf] .figure-frame { background: transparent; }
+.wf-on [data-wf] .figure-frame > .p-2 { padding: 0 !important; }
+.wf-on [data-wf] .pl-1.pr-1 { padding-left: 0; padding-right: 0; }
+
+/* ============================================================================
+   2 · WHITE PAGE (?wf=white) — light palette for the whole case study.
+   The page tokens flip; the few places that hard-code dark glass (nav, TL;DR,
+   contents) are overridden here rather than edited in the live components.
+   ============================================================================ */
+.wf-white {
+  --paper: #ffffff;
+  --ink: #101828;
+  --mid: #475467;
+  --rule: #e4e7ec;
+  --tint: #f2f4f7;
+  background: #ffffff !important;
+  color: var(--ink);
+}
+/* Accents darkened just enough to hold up on white. */
+.wf-white.theme-commerce { --case-accent: #0b8f84; --case-accent-soft: rgba(11,143,132,0.08); }
+.wf-white.theme-whatsapp { --case-accent: #15803d; --case-accent-soft: rgba(21,128,61,0.08); }
+.wf-white.theme-search   { --case-accent: #db2777; --case-accent-soft: rgba(219,39,119,0.07); --primary: #db2777; }
+
+.wf-white .ms-bg { display: none; }
+.wf-white .prose-body,
+.wf-white .prose-body p,
+.wf-white .prose-body em { color: var(--mid); }
+.wf-white .prose-body strong,
+.wf-white strong { color: var(--ink); }
+
+/* Nav (inline dark styles on the <nav>) */
+.wf-white nav:not([aria-label]) {
+  background: rgba(255,255,255,0.82) !important;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-color: var(--rule) !important;
+  box-shadow: 0 4px 16px rgba(16,24,40,0.06) !important;
+}
+.wf-white nav:not([aria-label]) a { color: var(--mid) !important; border-color: var(--rule) !important; }
+.wf-white nav:not([aria-label]) a:hover { color: var(--ink) !important; background: var(--tint) !important; }
+.wf-white nav .bg-\[\#444\] { background: var(--rule) !important; }
+/* The contents panel is also a <nav>; the manifest skin paints every nav dark. */
+.wf-white nav[aria-label] { background: transparent !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; border: 0 !important; }
+.wf-white nav[aria-label] > div { backdrop-filter: blur(16px); }
+.wf-white .toc-link:not([data-active="true"]) { border-color: transparent !important; }
+.wf-white .toc-link[data-active="true"] { box-shadow: none !important; border-color: transparent !important; }
+
+/* Contents panel + TL;DR glass */
+.wf-white [style*="rgba(28,28,32"],
+.wf-white [style*="rgba(28, 28, 32"],
+.wf-white [style*="rgba(255,255,255,0.03)"] {
+  background: rgba(255,255,255,0.9) !important;
+  border-color: var(--rule) !important;
+  box-shadow: 0 4px 16px rgba(16,24,40,0.06) !important;
+}
+.wf-white [style*="rgba(255,255,255,0.08)"],
+.wf-white [style*="rgba(255,255,255,0.07)"] { border-color: var(--rule) !important; }
+.wf-white .text-white { color: var(--ink) !important; }
+.wf-white [class*="text-white/"] { color: var(--mid) !important; }
+.wf-white [class*="text-[#ccc]"],
+.wf-white [class*="text-[#888]"],
+.wf-white [class*="text-[#aaa]"] { color: var(--mid) !important; }
+.wf-white [class*="hover:bg-[rgba(255,255,255"]:hover { background: var(--tint) !important; }
+.wf-white .toc-link:hover { background: var(--tint); }
+
+/* TL;DR: soften the dark-mode shadow, and pull the bright accent labels
+   (passed in as inline colours) down to the darkened accent. */
+.wf-white [style*="rgba(255,255,255,0.03)"] { box-shadow: 0 1px 2px rgba(16,24,40,0.04) !important; }
+.wf-white [style*="rgb(14, 233, 214)"],
+.wf-white [style*="rgb(74, 222, 128)"],
+.wf-white [style*="rgb(106, 238, 154)"],
+.wf-white [style*="rgb(244, 114, 182)"] { color: var(--case-accent) !important; }
+
+/* Figure chrome from index.css */
+.wf-white .figure-frame { background: #fff; }
+.wf-white .bg-paper { background-color: #fff; }
+
+/* Hero: drop the small label above the title ("Commerce ads on Meta", etc.).
+   Only the one directly before the h1; section labels further down stay. */
+.wf-on .kicker:has(+ .display-1) { display: none; }
+.wf-on .kicker + .display-1 { margin-top: 0; }
+
+/* Tighter corners (grey): panels 24 → 12px, wireframes inside 14 → 6px. */
+.wf-grey [data-wf] { border-radius: 12px !important; }
+.wf-grey [data-wf] .figure-frame,
+.wf-grey [data-wf] .rounded-lg.overflow-hidden,
+.wf-grey [data-wf] .rounded-xl.overflow-hidden,
+.wf-grey [data-wf] .relative.overflow-hidden,
+.wf-grey [data-wf].gap-px > *,
+.wf-grey [data-wf] .gap-px > * { border-radius: 6px !important; }
+
+/* Slide captions were capped at 672px, so the longer ones wrapped to two
+   lines even though the panel is now wide enough for one. */
+.wf-on [data-wf] p.max-w-2xl { max-width: none; }
+
+/* Carousel arrows = the password page's Enter button (middleware.ts .submit):
+   54px glass circle, the same line-and-chevron arrow, same hover. Overrides
+   the earlier arrow styling above. The glyph (text ← → on Commerce/WhatsApp,
+   a chevron svg on Search) is hidden and the gate's arrow drawn as a mask. */
+.wf-grey [data-wf] .carousel-btn,
+.wf-grey [data-wf] button.font-mono.border {
+  width: 36px !important; height: 36px !important; padding: 0 !important;
+  border-radius: 50% !important;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0 !important; color: #fff !important;
+  background: rgba(255,255,255,0.1) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  transition: background .2s, border-color .2s;
+}
+.wf-grey [data-wf] .carousel-btn > svg { display: none; }
+.wf-grey [data-wf] .carousel-btn::before,
+.wf-grey [data-wf] button.font-mono.border::before {
+  content: ""; width: 15px; height: 15px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3Cpolyline points='13 6 19 12 13 18'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'/%3E%3Cpolyline points='13 6 19 12 13 18'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+/* Previous arrow points left */
+.wf-grey [data-wf] .carousel-btn[aria-label="Previous"]::before,
+.wf-grey [data-wf] button.font-mono.border:first-child::before { transform: scaleX(-1); }
+.wf-grey [data-wf] .carousel-btn:hover:not(:disabled),
+.wf-grey [data-wf] button.font-mono.border:hover:not(:disabled) {
+  background: rgba(255,255,255,0.17) !important;
+  border-color: rgba(255,255,255,0.2) !important;
+  color: #fff !important;
+}
+
+/* Quieter chrome — LIVE on every case study (shipped 2026-11-03), not tied to
+   ?wf=. Sticky header + contents panel borders were a rgba(255,255,255,0.1)
+   hairline (inline styles, hence !important); now 0.075. */
+.ms-on nav:not([aria-label]),
+.ms-on [style*="rgba(28, 28, 32, 0.62)"] { border-color: rgba(255,255,255,0.075) !important; }
+.ms-on .toc-link[style*="rgba(255, 255, 255, 0.08)"] { border-color: rgba(255,255,255,0.06) !important; }
+
+/* Section breaks drew two lines: a short 672px .rule at the end of one section
+   sitting 1px above the next section's full-width border-t. Keep the
+   full-width line only. Dividers inside a section are untouched. */
+.wf-on :has(+ section.border-t) > .rule:last-child { display: none; }
+
+/* Product media sequence: two 320px wireframes, so the panel hugs them
+   (2 x 320 + 24 gap + 2 x 32 padding) instead of spanning the column. */
+.wf-on [data-wf].pm-seq { max-width: 728px !important; }
+
+/* §04 decisions 01 / 02 / 03: a hairline and air between each, so they read
+   as three separate steps rather than one run of text and figures. */
+.wf-on .pm-decision + .pm-decision {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 3rem;
+  margin-top: 3rem;
+}
+/* 02 accordion panel: slightly larger wireframes (360px columns). */
+.wf-on [data-wf].pm-acc { max-width: 832px !important; }
+/* Seven-features tree: spine runs between the centres of the first and last
+   tag (each tag row is ~31px tall, so inset by half). */
+.pm-seven .pm-spine { top: 15.5px; bottom: 15.5px; }

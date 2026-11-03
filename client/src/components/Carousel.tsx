@@ -15,6 +15,8 @@ type CarouselProps = {
   caption?: string;
   /** How wide the inline preview is */
   size?: "default" | "wide" | "full";
+  /** PREVIEW ONLY — marks this as a wireframe block for the ?wf= preview. Inert otherwise. */
+  wf?: boolean;
 };
 
 export function Carousel({
@@ -22,6 +24,7 @@ export function Carousel({
   label,
   caption,
   size = "wide",
+  wf,
 }: CarouselProps) {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
@@ -89,6 +92,7 @@ export function Carousel({
     <>
       <figure
         ref={ref}
+        data-wf={wf ? "" : undefined}
         className={`reveal ${revealed ? "in" : ""} ${sizeClass} my-12 md:my-20`}
       >
         {/* Top toolbar with label and counter */}

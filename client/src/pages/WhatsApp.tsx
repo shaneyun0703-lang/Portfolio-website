@@ -22,8 +22,9 @@ import { useScrollToTop } from "@/hooks/useScrollToTop";
 import { useScrolled } from "@/hooks/useScrolled";
 import { CaseNav } from "@/components/CaseNav";
 import { TldrWithSwitcher } from "@/components/TldrSection";
-import { readManifestSkin, allProjectsHref, ManifestField } from "@/pages/handoff/shared";
+import { readManifestSkin, readWireframeMode, refPrefix, allProjectsHref, ManifestField } from "@/pages/handoff/shared";
 import "@/styles/manifest-skin.css";
+import "@/styles/wireframe-preview.css";
 
 // ─────────────────────────────────────────────────────────────────────────
 // Local components — kept page-local because they are theme-tinted
@@ -96,8 +97,8 @@ function StatStrip({
 // images inside the phone frames are placeholders, not the live design.
 function ConsumerFlowFigure() {
   return (
-    <figure className="my-12 md:my-16">
-      <span className="caption-label">Reference · What a Status ad looks like for the viewer</span>
+    <figure data-wf className="my-12 md:my-16">
+      <span className="caption-label">{refPrefix()}What a Status ad looks like for the viewer</span>
       <div className="mt-4">
         <div
           className="overflow-hidden"
@@ -217,8 +218,8 @@ function HierarchyFigure() {
     },
   ];
   return (
-    <figure className="my-10 md:my-12">
-      <span className="caption-label">Reference · The shape of an ad inside Ads Manager</span>
+    <figure data-wf className="my-10 md:my-12">
+      <span className="caption-label">{refPrefix()}The shape of an ad inside Ads Manager</span>
       <div className="mt-4 max-w-3xl">
         {levels.map((lv, i) => {
           const isOpen = expanded === lv.n;
@@ -410,7 +411,7 @@ function TimelineFigure() {
   ];
   return (
     <figure className="my-12 md:my-16 max-w-5xl">
-      <span className="caption-label">Reference · Where this case study sits</span>
+      <span className="caption-label">{refPrefix()}Where this case study sits</span>
 
       <div className="mt-6 relative">
         {/* Horizontal rail */}
@@ -556,7 +557,7 @@ function FlowCarousel({
   const currentStep = steps[current];
   return (
     <>
-    <div className="my-8 xl:max-w-[calc(100%-17rem)]">
+    <div data-wf className="my-8 xl:max-w-[calc(100%-17rem)]">
       <div className="flex items-center justify-between mb-4">
         <span className="caption-label">{objective} campaign flow</span>
         <span className="font-mono text-[0.7rem] text-[var(--mid)]">
@@ -742,7 +743,7 @@ export default function WhatsApp() {
   const skin = readManifestSkin();
 
   return (
-    <div className={`theme-whatsapp min-h-screen ${skin ? "ms-on" : "bg-[var(--paper)]"}`}>
+    <div className={`theme-whatsapp min-h-screen ${skin ? "ms-on" : "bg-[var(--paper)]"} ${readWireframeMode()}`}>
       {skin && <ManifestField />}
       <WaToc />
 
@@ -1068,7 +1069,7 @@ export default function WhatsApp() {
               The Awareness campaign type has no conversions card and different placement controls. These structural differences required a deep understanding of the product and the UX implications of each campaign type — and each came with its own set of ineligibility cases to resolve.
             </p>
           </Prose>
-          <div className="xl:max-w-[calc(100%-17rem)] space-y-4 my-4">
+          <div data-wf className="xl:max-w-[calc(100%-17rem)] space-y-4 my-4">
             <div className="border border-[var(--rule)] rounded-lg overflow-hidden">
               <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => expand("/primer/awareness-conversion.png")}>
                 <img src="/primer/awareness-conversion.png" alt="Awareness campaign — no conversions card" className="w-full h-auto block" loading="lazy" />

@@ -21,8 +21,15 @@
 /* The page's own content sits above the field. `nav` is excluded on purpose:
    both the header and the contents are position:fixed, and forcing them to
    relative here drops them into the flow mid-page. They carry their own
-   z-index already. */
-.ms-on > *:not(.ms-bg):not(nav) { position: relative; z-index: 1; }
+   z-index already. `.fixed` is excluded for the same reason: the page-level
+   image lightboxes are direct children too, and forcing them relative dropped
+   them to the bottom of the page instead of over it. */
+.ms-on > *:not(.ms-bg):not(nav):not(.fixed) { position: relative; z-index: 1; }
+/* That z-index:1 also makes each child a stacking context, so a lightbox
+   opened inside one (fixed inset-0, z-50) was trapped below the header (z-50)
+   and contents (z-40), which showed through on top of the expanded image.
+   While a lightbox is open, lift the section that holds it above both. */
+.ms-on > *:not(.ms-bg):has(.fixed.inset-0) { z-index: 60; }
 
 /* ---- the nav seam -------------------------------------------------------- */
 /* Unscrolled, the nav is an opaque #1e1e22 band that cuts the field off in a

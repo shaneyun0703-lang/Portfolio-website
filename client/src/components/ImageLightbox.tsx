@@ -17,6 +17,10 @@ export function ImageLightbox() {
       if (!img) return;
       if (img.naturalWidth < 100 || img.naturalHeight < 100) return;
       if (img.closest("[data-no-lightbox]")) return;
+      // Images in a .figure-frame open their page's own lightbox. Opening this
+      // one as well stacked two overlays: a click outside closed only the top
+      // one and left the page's lightbox stranded underneath.
+      if (img.closest(".figure-frame")) return;
       if (img.closest("video")) return;
       const inCaseStudy = img.closest("section, figure, [class*='theme-']");
       if (!inCaseStudy) return;
