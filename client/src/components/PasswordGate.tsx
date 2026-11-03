@@ -148,8 +148,8 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
   const FLOATS = ["network", "flow", "depth", "lattice", "web", "ink", "aura", "mesh", "spectrum", "plexus", "silk", "contour", "beam", "gradient", "circuit", "cases", "wind"];
   const pattern: GatePattern = floatParam && FLOATS.includes(floatParam) ? (floatParam as GatePattern) : "mesh"; // prod default
   // WebGL "wow" backgrounds render a shader canvas instead of the 2D pattern.
-  // ?bg=off drops the background art entirely (plain page) for comparison.
-  const noBg = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("bg") === "off";
+  // Background art is dropped by default (matches the live gate). ?bg=on (or any ?float=) brings it back for comparison.
+  const noBg = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("bg") !== "on" && !floatParam;
   // No main card by default (matches the live gate). ?card=on brings the glass card back for comparison.
   const noCard = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("card") !== "on";
   const webgl = floatParam === "liquid" || floatParam === "glass" ? floatParam : null;
@@ -256,14 +256,14 @@ export function PasswordGate({ children, preview = false, onUnlock }: { children
             type="submit"
             aria-label="Enter"
             className="shrink-0 w-[54px] h-[54px] rounded-full flex items-center justify-center text-white transition-all duration-200 cursor-pointer active:scale-[0.97]"
-            style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.16)", boxShadow: "none", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
+            style={{ background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "none", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)" }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.17)";
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.28)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.2)";
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)";
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.16)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.1)";
             }}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>

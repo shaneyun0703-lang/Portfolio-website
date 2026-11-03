@@ -4,6 +4,12 @@ export const config = {
 
 const COOKIE = "pf_auth";
 
+// Gate background art: the two floating shapes (leaf + crescent mesh, shipped 2026-07-13).
+// Turned OFF 2026-11-03 (plain grid + vignette only). All of the code is still below.
+// Set to true to bring the shapes back. Design source of truth: the `mesh` branch in
+// client/src/components/GateBackground.tsx.
+const GATE_SHAPES = false;
+
 async function token(password: string): Promise<string> {
   const buf = await crypto.subtle.digest(
     "SHA-256",
@@ -40,10 +46,10 @@ function gatePage(redirect = "/", error?: string): string {
     body{min-height:100vh;display:flex;align-items:center;justify-content:center;
       background:#1c1c1e;font-family:'Inter',system-ui,sans-serif;overflow:hidden;position:relative}
     .bg{position:absolute;inset:0;pointer-events:none}
-    #starsWrap{position:absolute;inset:0}
+${GATE_SHAPES ? `    #starsWrap{position:absolute;inset:0}
     .anim #starsWrap{opacity:0}
     #starsWrap.in{animation:bloom 1.6s ease-out forwards}
-    @keyframes bloom{0%{opacity:0;filter:brightness(2.6) blur(3px)}45%{opacity:1;filter:brightness(1.7) blur(0)}100%{opacity:1;filter:brightness(1) blur(0)}}
+` : ""}    @keyframes bloom{0%{opacity:0;filter:brightness(2.6) blur(3px)}45%{opacity:1;filter:brightness(1.7) blur(0)}100%{opacity:1;filter:brightness(1) blur(0)}}
     #stars{position:absolute;inset:0;width:100%;height:100%}
     .vignette{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 30%,#1c1c1e 75%)}
     .wrap{position:relative;z-index:10;width:100%;max-width:396px;padding:0 24px}
@@ -107,9 +113,9 @@ function gatePage(redirect = "/", error?: string): string {
     .submit{flex-shrink:0;width:54px;height:54px;padding:0;border-radius:50%;
       display:flex;align-items:center;justify-content:center;
       color:#fff;cursor:pointer;transition:background .2s,border-color .2s;
-      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);
       backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-    .submit:hover{background:rgba(255,255,255,.17);border-color:rgba(255,255,255,.16)}
+    .submit:hover{background:rgba(255,255,255,.17);border-color:rgba(255,255,255,.2)}
     .foot{text-align:center;margin-top:24px;font-family:'JetBrains Mono',monospace;
       font-size:11px;color:rgba(255,255,255,.8);height:16px;line-height:16px;white-space:nowrap;
       letter-spacing:.04em;text-transform:lowercase}
@@ -123,8 +129,8 @@ function gatePage(redirect = "/", error?: string): string {
 <body>
   <div class="bg">
     <div class="vignette"></div>
-    <div id="starsWrap"><canvas id="stars"></canvas></div>
-  </div>
+${GATE_SHAPES ? `    <div id="starsWrap"><canvas id="stars"></canvas></div>
+` : ""}  </div>
   <div class="wrap">
     <div class="title">
       <h1><span>Shane</span><span class="out">Yun</span></h1>
@@ -202,7 +208,7 @@ function gatePage(redirect = "/", error?: string): string {
         .catch(function(){showError();});
     });
   })();
-  /* two floating geometric shapes (a large leaf + a large crescent) that morph, twinkle and warp under the cursor */
+${GATE_SHAPES ? `  /* two floating geometric shapes (a large leaf + a large crescent) that morph, twinkle and warp under the cursor */
   (function(){
     var canvas=document.getElementById('stars');if(!canvas)return;
     var ctx=canvas.getContext('2d');if(!ctx)return;
@@ -256,18 +262,18 @@ function gatePage(redirect = "/", error?: string): string {
     var raf;resize();
     if(reduce){frame(performance.now());}else{raf=requestAnimationFrame(frame);}
   })();
-  /* intro choreography (with failsafe so the form is always usable) */
+` : ""}  /* intro choreography (with failsafe so the form is always usable) */
   (function(){
     try{
       var html=document.documentElement;
       if(html.className.indexOf('anim')===-1)return;
       var sw=document.getElementById('starsWrap'),box=document.getElementById('box'),sh=document.getElementById('cardShadow'),disp=document.getElementById('disp'),sub=document.getElementById('submitBtn'),foot=document.getElementById('foot');
-      function forceReveal(){try{sw.classList.add('in');box.classList.add('in');sh.classList.add('in');if(!disp.placeholder)disp.placeholder='enter password';foot.style.visibility='visible';if(foot.textContent.indexOf('@')===-1)foot.innerHTML='Request access via <span class="em">shane.yun0703@gmail.com</span>';}catch(e){}}
+      function forceReveal(){try{if(sw)sw.classList.add('in');box.classList.add('in');sh.classList.add('in');if(!disp.placeholder)disp.placeholder='enter password';foot.style.visibility='visible';if(foot.textContent.indexOf('@')===-1)foot.innerHTML='Request access via <span class="em">shane.yun0703@gmail.com</span>';}catch(e){}}
       setTimeout(forceReveal,5000); // never leave the box hidden
       disp.placeholder='';foot.innerHTML=''; // button keeps its static "enter" label (shown immediately, not typed)
       function typeP(el,text,speed,isPh,done){var i=0;var id=setInterval(function(){i++;if(isPh)el.placeholder=text.slice(0,i);else el.textContent=text.slice(0,i);if(i>=text.length){clearInterval(id);if(done)done();}},speed);}
       function typeFoot(speed){var pre='Request access via ';var em='shane.yun0703@gmail.com';var total=pre.length+em.length;foot.style.visibility='visible';var i=0;var id=setInterval(function(){i++;var pl=Math.min(i,pre.length);var pv=pre.slice(0,pl),ph=pre.slice(pl);var en=i>pre.length?i-pre.length:0;var ev=em.slice(0,en),eh=em.slice(en);foot.innerHTML='<span>'+pv+'</span><span class="hid">'+ph+'</span><span class="em">'+ev+'</span><span class="em hid">'+eh+'</span>';if(i>=total)clearInterval(id);},speed);}
-      setTimeout(function(){sw.classList.add('in');},120);
+      setTimeout(function(){if(sw)sw.classList.add('in');},120);
       setTimeout(function(){box.classList.add('in');sh.classList.add('in');},820);
       setTimeout(function(){typeP(disp,'enter password',72,true,function(){setTimeout(function(){typeFoot(48);},400);});},1170);
     }catch(e){try{document.documentElement.className=document.documentElement.className.replace('anim','');var b=document.getElementById('box');if(b)b.classList.add('in');var f=document.getElementById('foot');if(f)f.style.visibility='visible';}catch(_){}}
