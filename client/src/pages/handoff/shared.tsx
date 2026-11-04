@@ -478,7 +478,7 @@ export function refPrefix(): string {
 
 /** Case studies where the grey wireframe panels are LIVE by default (shipped
  *  2026-11-03). Others only get them through the `?wf=` preview. */
-const WF_LIVE_PATHS = ["/commerce-ads"];
+const WF_LIVE_PATHS = ["/commerce-ads", "/whatsapp"];
 
 /** Wireframe panels. `?wf=grey` puts every wireframe in a larger grey panel on
  *  the dark page; `?wf=white` does the same on a white page; `?wf=off` shows a

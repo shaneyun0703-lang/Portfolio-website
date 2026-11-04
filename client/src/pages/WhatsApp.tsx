@@ -15,7 +15,7 @@
  *   what it will eventually show in its caption.
  */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { Section, Prose, Aside } from "@/components/Section";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
@@ -95,30 +95,71 @@ function StatStrip({
 // business. Built with CSS so it renders crisply at any zoom; will be
 // replaced later with the exported deck slide. Caption clarifies that the
 // images inside the phone frames are placeholders, not the live design.
+// The three beats of the screen recording, with the second they start at.
+// Preview only: the steps light up in sync with the video, and clicking one
+// jumps the video to it.
+const STATUS_AD_STEPS = [
+  { at: 0, title: "Between friends' updates", body: "Viewers tap through updates from contacts." },
+  { at: 7.2, title: "A sponsored ad appears", body: "A full-screen ad shows up between them." },
+  { at: 10, title: "Straight into a chat", body: "Send message opens a chat with the business." },
+];
+
 function ConsumerFlowFigure() {
+  const wf = !!readWireframeMode();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [step, setStep] = useState(0);
+  const onTime = () => {
+    const t = videoRef.current?.currentTime ?? 0;
+    let i = 0;
+    STATUS_AD_STEPS.forEach((st, k) => { if (t >= st.at) i = k; });
+    setStep(i);
+  };
+  const jump = (k: number) => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.currentTime = STATUS_AD_STEPS[k].at + 0.05;
+    v.play().catch(() => {});
+  };
   return (
-    <figure data-wf className="my-12 md:my-16">
-      <span className="caption-label">{refPrefix()}What a Status ad looks like for the viewer</span>
-      <div className="mt-4">
+    <figure data-wf className="my-12 md:my-16" style={wf ? { width: "fit-content" } : undefined}>
+      <span className="caption-label">{wf ? "Ad on WhatsApp Status" : `${refPrefix()}What a Status ad looks like for the viewer`}</span>
+      <div className={wf ? "mt-4 flex items-center gap-12" : "mt-4"}>
         <div
-          className="overflow-hidden"
+          className="overflow-hidden shrink-0"
           style={{ width: 264, height: 570, borderRadius: 24 }}
         >
           <video
+            ref={videoRef}
             src="/primer/wa-status-ad-full.mov"
             autoPlay
             loop
             muted
             playsInline
+            onTimeUpdate={wf ? onTime : undefined}
             className="w-full h-auto block"
             style={{ marginTop: 0 }}
           />
         </div>
+        {wf && (
+          <ol className="wf-steps">
+            {STATUS_AD_STEPS.map((st, k) => (
+              <li key={st.title}>
+                <button type="button" onClick={() => jump(k)} data-active={k === step} className="wf-step text-left w-full">
+                  <span className="font-mono text-[0.7rem] wf-step-n">0{k + 1}</span>
+                  <span className="wf-step-title block font-display font-medium text-[1rem] mt-1">{st.title}</span>
+                  <span className="block font-display text-[0.8rem] text-[var(--mid)] leading-snug mt-1 whitespace-nowrap">{st.body}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        )}
       </div>
-      <figcaption className="caption mt-6 max-w-2xl">
-        A real WhatsApp Status ad as seen by the viewer — appearing
-        between friends' posts, full-screen, marked sponsored.
-      </figcaption>
+      {!wf && (
+        <figcaption className="caption mt-6 max-w-2xl">
+          A real WhatsApp Status ad as seen by the viewer — appearing
+          between friends' posts, full-screen, marked sponsored.
+        </figcaption>
+      )}
     </figure>
   );
 }
@@ -185,12 +226,14 @@ function WalkthroughStep({
 }
 
 function HierarchyFigure() {
+  const wf = !!readWireframeMode();
   const [expanded, setExpanded] = useState<string | null>("02");
   const levels = [
     {
       n: "03",
       name: "Campaign",
       sub: "The top-level container for all ad activity.",
+      wfSub: "The goal, like sales or leads.",
       cards: ["Campaign details", "Product catalog", "Budget strategy"],
       highlight: false,
       screenshot: "/primer/campaign-objective.png",
@@ -202,6 +245,7 @@ function HierarchyFigure() {
       n: "02",
       name: "Ad set",
       sub: "The rules every ad inside follows.",
+      wfSub: "Who, where, and the budget.",
       cards: ["Conversions", "Audience", "Placements", "Budget & schedule"],
       highlight: true,
       screenshot: "/primer/adset.png",
@@ -211,6 +255,7 @@ function HierarchyFigure() {
       n: "01",
       name: "Ad",
       sub: "What people actually see.",
+      wfSub: "The creative people see.",
       cards: ["Media customization", "Ad link", "Preview"],
       highlight: false,
       screenshot: "/primer/ad.png",
@@ -218,13 +263,14 @@ function HierarchyFigure() {
     },
   ];
   return (
-    <figure data-wf className="my-10 md:my-12">
-      <span className="caption-label">{refPrefix()}The shape of an ad inside Ads Manager</span>
-      <div className="mt-4 max-w-3xl">
+    <figure data-wf className="my-10 md:my-12" style={wf ? { width: "fit-content" } : undefined}>
+      <span className="caption-label">{wf ? "Anatomy of a Meta ad campaign" : `${refPrefix()}The shape of an ad inside Ads Manager`}</span>
+      <div className={wf ? "mt-4 w-[860px] max-w-full" : "mt-4 max-w-3xl"}>
         {levels.map((lv, i) => {
           const isOpen = expanded === lv.n;
           return (
-            <div key={lv.n} className="relative">
+            <div key={lv.n} className="relative" style={wf ? { marginLeft: i * 24, marginTop: i ? 16 : 0 } : undefined}>
+              {wf && i > 0 && <span className="wf-elbow" aria-hidden="true" />}
               <button
                 type="button"
                 onClick={() => setExpanded(isOpen ? null : lv.n)}
@@ -239,7 +285,7 @@ function HierarchyFigure() {
                   cursor: "pointer",
                 }}
               >
-                <div className="px-5 py-4 flex flex-col justify-center min-w-[140px] border-r border-[var(--rule)]">
+                <div className={`px-5 py-4 flex flex-col justify-center border-r border-[var(--rule)] ${wf ? "w-[200px] shrink-0" : "min-w-[140px]"}`}>
                   <span
                     className="font-mono text-[0.65rem]"
                     style={{
@@ -254,25 +300,29 @@ function HierarchyFigure() {
                     {lv.name}
                   </span>
                   <span className="font-display text-[0.78rem] text-[var(--mid)] mt-0.5">
-                    {lv.sub}
+                    {wf ? lv.wfSub : lv.sub}
                   </span>
                 </div>
                 <div className="flex-1 px-5 py-4 flex flex-wrap items-center gap-2">
-                  {lv.cards.map((c) => (
-                    <span
-                      key={c}
-                      className="inline-flex items-center px-2.5 py-1 rounded-sm border font-display text-[0.78rem]"
-                      style={{
-                        borderColor: lv.highlight
-                          ? "var(--case-accent)"
-                          : "var(--rule)",
-                        color: "var(--ink)",
-                        background: "var(--paper)",
-                      }}
-                    >
-                      {c}
-                    </span>
-                  ))}
+                  {lv.cards.map((c) => {
+                    const focal = wf && lv.highlight && c === "Placements";
+                    return (
+                      <span
+                        key={c}
+                        className="inline-flex items-center px-2.5 py-1 rounded-sm border font-display text-[0.78rem]"
+                        style={{
+                          borderColor: lv.highlight
+                            ? "var(--case-accent)"
+                            : "var(--rule)",
+                          color: focal ? "var(--paper)" : "var(--ink)",
+                          background: focal ? "var(--case-accent)" : "var(--paper)",
+                          fontWeight: focal ? 600 : undefined,
+                        }}
+                      >
+                        {focal ? "Placements: WhatsApp Status" : c}
+                      </span>
+                    );
+                  })}
                 </div>
                 <div className="flex items-center px-4">
                   <span
@@ -310,23 +360,28 @@ function HierarchyFigure() {
                   )}
                 </div>
               )}
-              {i < levels.length - 1 && (
+              {!wf && i < levels.length - 1 && ((
+
                 <div
                   className="mx-auto w-px h-4"
                   style={{ background: "var(--rule)" }}
                   aria-hidden="true"
                 />
-              )}
+              ))}
             </div>
           );
         })}
       </div>
-      <figcaption className="caption mt-4 max-w-2xl">
-        Every Meta ad is built in three nested levels. Each level
-        contains one or more screens of controls. Anything decided at
-        one level applies to every level below it — click any row to
-        see the real interface.
-      </figcaption>
+      {wf ? (
+        <p className="font-mono text-[0.65rem] text-[var(--mid)] mt-4">Click a level to see its screen</p>
+      ) : (
+        <figcaption className="caption mt-4 max-w-2xl">
+          Every Meta ad is built in three nested levels. Each level
+          contains one or more screens of controls. Anything decided at
+          one level applies to every level below it — click any row to
+          see the real interface.
+        </figcaption>
+      )}
     </figure>
   );
 }
@@ -552,14 +607,20 @@ function FlowCarousel({
   objective: string;
   steps: { n: string; title: string; description: string; src?: string }[];
 }) {
+  const wf = !!readWireframeMode();
   const [current, setCurrent] = useState(0);
   const [open, setOpen] = useState(false);
   const currentStep = steps[current];
+  const wfLabels: Record<string, string> = {
+    "Sales": "Sales campaign + WhatsApp Status Ads",
+    "Sales · Ineligible state": "WhatsApp Status ad ineligible to use",
+  };
+  const label = (wf && wfLabels[objective]) || `${objective} campaign flow`;
   return (
     <>
     <div data-wf className="my-8 xl:max-w-[calc(100%-17rem)]">
       <div className="flex items-center justify-between mb-4">
-        <span className="caption-label">{objective} campaign flow</span>
+        <span className="caption-label">{label}</span>
         <span className="font-mono text-[0.7rem] text-[var(--mid)]">
           {current + 1} / {steps.length}
         </span>
@@ -576,7 +637,9 @@ function FlowCarousel({
             >
               {step.src ? (
                 <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => setOpen(true)}>
-                  <img src={step.src} alt={step.title} className="w-full h-auto block" loading="lazy" />
+                  {/* Screens come in two sizes (1.8 and 1.75 ratio). A fixed frame keeps
+                      the text under every slide at the same height. */}
+                  <img src={step.src} alt={step.title} className={wf ? "w-full block object-cover object-top" : "w-full h-auto block"} style={wf ? { aspectRatio: "9 / 5" } : undefined} loading="lazy" />
                   <span className="expand-hint">CLICK TO ENLARGE</span>
                 </div>
               ) : (
@@ -741,6 +804,7 @@ export default function WhatsApp() {
   /* PREVIEW ONLY — ?skin=manifest brings the Manifest field onto the page so a
      project opened from that landing arrives in the same language. */
   const skin = readManifestSkin();
+  const wf = !!readWireframeMode();
 
   return (
     <div className={`theme-whatsapp min-h-screen ${skin ? "ms-on" : "bg-[var(--paper)]"} ${readWireframeMode()}`}>
@@ -890,6 +954,19 @@ export default function WhatsApp() {
 
         <HierarchyFigure />
 
+        {wf ? (
+        <Prose>
+          <p>
+            Each level inherits every choice made above it.
+          </p>
+          <p>
+            A <strong>placement</strong> is where an ad appears, like
+            WhatsApp Status. Each one supports different formats, so it
+            shapes the ad below it. <strong>Most of the design work in this
+            case study starts here.</strong>
+          </p>
+        </Prose>
+        ) : (
         <Prose>
           <p>
             These levels are nested — <strong>any decision made at
@@ -902,6 +979,7 @@ export default function WhatsApp() {
             as a placement.
           </p>
         </Prose>
+        )}
       </Section>
 
       <div className="container">
@@ -1070,6 +1148,7 @@ export default function WhatsApp() {
             </p>
           </Prose>
           <div data-wf className="xl:max-w-[calc(100%-17rem)] space-y-4 my-4">
+            {wf && <span className="caption-label block">Awareness campaign + WhatsApp Status Ads</span>}
             <div className="border border-[var(--rule)] rounded-lg overflow-hidden">
               <div className="figure-frame !rounded-none !border-0 cursor-zoom-in" onClick={() => expand("/primer/awareness-conversion.png")}>
                 <img src="/primer/awareness-conversion.png" alt="Awareness campaign — no conversions card" className="w-full h-auto block" loading="lazy" />

@@ -279,3 +279,29 @@
 /* Seven-features tree: spine runs between the centres of the first and last
    tag (each tag row is ~31px tall, so inset by half). */
 .pm-seven .pm-spine { top: 15.5px; bottom: 15.5px; }
+
+/* WhatsApp hierarchy: each level is indented under the one above, joined by
+   an elbow that starts on the parent's bottom edge and ends on the child's
+   left edge, so inheritance reads from the shape itself. */
+.wf-elbow {
+  position: absolute; left: -12px; top: -17px; width: 12px; height: 70px;
+  border-left: 1.5px solid rgba(255,255,255,0.45);
+  border-bottom: 1.5px solid rgba(255,255,255,0.45);
+  border-bottom-left-radius: 6px;
+  pointer-events: none;
+}
+
+/* WhatsApp Status ad: steps beside the video, the current one lit in sync
+   with playback. A rail on the left shows progress through the three beats. */
+.wf-steps { display: flex; flex-direction: column; gap: 4px; }
+.wf-step {
+  display: block; padding: 14px 0 14px 18px; cursor: pointer;
+  border-left: 2px solid rgba(255,255,255,0.1);
+  opacity: 0.45; transition: opacity .25s, border-color .25s;
+}
+.wf-step:hover { opacity: 0.75; }
+.wf-step[data-active="true"] { opacity: 1; border-left-color: var(--case-accent); }
+.wf-step .wf-step-n { color: var(--mid); }
+.wf-step[data-active="true"] .wf-step-n { color: var(--case-accent); }
+.wf-step .wf-step-title { color: var(--ink); transition: color .25s; }
+.wf-step[data-active="true"] .wf-step-title { color: var(--case-accent); }
